@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-tw"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="More Effective C# 筆記 #1 資料型別"><meta name="keywords" content="Unity,C#"><meta name="author" content="PeDev"><meta name="copyright" content="PeDev"><meta name="google-site-verification" content="HvPsLFKP5SVY13dKfPdcZoJCiD1trXxvkXf9ZTeKAtU"><title>More Effective C# 筆記 #1 資料型別 | PE工具箱</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://www.google-analytics.com"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-158056426-1', 'auto');
+ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用屬性property取代public欄位field"><span class="toc-number">2.</span> <span class="toc-text"> 使用屬性(Property)取代public欄位(Field)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#in-unity"><span class="toc-number">2.1.</span> <span class="toc-text"> In Unity</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#可變動的資料優先使用隱含式屬性"><span class="toc-number">3.</span> <span class="toc-text"> 可變動的資料優先使用隱含式屬性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#in-unity-2"><span class="toc-number">3.1.</span> <span class="toc-text"> In Unity</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#實值型別value-types優先使其具不可變性"><span class="toc-number">4.</span> <span class="toc-text"> 實值型別(value types)優先使其具不可變性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#區分實值value與參考reference型別"><span class="toc-number">5.</span> <span class="toc-text"> 區分實值(value)與參考(reference)型別</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#memory-overhead"><span class="toc-number">5.1.</span> <span class="toc-text"> Memory overhead</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#boxing"><span class="toc-number">5.2.</span> <span class="toc-text"> Boxing</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#了解多種相等概念之間的關係"><span class="toc-number">6.</span> <span class="toc-text"> 了解多種相等概念之間的關係</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#referenceequalsobject-left-object-right"><span class="toc-number">6.1.</span> <span class="toc-text"> ReferenceEquals(object left, object right)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equalsobject-left-object-right"><span class="toc-number">6.2.</span> <span class="toc-text"> Equals(object left, object right)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equalsobject-right"><span class="toc-number">6.3.</span> <span class="toc-text"> Equals(object right)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#了解gethashcode的陷阱"><span class="toc-number">7.</span> <span class="toc-text"> 了解GetHashCode()的陷阱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gethashcode到底該不該覆寫"><span class="toc-number">7.1.</span> <span class="toc-text"> GetHashCode到底該不該覆寫?</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="PeDev"></div><div class="author-info__name text-center">PeDev</div><div class="author-info__description text-center">who is currently making a 2d platformer game.</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">8</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">9</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">4</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">PE工具箱</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">More Effective C# 筆記 #1 資料型別</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-12-14</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Unity/">Unity</a><span class="post-meta__separator">|</span><i class="fa fa-comment-o post-meta__icon" aria-hidden="true"></i><a href="/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/#disqus_thread"><span class="disqus-comment-count" data-disqus-identifier="2020/12/14/More-Effective-C-2nd-讀書筆記/"></span></a><div class="post-meta-wordcount"><span>Word count: </span><span class="word-count">4k</span><span class="post-meta__separator">|</span><span>Reading time: 15 min</span></div></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>本篇內容大多來自於*《More Effective C# 寫出良好C#程式的50個具體做法 第二版》Ch.1 處理資料型別*，加上一些網路上查詢的相關內容學習紀錄。</p>
+<p>主要目的是了解C#語言的一些細節與效能陷阱，以便撰寫更好的程式碼。</p>
+<a id="more"></a>
+<h1 id="使用屬性property取代public欄位field"><a class="markdownIt-Anchor" href="#使用屬性property取代public欄位field"></a> 使用屬性(Property)取代public欄位(Field)</h1>
+<ul>
+<li>屬性(Property): 抽象的存取介面，本身不包含資料，僅提供getter和setter的method。可以把它直接當成getter &amp; setter methods來看待。</li>
+<li>欄位(Field): 實體的資料內容。</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">punlic <span class="keyword">class</span> <span class="title">GameObject</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> m_Name; <span class="comment">// private field</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="comment">// public property</span></span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="comment">// getter</span></span><br><span class="line">            <span class="keyword">return</span> m_Name;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">set</span> &#123; <span class="comment">// setter</span></span><br><span class="line">            m_Name = <span class="keyword">value</span>;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> name; <span class="comment">// public field &lt;---應避免使用，改以public proerpty的方式取代</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>實作索引子(Indexer)  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Foo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] m_Array = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>]; <span class="comment">// private field</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> index] &#123; <span class="comment">// Indexer, e.g. foo[0] = 0;</span></span><br><span class="line">        <span class="keyword">get</span> =&gt; m_Array[index];</span><br><span class="line">        <span class="keyword">set</span> =&gt; m_Array[index] = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> x, <span class="keyword">int</span> y] &#123; <span class="comment">// 2-dims Indexer, e.g. foo[0, 0] = 0;</span></span><br><span class="line">        <span class="keyword">get</span> =&gt; m_Array[x] + m_Array[y];</span><br><span class="line">        <span class="keyword">set</span> =&gt; m_Array[x] = m_Array[y] = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> <span class="keyword">this</span>[<span class="keyword">int</span> x, <span class="keyword">string</span> name] &#123; <span class="comment">// with string parameters.</span></span><br><span class="line">        <span class="keyword">get</span> =&gt; DoSomething(x, name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>使用屬性的好處:
+<ol>
+<li>抽象化資料內容不外露，能自由定義存取時的行為。</li>
+<li>分別定義getter和setter的存取範圍(public/protected/private)</li>
+<li>可以使用virtual、abstract關鍵字，能被繼承覆寫。</li>
+<li>能定義在interface內(視同method)</li>
+</ol>
+</li>
+<li>使用屬性的限制:
+<ol>
+<li>不能用ref或out關鍵字把屬性傳遞給方法。</li>
+</ol>
+</li>
+<li>屬性對外的使用方式與欄位相同，但是會產生不同的中繼語言MSIL指令(instruction)，即使他們在使用語法與資料來源是相容的，但是他們的機械碼是不相容的。這將會被迫更新一個已經deploy的assembly。</li>
+<li>效能方面，當JIT編譯器內嵌屬性存取子時，屬性與欄位的效能是一樣的。縱使沒有內嵌，效能差異也只有一個function call，這個差異幾乎可以忽視。
+<ul>
+<li>內嵌屬性存取子: 意旨getter方法只是很單純的return一個field的值，這樣編譯器就以inline的方式最佳化，所以沒有function call。</li>
+<li><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/classes-and-structs/using-properties" target="_blank" rel="noopener">https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/classes-and-structs/using-properties</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="in-unity"><a class="markdownIt-Anchor" href="#in-unity"></a> In Unity</h2>
+<ul>
+<li>在Unity內，我們一般會很習慣直接用public field來expose我們的成員變數到editor inspector上顯示。</li>
+<li>當我們打算以屬性來取代欄位時，可以透過[SerializeField]來expose私有欄位。
+<ul>
+<li>並且m_的命名開頭能夠被Unity忽略掉，算是一種unity-supported的coding style。</li>
+</ul>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> health; <span class="comment">// public field which is bad.</span></span><br><span class="line"></span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="comment">// private field with this attribute can be exposed to inspector.</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> m_Health; <span class="comment">// "m_" will not be displayed in Unity inspector.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> Health &#123; <span class="comment">// public property</span></span><br><span class="line">    <span class="keyword">get</span> =&gt; m_Health;</span><br><span class="line">    <span class="keyword">set</span> =&gt; m_Health = <span class="keyword">value</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="可變動的資料優先使用隱含式屬性"><a class="markdownIt-Anchor" href="#可變動的資料優先使用隱含式屬性"></a> 可變動的資料優先使用隱含式屬性</h1>
+<ul>
+<li>隱含式屬性 Auto-Implemented property: 編譯器會自動建立支援欄位(backing field)，由於支援欄位的名稱是由編譯器產生，你無法直接使用支援欄位。  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GameObject</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; <span class="comment">// Auto-Implemented property</span></span><br><span class="line">    <span class="comment">// equals</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> m_Name;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; m_Name;</span><br><span class="line">        <span class="keyword">set</span> =&gt; m_Name = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用隱含式屬性的好處:
+<ol>
+<li>撰寫方便+可讀性較佳</li>
+<li>限制使用者無法直接存取欄位</li>
+<li>當有需要把隱含式屬性用具體的實作取代時(如setter需要做資料驗證)，你將會是針對你的類別做機器碼相容的改變。</li>
+</ol>
+</li>
+<li>缺點:<br />
+       * 對於Serialization的attribute不友善</li>
+</ul>
+</li>
+</ul>
+<h2 id="in-unity-2"><a class="markdownIt-Anchor" href="#in-unity-2"></a> In Unity</h2>
+<ul>
+<li>直接在隱含式屬性上加[SerializeField]是沒有效果的，是要改成使用[field: SerializeField]才有效。</li>
+<li>缺點是在inspector的顯示名稱很難看，建議不要在這種情況下使用隱含式比較好。</li>
+<li>但一般來說如果你有不需要被Serialized的屬性的話用隱含式就很方便了。  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">   [<span class="meta">field: SerializeField</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> Health &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; <span class="comment">// auto-implemented property</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="實值型別value-types優先使其具不可變性"><a class="markdownIt-Anchor" href="#實值型別value-types優先使其具不可變性"></a> 實值型別(value types)優先使其具不可變性</h1>
+<ul>
+<li>不可變的型別(immutable types): 型別在建立後，它們成為常數。</li>
+<li>實質型別以struct實作，使其符合純資料的組合(composition)。</li>
+<li>example: 可變動的Address結構  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> sturct Address &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> state;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> zipCode;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Line1 &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Line2 &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> City &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> State &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; state;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            ValidateState(<span class="keyword">value</span>);</span><br><span class="line">            state = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ZipCode &#123;</span><br><span class="line">        <span class="keyword">get</span> =&gt; zipCode;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            ValidateZip(<span class="keyword">value</span>);</span><br><span class="line">            zipCode = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+使用範例:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use case</span></span><br><span class="line">Address a1 = <span class="keyword">new</span> Address();</span><br><span class="line">a1.Line1 = <span class="string">"AAA"</span>;</span><br><span class="line">a1.City = <span class="string">"Taipei"</span>;</span><br><span class="line">a1.ZipCode = <span class="string">"12345"</span>; <span class="comment">// Assume it is valid zip.</span></span><br><span class="line"><span class="comment">// Edit.</span></span><br><span class="line">a1.City = <span class="string">"New Taipei City"</span>; <span class="comment">// Now zip is invalid.</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>內部狀態改變代表有可能違反了物件的不變性(immutable)，在你替換City欄位時，a1已經成為一個錯誤的資料，他的ZipCode不再合法。</li>
+<li>違反物件的不變性更會導致多執行緒發生問題。</li>
+</ul>
+</li>
+<li>因此好的做法應該是要讓Address物件成為一個不可變的struct，把所有public properties改成唯讀，如下:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> sturct Address &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Line1 &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Line2 &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> City &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ZipCode &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Address</span>(<span class="params"><span class="keyword">string</span> line1, <span class="keyword">string</span> line2, <span class="keyword">string</span> city, <span class="keyword">int</span> zipCode</span>)</span> &#123;</span><br><span class="line">        Line1 = line1;</span><br><span class="line">        Line2 = line2;</span><br><span class="line">        City = city;</span><br><span class="line">        ValidateZip(zipCode);</span><br><span class="line">        ZipCode = zipCode;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+如此一來，每當你要更換資料內容時，都必須重新new一個出來，這樣就能維持資料的不變性。</li>
+<li>注意可能會有reference type的field，在ctor時要deep clone而非直接assgin。  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 有漏洞</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> PhoneList &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> Phone[] phones;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PhoneList</span>(<span class="params">Phone[] ph</span>)</span> &#123;</span><br><span class="line">        phones = ph; <span class="comment">// Phone[] 是reference type，因此在外部更改也會影響內部的值。</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> IEnumerable&lt;Phone&gt; Phones =&gt; phones;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正確的做法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> PhoneList &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> ImmutableList&lt;Phone&gt; phones;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PhoneList</span>(<span class="params">Phone[] ph</span>)</span> &#123;</span><br><span class="line">        phones = ph.ToImmutableList(); <span class="comment">// 會額外生成一個不可變的List(clone)</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> IEnumerable&lt;Phone&gt; Phones =&gt; phones;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="區分實值value與參考reference型別"><a class="markdownIt-Anchor" href="#區分實值value與參考reference型別"></a> 區分實值(value)與參考(reference)型別</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">實值型別(value types)</th>
+<th style="text-align:center">參考型別(reference types)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">Struct</td>
+<td style="text-align:center">Class</td>
+</tr>
+<tr>
+<td style="text-align:center">記憶體位置</td>
+<td style="text-align:center">Stack</td>
+<td style="text-align:center">物件記憶體存放於Heap，Stack上僅存其指標</td>
+</tr>
+<tr>
+<td style="text-align:center">繼承與多型</td>
+<td style="text-align:center">無法繼承，可實作Interface</td>
+<td style="text-align:center">支援任何繼承與實作</td>
+</tr>
+<tr>
+<td style="text-align:center">NULL</td>
+<td style="text-align:center">永遠都有數值，並沒有NULL</td>
+<td style="text-align:center">可為NULL(視同空指標)</td>
+</tr>
+<tr>
+<td style="text-align:center">建構子Constructor</td>
+<td style="text-align:center">不能自行定義無參數建構子，但任何struct都保證會有default的無參數建構子(所有欄位塞0)，且在定義建構子中要求對所有欄位成員賦值。</td>
+<td style="text-align:center">可自由定義</td>
+</tr>
+<tr>
+<td style="text-align:center">Assign operator</td>
+<td style="text-align:center">完全複製實值</td>
+<td style="text-align:center">複製指標(因此還是會指向同一塊heap記憶體)</td>
+</tr>
+<tr>
+<td style="text-align:center">Memory overhead</td>
+<td style="text-align:center">No(Unless boxing)</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:center">GC</td>
+<td style="text-align:center">No GC.Allocate (Unless boxing)</td>
+<td style="text-align:center">Yes</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><a href="https://stackoverflow.com/questions/13049/whats-the-difference-between-struct-and-class-in-net" target="_blank" rel="noopener">What’s the difference between struct and class in .NET?<br />
+</a></li>
+</ul>
+<h2 id="memory-overhead"><a class="markdownIt-Anchor" href="#memory-overhead"></a> Memory overhead</h2>
+<ul>
+<li>
+<p>由於參考型別相當於用指標去參考指定物件，勢必得分配記憶體給這個「指標」使用，一般來說與int的長度相同為32bits=4Bytes，而memory overhead就是指這個額外的指標記憶體花費。</p>
+</li>
+<li>
+<p>舉例來說，分別以struct和class來製作兩種型別:</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> FooStruct &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> intValue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FooClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> intValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然後用分配一個長度為100的array，它們實際上分配的記憶體如下</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FooStruct[] structArray = <span class="keyword">new</span> FooStruct[<span class="number">100</span>]; <span class="comment">// Memory = 陣列型別的指標記憶體(4Bytes) + 100 * FooStruct的記憶體(等同int的記憶體=4Bytes)</span></span><br><span class="line">FooClass[] classArray = <span class="keyword">new</span> FooClass[<span class="number">100</span>]; <span class="comment">// Memory = 陣列型別的指標記憶體(4Bytes) + 100 * FooClass指標記憶體(4Bytes)</span></span><br></pre></td></tr></table></figure>
+<p>雖然這樣看起來兩者的記憶體使用量是一樣的，但事實上structArray這時候已經有值了(為0)，而classArray存的全是空指標，因此還需要下面步驟兩者才算相等:</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Assign每一個陣列元素</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">    classArray[i] = <span class="keyword">new</span> FooClass();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 跑完後的Memory使用量為: 陣列型別的指標記憶體(4Bytes) + 100 * FooClass指標記憶體(4Bytes) + 100 * FooClass的記憶體(等同int的記憶體=4Bytes)</span></span><br></pre></td></tr></table></figure>
+<p>此時我們就可以說classArray的memory overhead接近50%(100 / 201)，所謂overhead的部分就是指標所額外占用的比率(陣列使用的指標不計)。</p>
+</li>
+<li>
+<p>參考資料</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/2860543" target="_blank" rel="noopener">What is “overhead”?</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="boxing"><a class="markdownIt-Anchor" href="#boxing"></a> Boxing</h2>
+<ul>
+<li>Boxing是指將實質型別(value type)轉換為<code>object</code>類型或是由這個實值型別實作之任何介面。</li>
+<li>直接用程式碼來表示:</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">123</span>;      <span class="comment">// a value type</span></span><br><span class="line"><span class="keyword">object</span> o = i;     <span class="comment">// boxing (implicit casting value type to System.Object)</span></span><br><span class="line"><span class="keyword">int</span> j = (<span class="keyword">int</span>)o;   <span class="comment">// unboxing (explicit casting from System.Object to value type)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>這樣的過程相當於new一個只包著int i的class，有可能有效能上的隱憂。</p>
+</li>
+<li>
+<p>一些非常容易發生的boxing:</p>
+<ol>
+<li>String.Format</li>
+</ol>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">Format</span>(<span class="params"><span class="keyword">string</span> format, <span class="keyword">params</span> <span class="keyword">object</span>[] args</span>)</span></span><br></pre></td></tr></table></figure>
+<p>可以注意到參數args的型別是object，因此一般在使用上可能會如下:</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> <span class="keyword">value</span> = <span class="number">1f</span>;</span><br><span class="line"><span class="keyword">string</span>.Format(<span class="string">"value is &#123;0&#125;"</span>, <span class="keyword">value</span>); <span class="comment">// value is 1.0</span></span><br></pre></td></tr></table></figure>
+<p>後面的value本來是float實值型別，但是它將會被boxing成<code>object</code> type。<br />
+如果要避免boxing可以提前用<code>ToString()</code>方法來轉型成string (string本身就是reference type沒有boxing的問題，可以參考<a href="https://stackoverflow.com/a/8478712" target="_blank" rel="noopener">這篇討論</a>)</p>
+<blockquote>
+<p>$“value is {value}” 字串插值這個語法糖在大多數情況是等同於String.Format()，編譯器會根據使用情境來優化選擇方法。 詳情參閱: <a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/language-reference/tokens/interpolated" target="_blank" rel="noopener">$ - 字串插值(C# 引用)</a></p>
+</blockquote>
+<ol start="2">
+<li>拿value type當作Dictionary的key(尤其是Enum)</li>
+</ol>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> ConnectionType &#123;</span><br><span class="line">    Signal,</span><br><span class="line">    Reference,</span><br><span class="line">    Parent</span><br><span class="line">&#125;</span><br><span class="line">Dictionary&lt;ConnectionType, GameObject&gt; connectionTo; <span class="comment">// enum as dictionary key</span></span><br></pre></td></tr></table></figure>
+<p>這樣會產生boxing的原因是hash-based collection是透過Object.GetHashCode()來產生hash，所以它一律都會把key值轉回object來呼叫GetHashCode()方法。</p>
+<p>想要避免boxing可以透過繼承<code>IEqualityComparer</code>來建立一個自定義的Comparer來避免做Object.GetHashCode()的行為，如下:</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class ConnectionTypeComparer : IEqualityComparer&lt;ConnectionType&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params">ConnectionType x, ConnectionType y</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> x == y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">GetHashCode</span>(<span class="params">ConnectionType x</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 用dictionary建構子替換default的comparer</span></span><br><span class="line">connectionTo = Dictionary&lt;ConnectionType, GameObject&gt;(<span class="keyword">new</span> ConnectionTypeComparer());</span><br></pre></td></tr></table></figure>
+<p>又或者可以透過struct包裝value reference的key並實作<code>IEquatable</code>介面來使其呼叫覆寫的<code>GetHashCode()</code>，這部分的原理詳情可參考這篇: <a href="https://www.jacksondunstan.com/articles/5148" target="_blank" rel="noopener">Collections Without the Boxing</a></p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> IntStruct : IEquatable&lt;IntStruct&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> Value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params">IntStruct other</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> Value == other.Value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">int</span> <span class="title">GetHashCode</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> Value.GetHashCode();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>基本上就是<strong>多注意generic function，通常會有boxing的隱憂</strong>。</p>
+</li>
+<li>
+<p>參考</p>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/types/boxing-and-unboxing" target="_blank" rel="noopener">Boxing 和 Unboxing (C# 程式設計手冊)</a></li>
+<li><a href="https://isdaniel.github.io/Boxing_UnBoxing/" target="_blank" rel="noopener">C# Boxing vs UnBoxing</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="了解多種相等概念之間的關係"><a class="markdownIt-Anchor" href="#了解多種相等概念之間的關係"></a> 了解多種相等概念之間的關係</h1>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class System.Object &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">ReferenceEquals</span>(<span class="params"><span class="keyword">object</span> left, <span class="keyword">object</span> right</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params"><span class="keyword">object</span> left, <span class="keyword">object</span> right</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params"><span class="keyword">object</span> right</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="keyword">operator</span> ==(MyClass left, MyClass right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="referenceequalsobject-left-object-right"><a class="markdownIt-Anchor" href="#referenceequalsobject-left-object-right"></a> <code>ReferenceEquals(object left, object right)</code></h2>
+<ul>
+<li>判斷兩者的<strong>物件識別(object identity)相同</strong>，即兩者<strong>參考的記憶體對象</strong>是否相同。
+<ul>
+<li>用這個方法檢測實值型別的相等永遠傳回false。</li>
+</ul>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> j = <span class="number">5</span>;</span><br><span class="line"><span class="comment">// value types never reference equals.</span></span><br><span class="line"><span class="keyword">if</span> (Object.ReferenceEquals(i, j)) &#123;</span><br><span class="line">    <span class="comment">// Never happends.</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Always happens.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Even if itself</span></span><br><span class="line"><span class="keyword">if</span> (Object.ReferenceEquals(i, i) &#123;</span><br><span class="line">    <span class="comment">// Never happends.</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Always happens.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+因為boxing的緣故，即使你以一個實值型別和自己相比也會回傳false。</li>
+</ul>
+<h2 id="equalsobject-left-object-right"><a class="markdownIt-Anchor" href="#equalsobject-left-object-right"></a> <code>Equals(object left, object right)</code></h2>
+<ul>
+<li>一個靜態泛型(generic)的比較相等方法，具體實作與以下類似:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Check object identity</span></span><br><span class="line"><span class="keyword">if</span> (Object.ReferenceEquals(<span class="keyword">object</span> left, <span class="keyword">object</span> right)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Return false if one of them is null.</span></span><br><span class="line"><span class="keyword">if</span> (Object.ReferenceEquals(left, <span class="literal">null</span>) ||</span><br><span class="line">    Object.ReferenceEquals(right, <span class="literal">null</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// return left's Equals() method.</span></span><br><span class="line"><span class="keyword">return</span> left.Equals(right);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以發現這個方法完全沒有實際的比較，具體的比較內容是仰賴<code>ReferenceEquals</code>和實體(intance)方法<code>Equals(object right)</code>來實作。</li>
+</ul>
+</li>
+</ul>
+<h2 id="equalsobject-right"><a class="markdownIt-Anchor" href="#equalsobject-right"></a> <code>Equals(object right)</code></h2>
+<ul>
+<li>可繼承覆寫的實體的方法</li>
+<li>預設沒繼承的<code>Object.Equals(object right)</code>的功能與<code>Object.ReferenceEquals</code>完全一樣</li>
+<li>實值型別其實都是繼承自<code>System.ValueType</code>，包含所有struct，而<code>ValueType</code>是已經有覆寫(override)這個Equals方法了。</li>
+<li>但記住，因為它是所有實值型別的基底，為了做正確的ValueType Equals檢測它會仰賴Refelction來比較所有欄位(field)的值是否一致。</li>
+<li>因此<strong>基本上你應該要為所有struct型別覆寫<code>Equals</code>以得到最好的效能</strong>。</li>
+<li>當你想要讓你的參考型別以實值語法(Value semantic)來比較相等時，才會需要覆寫Equals方法</li>
+<li>如string就是一個典型的參考型別+實值語法的類別。</li>
+<li>當你要實作時，記住你需要尊重相等的數學性質: 反身性(reflexive)、對稱性(symmetric)和遞移性(transitive)。
+<ul>
+<li>反身性(reflexive): 任何物件和自身相等，不管是哪一種型別，a == a 永遠都為true。</li>
+<li>對稱性(symmetric): 次序不影響結果，如果 a == b 為true，則b == a 為true。</li>
+<li>遞移性(transitive): 如果 a == b &amp;&amp; b == c 為true，則 a == c 為true。</li>
+</ul>
+</li>
+<li><code>IEquatable&lt;T&gt;</code>提供了強型別(strong-type)的參數，在Collection類別中可以省去Type檢查以及boxing，細節可以參考 <a href="https://www.jacksondunstan.com/articles/5148" target="_blank" rel="noopener">Collections Without the Boxing</a> 以及 <a href="https://blog.paranoidcoding.com/2009/01/15/if-you-implement-iequatable-t-you-still-must-override-object-s-equals-and-gethashcode.html" target="_blank" rel="noopener">If You Implement Iequatable T You Still Must Override Object S Equals And Gethashcode</a>
+<ul>
+<li>所以基本上，每當你想要覆寫<code>Object.Equals</code>時都應該實作<code>IEquatable&lt;T&gt;</code>以獲得最大效能。</li>
+</ul>
+</li>
+<li>一個典型的class覆寫Equals範例如下:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class Foo : IEquatable&lt;Foo&gt; &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params">objet right</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// Check null.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">object</span>.ReferenceEquals(right, <span class="literal">null</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Check object identity</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">object</span>.ReferenceEquals(<span class="keyword">this</span>, right)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Check type</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.GetType() != right.GetType()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.Equals(right <span class="keyword">as</span> Foo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// IEquatable&lt;Foo&gt; implementation.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params">Foo other</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 省略</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+注意Type檢查的部分，一般來說可能會寫成下面這種:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 有問題的寫法</span></span><br><span class="line">Foo rightAsFoo = right <span class="keyword">as</span> Foo;</span><br><span class="line"><span class="keyword">if</span> (rightAsFoo == <span class="literal">null</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>.Equals(rightAsFoo);</span><br></pre></td></tr></table></figure>
+這種情況可能會發生一個很嚴重的問題，當一個繼承關係的兩個類別進行比較時如下:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Foo</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Boo</span> : <span class="title">Foo</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">Foo foo = <span class="keyword">new</span> Foo();</span><br><span class="line">Boo boo = <span class="keyword">new</span> Boo();</span><br><span class="line"></span><br><span class="line">foo.Equals(boo); <span class="comment">// correct.</span></span><br><span class="line">boo.Equals(foo); <span class="comment">// always return false, because foo as Boo == null.</span></span><br></pre></td></tr></table></figure>
+會破壞相等的<strong>對稱性</strong>，因此進行精準的強型別檢查是必須的。</li>
+<li><code>operator ==()</code>
+<ul>
+<li>當你建立一個實值型別時，就應當重新定義運算子==()，原因跟<code>Equals</code>相同。</li>
+</ul>
+</li>
+</ul>
+<h1 id="了解gethashcode的陷阱"><a class="markdownIt-Anchor" href="#了解gethashcode的陷阱"></a> 了解GetHashCode()的陷阱</h1>
+<ul>
+<li>每當你打算覆寫GetHashCode()時，應當依循以下三個規則:
+<ol>
+<li>如果兩個物件是相等的(如Equals方法的結果)，則它們必須產生相同的雜湊值。(但不代表相同雜湊值就一定Equals)</li>
+<li>對於任何物件A，A.GetHashCode()必須是不會因實體而改變。無論呼叫A的任何一個方法，GetHashCode()都必須傳回相同的值。(不得在外部修改，確保能在collection中正確的存取)</li>
+<li>雜湊函式必須使所有典型的輸入集均勻的分佈在所有整數上。理想上，你會想避免產生的值集中在某些值的附近以避免bucket內的物件過多。(不強制，但這關乎到hashmap的效率)</li>
+</ol>
+</li>
+<li>預設的<code>System.Object.GetHashCode</code>使用System.Object類別中的一個internal欄位來產生雜湊值(相當於參考指標)。</li>
+<li>預設的<code>System.ValyeType.GetHashCode</code>為所有實值型別提供了預期行為。它依據型別中定義的第一個欄位來傳回雜湊碼(透過Reflection)，看以下例子:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> MyStruct &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> msg;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">public</span> DateTime date;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+則MyStruct的雜湊碼就是由<code>msg</code>欄位所產生的雜湊碼。因此以下程式碼:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyStruct s = <span class="keyword">new</span> MyStruct();</span><br><span class="line">s.msg = <span class="string">"Hello world"</span>;</span><br><span class="line"><span class="keyword">return</span> s.GetHashCode() == s.msg.GetHashCode(); <span class="comment">// true.</span></span><br></pre></td></tr></table></figure>
+會回傳true。<br />
+但這也代表一件事，<strong>所有訊息一樣的MyStruct物件</strong>都會有<strong>一樣的雜湊碼</strong>，這樣一來hash-based collection的效率就會降低(都被放在同一個bucket內)。<br />
+換個情形來看，如果只是改個位置:  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> MyStruct &#123;</span><br><span class="line">    <span class="keyword">public</span> DateTime date;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> msg;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>此時的MyStruct仰賴<code>date</code>產出HashCode，這樣一來同一天的所有訊息都會<strong>有同一個hash</strong>，<strong>效能會大大降低(變O(N))</strong>，完全失去hash的優點。</p>
+<h2 id="gethashcode到底該不該覆寫"><a class="markdownIt-Anchor" href="#gethashcode到底該不該覆寫"></a> <code>GetHashCode</code>到底該不該覆寫?</h2>
+<pre><code>* 對於參考型別的物件
+    * 一般來說`System.Object.GetHashCode`就足夠使用了，但是如果有覆寫`Equals`或`operator ==()`時則要注意規則1.是否有遵循。
+    * 萬一真的要覆寫的話，記得規則2.的內容，不能因為欄位的值變動了而改動HashCode。
+* 對於實值型別的物件
+    * 基本上不建議使用其預設的hash(Reflection + 分散效果差)。
+    * 為了遵循規則2.，最好是做成不可改變的型別(immutable)或是hash的參考對象是不可改變的。
+    * 為了效率起見遵循規則3.，要找到適當產生hash的方法是足夠分散且不碰撞的。
+</code></pre>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">PeDev</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/">https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a><a class="post-meta__tags" href="/tags/C/">C#</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/12/04/Unity-Screen-Space-Water-Reflection-2D/"><span>Unity Screen Space Water Reflection 2D</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/';
+  this.page.identifier = '2020/12/14/More-Effective-C-2nd-讀書筆記/';
+  this.page.title = 'More Effective C# 筆記 #1 資料型別';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'pedevmakesgame' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script><script id="dsq-count-scr" src="https://pedevmakesgame.disqus.com/count.js" async></script></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2020 By PeDev</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script src="/js/katex.js"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="100" alpha="0.4" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
