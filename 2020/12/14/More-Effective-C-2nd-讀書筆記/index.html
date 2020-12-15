@@ -286,14 +286,21 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </ul>
 <p>此時的MyStruct仰賴<code>date</code>產出HashCode，這樣一來同一天的所有訊息都會<strong>有同一個hash</strong>，<strong>效能會大大降低(變O(N))</strong>，完全失去hash的優點。</p>
 <h2 id="gethashcode到底該不該覆寫"><a class="markdownIt-Anchor" href="#gethashcode到底該不該覆寫"></a> <code>GetHashCode</code>到底該不該覆寫?</h2>
-<pre><code>* 對於參考型別的物件
-    * 一般來說`System.Object.GetHashCode`就足夠使用了，但是如果有覆寫`Equals`或`operator ==()`時則要注意規則1.是否有遵循。
-    * 萬一真的要覆寫的話，記得規則2.的內容，不能因為欄位的值變動了而改動HashCode。
-* 對於實值型別的物件
-    * 基本上不建議使用其預設的hash(Reflection + 分散效果差)。
-    * 為了遵循規則2.，最好是做成不可改變的型別(immutable)或是hash的參考對象是不可改變的。
-    * 為了效率起見遵循規則3.，要找到適當產生hash的方法是足夠分散且不碰撞的。
-</code></pre>
+<ul>
+<li>對於參考型別的物件
+<ul>
+<li>一般來說<code>System.Object.GetHashCode</code>就足夠使用了，但是如果有覆寫<code>Equals</code>或<code>operator ==()</code>時則要注意規則1.是否有遵循。</li>
+<li>萬一真的要覆寫的話，記得規則2.的內容，不能因為欄位的值變動了而改動HashCode。</li>
+</ul>
+</li>
+<li>對於實值型別的物件
+<ul>
+<li>基本上不建議使用其預設的hash(Reflection + 分散效果差)。</li>
+<li>為了遵循規則2.，最好是做成不可改變的型別(immutable)或是hash的參考對象是不可改變的。</li>
+<li>為了效率起見遵循規則3.，要找到適當產生hash的方法是足夠分散且不碰撞的。</li>
+</ul>
+</li>
+</ul>
 </div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">PeDev</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/">https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Unity/">Unity</a><a class="post-meta__tags" href="/tags/C/">C#</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/12/04/Unity-Screen-Space-Water-Reflection-2D/"><span>Unity Screen Space Water Reflection 2D</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
 var disqus_config = function () {
   this.page.url = 'https://qwe321qwe321qwe321.github.io/2020/12/14/More-Effective-C-2nd-%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/';
