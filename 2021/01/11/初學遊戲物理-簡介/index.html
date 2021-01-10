@@ -58,7 +58,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li><strong>Contact Manifold</strong>: 收集兩個Collider之間的所有Contact的一個集合，它本身算是紀錄兩個collider之間的交疊(intersection)情形的資料</li>
 </ul>
 <p>再來因為我主要的學習來源都是取自<a href="https://box2d.org/" target="_blank" rel="noopener">Box2D</a>，它是一套開源的2D物理引擎，Unity的Physics2D也是直接porting它的。<br />
-所以很常會提到它的作者Erin Carto(現任暴雪的遊戲物理工程師)的演講內容以及投影片。</p>
+所以很常會提到它的作者Erin Catto(現任暴雪的遊戲物理工程師)的演講內容以及投影片。</p>
 <h1 id="主流程"><a class="markdownIt-Anchor" href="#主流程"></a> 主流程</h1>
 <p>遊戲物理引擎在一次物理更新(Step)中會做的整個流程:<br />
 <img src="https://i.imgur.com/iRIuhoW.png" alt="" /><br />
@@ -104,7 +104,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>這個階段的一大難題之一，簡述問題就是<br />
 <strong>「當Body速度過快導致兩次更新之間直接穿透了中間的物件而沒有檢測到碰撞」</strong><br />
 <img src="https://i.gyazo.com/f1bdf861993edeab99c0bb9c9ca50791.png" alt="" /><br />
-也有分各大門派的解法，Box2D的解法是: <a href="https://www.youtube.com/watch?v=7_nKOET6zwI" target="_blank" rel="noopener">Physics for Game Programmers; Continuous Collision</a> by Erin Carto</p>
+也有分各大門派的解法，Box2D的解法是: <a href="https://www.youtube.com/watch?v=7_nKOET6zwI" target="_blank" rel="noopener">Physics for Game Programmers; Continuous Collision</a> by Erin Catto</p>
 <hr />
 <p>Collision Detection相關內容:</p>
 <ul>
@@ -145,8 +145,8 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <ul>
 <li><a href="https://allenchou.net/2013/12/game-physics-constraints-sequential-impulse/" target="_blank" rel="noopener">Game Physics: Resolution – Constraints &amp; Sequential Impulse</a> - 跟上面的中文教學影片的內容一樣的英文文字版本</li>
 <li><a href="http://allenchou.net/2013/12/game-physics-resolution-contact-constraints/" target="_blank" rel="noopener">Game Physics: Resolution – Contact Constraints</a> - 跟上面的中文教學影片的內容一樣的英文文字版本</li>
-<li><a href="https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf" target="_blank" rel="noopener">Fast and Simple Physics using Sequential Impulse</a> - Erin Carto在GDC2006的投影片</li>
-<li><a href="https://www.youtube.com/watch?v=SHinxAhv1ZE" target="_blank" rel="noopener">Physics for Game Programmers: Understanding Constraints</a> - Erin Carto在GDC2014的影片</li>
+<li><a href="https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf" target="_blank" rel="noopener">Fast and Simple Physics using Sequential Impulse</a> - Erin Catto 在GDC2006的投影片</li>
+<li><a href="https://www.youtube.com/watch?v=SHinxAhv1ZE" target="_blank" rel="noopener">Physics for Game Programmers: Understanding Constraints</a> - Erin Catto 在GDC2014的影片</li>
 </ul>
 <h1 id="integration"><a class="markdownIt-Anchor" href="#integration"></a> Integration</h1>
 <p>其實我不確定這個階段算不算在Resolution裡面，此階段就是套用Body的Velocity，使其修改Body的Transform來形成運動。<br />
