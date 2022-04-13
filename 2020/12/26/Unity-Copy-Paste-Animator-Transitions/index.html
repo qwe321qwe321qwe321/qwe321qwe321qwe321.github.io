@@ -56,8 +56,10 @@
       document.documentElement.setAttribute('color-mode', colorMode)
     }
   </script>
-
-<meta name="generator" content="Hexo 6.1.0"></head>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
 
 
   <body>
@@ -177,11 +179,20 @@ MathJax = {
 <h1 id="實作"><a class="markdownIt-Anchor" href="#實作"></a> 實作</h1>
 <p>我理想中的使用方法是可以直接拿到AnimatorWindow的狀態來做複製貼上。</p>
 <p>首先測試了一下<code>Selection.objects</code>拿的到選取的<code>AnimatorStateTransitions</code>和<code>AnimatorState</code>，這兩個的關係甚麼呢？我翻一下<code>AnimatorController</code>內的所有屬性，整個階層架構展開大概長這樣:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">AnimatorController</span><br><span class="line">|-AnimatorStateMachine</span><br><span class="line">  |-layers (AnimatorLayer)</span><br><span class="line">    |-states (AnimatorState)</span><br><span class="line">      |-transitions (AnimatorTransition)</span><br><span class="line">        |-destinationState (AnimatorState)</span><br><span class="line">      |-subStateMachines (StateMachine)</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">AnimatorController
+|-AnimatorStateMachine
+  |-layers (AnimatorLayer)
+    |-states (AnimatorState)
+      |-transitions (AnimatorTransition)
+        |-destinationState (AnimatorState)
+      |-subStateMachines (StateMachine)
+  ...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意<code>AnimatorTransition</code>本身不包含他的source state，所以我用Selection拿到的transition時也拿不到他的source，這樣就無法複製Ingoing transition了。</p>
 <p>因此我只好直接暴力搜尋當前layer內所有的transition來找source state。</p>
 <p>不過有個問題是我實在找不到<strong>取得AnimatorWindow當前的AnimatorController以及Layer</strong>的方法，本來我也decompile了<code>UnityEditor.dll</code>且在裡面找到這兩個field:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">static</span> AnimatorController lastActiveController = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">static</span> <span class="built_in">int</span> lastActiveLayerIndex = <span class="number">0</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token class-name">AnimatorController</span> lastActiveController <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token keyword">internal</span> <span class="token keyword">static</span> <span class="token class-name"><span class="token keyword">int</span></span> lastActiveLayerIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>想說這看起來跟<a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/SceneView-lastActiveSceneView.html"><code>SceneView.lastActiveSceneView</code></a>和<a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/GUILayoutUtility.GetLastRect.html"><code>GUILayoutUtility.GetLastRect()</code></a>的命名邏輯很像，應該可以拿到最近一次focus的Controller了。</p>
 <p>但用了Reflection.GetValue拿到的始終是<code>null</code>，只好作罷。</p>
 <p>於是改成了<strong>使用者需要自己設定好目標AnimatorController以及Layer才能開始複製貼上</strong>，弄這個也多花時間在做錯誤處理(防範使用者複製貼上到不同的controller或layer)。</p>
@@ -191,13 +202,46 @@ MathJax = {
 <h2 id="1-unity專案重啟後那些transition就沒了"><a class="markdownIt-Anchor" href="#1-unity專案重啟後那些transition就沒了"></a> 1. Unity專案重啟後那些transition就沒了</h2>
 <p>這件事很嚴重，因為這樣根本不能用，害我馬上把github專案改回private緊急維修。</p>
 <p>原因很單純，那些AnimatorStateTransition根本沒有存進專案內(AnimatorController內部)。我原本是直接用constructor new了一個出來，如下:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> transition = <span class="keyword">new</span> AnimatorStateTransition();</span><br><span class="line">state.AddTransition(transition);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token class-name"><span class="token keyword">var</span></span> transition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">AnimatorStateTransition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+state<span class="token punctuation">.</span><span class="token function">AddTransition</span><span class="token punctuation">(</span>transition<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>我本以為那個<code>AddTransition</code>的方法已經會幫我處理這塊了，結果並沒有。因為內部是長這樣:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>   <span class="doctag">&lt;para&gt;</span>Utility function to add an outgoing transition.<span class="doctag">&lt;/para&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;transition&quot;&gt;</span>The transition to add.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddTransition</span>(<span class="params">AnimatorStateTransition transition</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">this</span>.undoHandler.DoUndo(<span class="keyword">this</span>, <span class="string">&quot;Transition added&quot;</span>);</span><br><span class="line">	AnimatorStateTransition[] transitions = <span class="keyword">this</span>.transitions;</span><br><span class="line">	ArrayUtility.Add&lt;AnimatorStateTransition&gt;(<span class="keyword">ref</span> transitions, transition);</span><br><span class="line">	<span class="keyword">this</span>.transitions = transitions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">/// &lt;summary></span>
+<span class="token comment">///   &lt;para>Utility function to add an outgoing transition.&lt;/para></span>
+<span class="token comment">/// &lt;/summary></span>
+<span class="token comment">/// &lt;param name="transition">The transition to add.&lt;/param></span>
+<span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">AddTransition</span><span class="token punctuation">(</span><span class="token class-name">AnimatorStateTransition</span> transition<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">this</span><span class="token punctuation">.</span>undoHandler<span class="token punctuation">.</span><span class="token function">DoUndo</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">"Transition added"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token class-name">AnimatorStateTransition<span class="token punctuation">[</span><span class="token punctuation">]</span></span> transitions <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>transitions<span class="token punctuation">;</span>
+	ArrayUtility<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Add</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>AnimatorStateTransition<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token keyword">ref</span> transitions<span class="token punctuation">,</span> transition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">this</span><span class="token punctuation">.</span>transitions <span class="token operator">=</span> transitions<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>而其他參數的多載方法是長這樣:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> AnimatorStateTransition <span class="title">AddTransition</span>(<span class="params">AnimatorStateMachine destinationStateMachine</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    AnimatorStateTransition animatorStateTransition = <span class="keyword">this</span>.CreateTransition(<span class="literal">false</span>);</span><br><span class="line">    animatorStateTransition.destinationStateMachine = destinationStateMachine;</span><br><span class="line">    <span class="keyword">this</span>.AddTransition(animatorStateTransition);</span><br><span class="line">    <span class="keyword">return</span> animatorStateTransition;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token return-type class-name">AnimatorStateTransition</span> <span class="token function">AddTransition</span><span class="token punctuation">(</span><span class="token class-name">AnimatorStateMachine</span> destinationStateMachine<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name">AnimatorStateTransition</span> animatorStateTransition <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">CreateTransition</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    animatorStateTransition<span class="token punctuation">.</span>destinationStateMachine <span class="token operator">=</span> destinationStateMachine<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">AddTransition</span><span class="token punctuation">(</span>animatorStateTransition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> animatorStateTransition<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以發現它有一個Create方法來產生Transition，裡面是:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> AnimatorStateTransition <span class="title">CreateTransition</span>(<span class="params"><span class="built_in">bool</span> setDefaultExitTime</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    AnimatorStateTransition animatorStateTransition = <span class="keyword">new</span> AnimatorStateTransition();</span><br><span class="line">    animatorStateTransition.hasExitTime = <span class="literal">false</span>;</span><br><span class="line">    animatorStateTransition.hasFixedDuration = <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">bool</span> flag = AssetDatabase.GetAssetPath(<span class="keyword">this</span>) != <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> (flag)</span><br><span class="line">    &#123;</span><br><span class="line">        AssetDatabase.AddObjectToAsset(animatorStateTransition, AssetDatabase.GetAssetPath(<span class="keyword">this</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    animatorStateTransition.hideFlags = HideFlags.HideInHierarchy;</span><br><span class="line">    <span class="keyword">if</span> (setDefaultExitTime)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.SetDefaultTransitionExitTime(<span class="keyword">ref</span> animatorStateTransition);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> animatorStateTransition;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token return-type class-name">AnimatorStateTransition</span> <span class="token function">CreateTransition</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">bool</span></span> setDefaultExitTime<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name">AnimatorStateTransition</span> animatorStateTransition <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">AnimatorStateTransition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    animatorStateTransition<span class="token punctuation">.</span>hasExitTime <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    animatorStateTransition<span class="token punctuation">.</span>hasFixedDuration <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">bool</span></span> flag <span class="token operator">=</span> AssetDatabase<span class="token punctuation">.</span><span class="token function">GetAssetPath</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>flag<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        AssetDatabase<span class="token punctuation">.</span><span class="token function">AddObjectToAsset</span><span class="token punctuation">(</span>animatorStateTransition<span class="token punctuation">,</span> AssetDatabase<span class="token punctuation">.</span><span class="token function">GetAssetPath</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    animatorStateTransition<span class="token punctuation">.</span>hideFlags <span class="token operator">=</span> HideFlags<span class="token punctuation">.</span>HideInHierarchy<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>setDefaultExitTime<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">SetDefaultTransitionExitTime</span><span class="token punctuation">(</span><span class="token keyword">ref</span> animatorStateTransition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> animatorStateTransition<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>flag</code>那個判斷式就是重點了，他在確認目前的<code>AnimatorState</code>有存在於專案之中後會把這個transition物件塞進去。</p>
 <p>把這部分處理完之後就解決這問題了。</p>
 <h2 id="2-anystate-entrystate-and-exitstate"><a class="markdownIt-Anchor" href="#2-anystate-entrystate-and-exitstate"></a> 2. AnyState, EntryState, and ExitState</h2>
@@ -339,6 +383,12 @@ MathJax = {
           </a>
         </li>
       
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
     </ul>
   </div>
   
@@ -357,6 +407,7 @@ MathJax = {
     </div>
   
 </div>
+<script src="/js/prism/prism.js" async></script>
 
       </div>
 

@@ -56,8 +56,10 @@
       document.documentElement.setAttribute('color-mode', colorMode)
     }
   </script>
-
-<meta name="generator" content="Hexo 6.1.0"></head>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
 
 
   <body>
@@ -155,7 +157,7 @@ MathJax = {
           
       </div>
       <div class="markdown-body">
-        <h1 id="前言廢話"><a class="markdownIt-Anchor" href="#前言廢話"></a> 前言&amp;廢話</h1>
+        <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
 <p>這篇文單純記錄用hexo在github上架設靜態網站遇到的問題以及一些指令和輔助工具，以防忘記。</p>
 <p>另外這也是第一篇用<a target="_blank" rel="noopener" href="https://github.com/jaredly/hexo-admin">Hexo Admin</a>打的文章，作為嘗試。</p>
 <span id="more"></span>
@@ -172,34 +174,35 @@ MathJax = {
 <p>所以就不多作介紹了。</p>
 <p>但這邊有個小問題當初卡了我一陣子，是語言和時區(timezone)到底要寫什麼才合法，<br />
 教學不是沒寫就是對岸的教學。總之是設定成這樣:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">language: zh-tw</span><br><span class="line">timezone: &#x27;Asia/Taipei&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">language: zh-tw
+timezone: &#39;Asia&#x2F;Taipei&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h1 id="commands"><a class="markdownIt-Anchor" href="#commands"></a> Commands</h1>
 <p><em>前提是該設定的都設定好了，如部署設定之類的。</em></p>
 <h2 id="生成架設部署網站"><a class="markdownIt-Anchor" href="#生成架設部署網站"></a> 生成/架設/部署網站</h2>
 <h3 id="生成靜態網頁"><a class="markdownIt-Anchor" href="#生成靜態網頁"></a> 生成靜態網頁</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate [-d] [-w]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo generate <span class="token punctuation">[</span>-d<span class="token punctuation">]</span> <span class="token punctuation">[</span>-w<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或用縮寫</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g [-d] [-w]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo g <span class="token punctuation">[</span>-d<span class="token punctuation">]</span> <span class="token punctuation">[</span>-w<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用<code>-d</code>參數會在生成後進行部署(deploy)。</p>
 <h3 id="架設在local端"><a class="markdownIt-Anchor" href="#架設在local端"></a> 架設在Local端</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server [-p] [-s] [-l]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo server <span class="token punctuation">[</span>-p<span class="token punctuation">]</span> <span class="token punctuation">[</span>-s<span class="token punctuation">]</span> <span class="token punctuation">[</span>-l<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或用縮寫</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s [-p] [-s] [-l]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo s <span class="token punctuation">[</span>-p<span class="token punctuation">]</span> <span class="token punctuation">[</span>-s<span class="token punctuation">]</span> <span class="token punctuation">[</span>-l<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>便會啟動伺服器，預設是 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a></p>
 <p>參數不常用，有興趣就<a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/commands">參考官方文件</a>。</p>
 <h3 id="部署到遠端github"><a class="markdownIt-Anchor" href="#部署到遠端github"></a> 部署到遠端(Github)</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy [-g]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo deploy <span class="token punctuation">[</span>-g<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或用縮寫</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d [-g]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo d <span class="token punctuation">[</span>-g<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用<code>-g</code>參數會在部署網站前先產生靜態檔案。</p>
 <p>使用這項指令前要先設定好部署到github，之後只要輸入這個指令就會自動commit並push上去。如圖</p>
 <p><img src="/images/hexo_deploy_to_github.png" alt="會自動commit以及push至github上upload successful" /></p>
 <h3 id="清除快取以及靜態檔案"><a class="markdownIt-Anchor" href="#清除快取以及靜態檔案"></a> 清除快取以及靜態檔案</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>有些檔案更改後再次generate也不會修改，需要先清除才行。</p>
 <h2 id="寫作"><a class="markdownIt-Anchor" href="#寫作"></a> 寫作</h2>
 <h3 id="建立文章"><a class="markdownIt-Anchor" href="#建立文章"></a> 建立文章</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo new <span class="token punctuation">[</span>layout<span class="token punctuation">]</span> <span class="token operator">&lt;</span>title<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>建立一篇新的文章。如果沒有設定 layout 的話，則會使用 _config.yml 中的 default_layout 設定代替。如果標題包含空格的話，請使用引號括起來。</p>
 <p>文章檔案放在<code>source/_posts</code>裡面</p>
 <h4 id="layout"><a class="markdownIt-Anchor" href="#layout"></a> Layout</h4>
@@ -210,15 +213,15 @@ MathJax = {
 <li><code>page</code>為特別的頁面區，如tags、categories和about之類的頁面。</li>
 </ul>
 <h3 id="發表草稿"><a class="markdownIt-Anchor" href="#發表草稿"></a> 發表草稿</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo publish [layout] &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hexo publish <span class="token punctuation">[</span>layout<span class="token punctuation">]</span> <span class="token operator">&lt;</span>filename<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>草稿檔案放在<code>source/_drafts</code>裡面。</p>
 <h1 id="遇到的問題集"><a class="markdownIt-Anchor" href="#遇到的問題集"></a> 遇到的問題集</h1>
 <ul>
 <li>
 <p>Q1. 使用某些主題時(如我現在使用的melody主題)會發生打開網頁時跳出以下訊息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extends includes/layout.pug block content include includes/recent-posts.pug include includes/pagination.pug</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">extends includes&#x2F;layout.pug block content include includes&#x2F;recent-posts.pug include includes&#x2F;pagination.pug<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>A1. 你的環境缺少部分hexo套件，用以下指令安裝。<a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly/issues/4">(參考來源)</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-renderer-jade hexo-renderer-stylus --save or yarn add hexo-renderer-jade hexo-renderer-stylus</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">npm install hexo-renderer-jade hexo-renderer-stylus --save or yarn add hexo-renderer-jade hexo-renderer-stylus<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li>
 <p>Q2. 部署上去的網站與local網站長的不同</p>
@@ -290,7 +293,7 @@ eyJoaXN0b3J5IjpbNzczMjI0NzEyXX0=
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%E5%BB%A2%E8%A9%B1"><span class="toc-text"> 前言&amp;廢話</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%9Dhexo"><span class="toc-text"> 安裝Hexo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#commands"><span class="toc-text"> Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%9E%B6%E8%A8%AD%E9%83%A8%E7%BD%B2%E7%B6%B2%E7%AB%99"><span class="toc-text"> 生成&#x2F;架設&#x2F;部署網站</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81"><span class="toc-text"> 生成靜態網頁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E8%A8%AD%E5%9C%A8local%E7%AB%AF"><span class="toc-text"> 架設在Local端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0%E9%81%A0%E7%AB%AFgithub"><span class="toc-text"> 部署到遠端(Github)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E5%BF%AB%E5%8F%96%E4%BB%A5%E5%8F%8A%E9%9D%9C%E6%85%8B%E6%AA%94%E6%A1%88"><span class="toc-text"> 清除快取以及靜態檔案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%AB%E4%BD%9C"><span class="toc-text"> 寫作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%87%E7%AB%A0"><span class="toc-text"> 建立文章</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#layout"><span class="toc-text"> Layout</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BC%E8%A1%A8%E8%8D%89%E7%A8%BF"><span class="toc-text"> 發表草稿</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%95%8F%E9%A1%8C%E9%9B%86"><span class="toc-text"> 遇到的問題集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B7%A5%E5%85%B7"><span class="toc-text"> 第三方工具</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%9Dhexo"><span class="toc-text"> 安裝Hexo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#commands"><span class="toc-text"> Commands</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%9E%B6%E8%A8%AD%E9%83%A8%E7%BD%B2%E7%B6%B2%E7%AB%99"><span class="toc-text"> 生成&#x2F;架設&#x2F;部署網站</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E9%9D%9C%E6%85%8B%E7%B6%B2%E9%A0%81"><span class="toc-text"> 生成靜態網頁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E8%A8%AD%E5%9C%A8local%E7%AB%AF"><span class="toc-text"> 架設在Local端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%88%B0%E9%81%A0%E7%AB%AFgithub"><span class="toc-text"> 部署到遠端(Github)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E5%BF%AB%E5%8F%96%E4%BB%A5%E5%8F%8A%E9%9D%9C%E6%85%8B%E6%AA%94%E6%A1%88"><span class="toc-text"> 清除快取以及靜態檔案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%AB%E4%BD%9C"><span class="toc-text"> 寫作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E6%96%87%E7%AB%A0"><span class="toc-text"> 建立文章</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#layout"><span class="toc-text"> Layout</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BC%E8%A1%A8%E8%8D%89%E7%A8%BF"><span class="toc-text"> 發表草稿</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%95%8F%E9%A1%8C%E9%9B%86"><span class="toc-text"> 遇到的問題集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B7%A5%E5%85%B7"><span class="toc-text"> 第三方工具</span></a></li></ol>
     </div>
   </div>
 
@@ -347,6 +350,12 @@ eyJoaXN0b3J5IjpbNzczMjI0NzEyXX0=
           </a>
         </li>
       
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
     </ul>
   </div>
   
@@ -365,6 +374,7 @@ eyJoaXN0b3J5IjpbNzczMjI0NzEyXX0=
     </div>
   
 </div>
+<script src="/js/prism/prism.js" async></script>
 
       </div>
 
