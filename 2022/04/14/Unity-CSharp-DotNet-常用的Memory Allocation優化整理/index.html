@@ -442,37 +442,43 @@ MathJax = {
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="waituntil-waitwhile"><a class="markdownIt-Anchor" href="#waituntil-waitwhile"></a> WaitUntil &amp; WaitWhile</h3>
 <p>這兩個完全沒有理由要去使用，只要你知道<code>yield return null</code>的用法基本上就不需要這兩個類別了。</p>
-<p>而且之它們兩個還需要<code>Func&lt;bool&gt;</code>，一般會用到Lambda expression，反而造成更多GC.Alloc。</p>
+<p>而且它們兩個還需要傳入<code>Func&lt;bool&gt;</code>，一般會用到Lambda expression，反而造成更多GC.Alloc。</p>
 <h3 id="profiling"><a class="markdownIt-Anchor" href="#profiling"></a> Profiling</h3>
 <p><img src="https://i.imgur.com/fwjzPmY.png" alt="" /></p>
 <p>字尾加Fix的是修正後的結果</p>
 <h2 id="6-delegate-lambda-expression-delegate-operator-anonymous-function"><a class="markdownIt-Anchor" href="#6-delegate-lambda-expression-delegate-operator-anonymous-function"></a> 6. Delegate (Lambda expression / delegate operator / anonymous function)</h2>
 <p>名詞解釋就省略了，總之就是如下的範例:</p>
-<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate implicit operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">ActionParameter</span><span class="token punctuation">(</span>DoSomething<span class="token punctuation">)</span><span class="token punctuation">;</span>
-Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate explicit operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">ActionParameter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Action<span class="token punctuation">)</span>DoSomething<span class="token punctuation">)</span><span class="token punctuation">;</span>
-Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Process</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate implicit operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ActionParameter</span><span class="token punctuation">(</span>DoSomething<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 6.a</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate explicit operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ActionParameter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span>Action<span class="token punctuation">)</span>DoSomething<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 6.b</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"Lambda Experssion"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">ActionParameter</span><span class="token punctuation">(</span>
-    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-        <span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"Lambda Experssion"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ActionParameter</span><span class="token punctuation">(</span> <span class="token comment">// 6.c</span>
+        <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+            <span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">ActionParameter</span><span class="token punctuation">(</span><span class="token keyword">delegate</span> <span class="token punctuation">&#123;</span> <span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>以上每種寫法都會有GC.Alloc，畢竟他就是無法避免地需要建立一個delegate物件出來。</p>
+    Profiler<span class="token punctuation">.</span><span class="token function">BeginSample</span><span class="token punctuation">(</span><span class="token string">"delegate operator"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ActionParameter</span><span class="token punctuation">(</span><span class="token keyword">delegate</span> <span class="token punctuation">&#123;</span> <span class="token function">DoSomething</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 6.d</span>
+    Profiler<span class="token punctuation">.</span><span class="token function">EndSample</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ActionParameter</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>Action</span> action<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    action<span class="token punctuation">?.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上abcd四種寫法都會有GC.Alloc，畢竟他就是無法避免地需要建立一個delegate物件出來。</p>
 <blockquote>
 <p>有些人可能會有個誤解 ─ 以為直接把一個方法當作delegate不會有GC.Alloc(第一種寫法)，因為你可能會覺得方法本身是唯一的、是一個常數，那我拿到這個唯一的方法的delegate不就是allocation free嗎?<br />
 當然不是。</p>
-<p>我們必須時時刻刻有這個認知 ─ delegate也是object，delegate本身是可以重組合併其他delegate的(<code>+=</code> <code>-=</code> operator)，所以它當然不是唯一的常數。</p>
+<p>我們必須要有這個認知 ─ delegate也是object，delegate本身是可以重組合併其他delegate的(<code>operator+=</code> 和 <code>operator-=</code>)，所以它當然不是唯一的常數。</p>
 </blockquote>
 <h3 id="solution-5"><a class="markdownIt-Anchor" href="#solution-5"></a> Solution</h3>
-<p>Lambda匿名函式寫法可能會跟外部的captured variable有關聯所以我沒辦法提供完美的解法，不過你如果只是像範例1和2的寫法，我一般來說會cache起來優化:</p>
+<p>Lambda匿名函式寫法可能會跟外部的captured variable有關聯所以我沒辦法提供通用解法，不過你如果只是像範例1和2的寫法，我一般來說會cache起來優化:</p>
 <pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token class-name">System<span class="token punctuation">.</span>Action</span> m_ActionDoSomething<span class="token punctuation">;</span>
 
 <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -488,7 +494,7 @@ Profiler<span class="token punctuation">.</span><span class="token function">End
 <p>附上profiler:</p>
 <p><img src="https://i.imgur.com/abyczvK.png" alt="" /></p>
 <h2 id="7-captured-variable-陷阱"><a class="markdownIt-Anchor" href="#7-captured-variable-陷阱"></a> 7. Captured Variable 陷阱</h2>
-<p>使用lambda匿名函式時有時候會用到<code>captured variable</code>的C#語言特性，簡單來說就是當你的匿名函式內部有使用到外面的變數時，compiler會自動幫你把指定的變數的reference儲存起來放入匿名函數內，因為他是儲存reference，所以有時候會有不直覺的結果，可以參考案例: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/271440/captured-variable-in-a-loop-in-c-sharp">Captured variable in a loop in C#</a>。</p>
+<p>使用lambda匿名函式時有時候會用到<code>captured variable</code>的C#語言特性，簡單來說就是當你的匿名函式內部有使用到外面的變數時，compiler會自動幫你把指定的變數的reference儲存起來放入匿名函數內，且因為他是儲存reference，所以有時候會有不直覺的結果，可以參考案例: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/271440/captured-variable-in-a-loop-in-c-sharp">Captured variable in a loop in C#</a>。</p>
 <p>但我這篇不是要講邏輯上的陷阱，而是GC.Alloc的陷阱，直接看範例:</p>
 <pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">CapturedVariable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token class-name"><span class="token keyword">int</span></span> var1 <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
@@ -511,8 +517,11 @@ Profiler<span class="token punctuation">.</span><span class="token function">End
             <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>上面這種寫法會有GC.Alloc</strong>，很不直覺。</p>
-<p>這段code是指那個方法本身是<strong>有條件地執行下面的匿名函式</strong>，而我第一行使用會傳入<code>false</code>，直覺上code根本不會進到<code>if</code>內部所以也根本不會建立匿名函數，那怎麼會有GC.Alloc?</p>
+<p><strong>上面這種寫法會有GC.Alloc！</strong><br />
+<strong>上面這種寫法會有GC.Alloc！</strong><br />
+<strong>上面這種寫法會有GC.Alloc！</strong><br />
+很不直覺的一個坑，第一次遇到的時候花了好一陣子才搞懂。</p>
+<p>這段code的<code>CapturedVariablePitfall</code>方法本身是<strong>根據傳入參數來決定是否執行ActionParameter()</strong>，而我第一行使用會傳入<code>false</code>，直覺上code根本不會進到<code>if</code>內部所以也根本不會建立匿名函數，那怎麼會有GC.Alloc?</p>
 <p>以結果來說，在方法的第一行就會產生GC.Alloc了，這點你可以用Profiler抓抓看就能驗證。至於為什麼，要看看Compiler到底編譯了甚麼東西出來才清楚，我直接用SharpLab這個網站來看看<a target="_blank" rel="noopener" href="https://sharplab.io/#v2:EYLgHgbALANAJiA1AHwAICYAMBYAUBgRjz1QGYACDcgMQHlbyBvPc111KcgYQEMAHAC4BXAE4BTOADUeIgJY9gAGzEAKAJRMWbbbIB2A8gDcZBcgF5yBTJgDc5APT3yAcS4A6AIKLFAewDG5DwGAgAWsgDO5Ip6YuQAZj4i5H78wuJwRjLySrHAYr4A7m5a2uwE6AAKMjwAtmICYiIqJaXq5gB8mrilPeR6BsYi6OaZIgR2juQAPAC0c+R5KULhsT5x5KERyamiEqPZysXdvQC+ajYtJy0tHOQAcj68grtSWQrKbczHPf2jphZWWwOJyuTzefyBYJhSLRXSxBJJFLPdL7d65fI+IotbSocpVES1eqNZrfVoaMydL69UrYthnC6kq6km6cJ5pCTSORoiqyARxHjeFTAHw+RTJHy6OC82QSjRU3q/Qb/SzWCYg9xeXwBIIbaFRGLxRLbZF7QYHdGFI7U2TrFR+CVSgQy3Ry4HkACihjEuj663tkulErMZn5ihWMF1jViW3CTu8Lg14L8tJ6uMq1TqDSaKep5DaFK6uaLfX0o2GFiVaumcxmCzESxW5DWuq2SPZGTNaKtxe09JzTN711wLMoeIzRKauLcacCfidssLvR4c+dbgAkrpDD4ANaqc6XPAnIA==">編譯結果</a>:</p>
 <p>C#原始碼編譯前:<br />
 <img src="https://i.imgur.com/VblsShi.png" alt="" /></p>
