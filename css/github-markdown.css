@@ -14,7 +14,10 @@
   font-size: 1.6rem;
   line-height: 2;
   word-wrap: break-word;
-  color: var(--color-text-md-content)
+  color: var(--color-text-md-content);
+  background-color: var(--bg--markdown-body);
+  padding: 20px 30px;
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
@@ -698,7 +701,7 @@
   border-radius: 5px;
 }
 
-.markdown-body pre code {
+/* .markdown-body pre code {
   display: inline;
   max-width: auto;
   padding: 0;
@@ -709,7 +712,7 @@
   background-color: transparent;
   border: 0;
   color: var(--color-text-md-pre)
-}
+} */
 
 .markdown-body .full-commit .btn-outline:not(:disabled):hover {
   color: #005cc5;
