@@ -6,7 +6,7 @@
   <link href="https://qwe321qwe321qwe321.github.io/atom.xml" rel="self"/>
   
   <link href="https://qwe321qwe321qwe321.github.io/"/>
-  <updated>2022-04-13T23:24:00.000Z</updated>
+  <updated>2022-10-11T08:14:24.431Z</updated>
   <id>https://qwe321qwe321qwe321.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Embed GlslEditor in Markdown</title>
+    <link href="https://qwe321qwe321qwe321.github.io/2022/10/11/Embed-GlslEditor-in-Markdown/"/>
+    <id>https://qwe321qwe321qwe321.github.io/2022/10/11/Embed-GlslEditor-in-Markdown/</id>
+    <published>2022-10-11T08:14:24.431Z</published>
+    <updated>2022-10-11T08:14:24.431Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="glsleditor"><a class="markdownIt-Anchor" href="#glsleditor"></a> GlslEditor</h1><p><a href="https://github.com/patriciogonzalezvivo/glslEditor">GlslEditor by patriciogonzalezvivo</a></p><h1 id="2d-random"><a class="markdownIt-Anchor" href="#2d-random"></a> 2D Random</h1><p>Source code is from <a href="https://thebookofshaders.com/10/">TheBookOfShaders</a></p><div  class="glslEditorCanvas"><textarea>// Author @patriciogv - 2015// http://patriciogonzalezvivo.com#ifdef GL_ESprecision mediump float;#endifuniform vec2 u_resolution;uniform vec2 u_mouse;uniform float u_time;float random (vec2 st) {    return fract(sin(dot(st.xy,                         vec2(12.9898,78.233)))*        43758.5453123);}void main() {    vec2 st = gl_FragCoord.xy/u_resolution.xy;    float rnd = random( st );    gl_FragColor = vec4(vec3(rnd),1.0);}</textarea></div>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;glsleditor&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#glsleditor&quot;&gt;&lt;/a&gt; GlslEditor&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/patriciogonzalezvivo</summary>
+      
+    
+    
+    
+    
+    <category term="Shader" scheme="https://qwe321qwe321qwe321.github.io/tags/Shader/"/>
+    
+    <category term="Web" scheme="https://qwe321qwe321qwe321.github.io/tags/Web/"/>
+    
+  </entry>
   
   <entry>
     <title>Unity/C#.Net 常用的Memory Allocation優化整理</title>
@@ -64,8 +89,6 @@
     
     
     
-    <category term="GamePhysics" scheme="https://qwe321qwe321qwe321.github.io/categories/GamePhysics/"/>
-    
     
     <category term="Gamedev" scheme="https://qwe321qwe321qwe321.github.io/tags/Gamedev/"/>
     
@@ -97,14 +120,12 @@
     
     
     
-    <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/categories/Unity/"/>
-    
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
     
     <category term="Gamedev" scheme="https://qwe321qwe321qwe321.github.io/tags/Gamedev/"/>
     
-    <category term="Editor" scheme="https://qwe321qwe321qwe321.github.io/tags/Editor/"/>
+    <category term="Tool" scheme="https://qwe321qwe321qwe321.github.io/tags/Tool/"/>
     
   </entry>
   
@@ -123,8 +144,6 @@
 &lt;p&gt;主要目的是了解C#語言的一些細節與效能陷阱，以便撰寫更好的程式碼。&lt;/p&gt;</summary>
     
     
-    
-    <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/categories/Unity/"/>
     
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
@@ -150,10 +169,10 @@
     
     
     
-    <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/categories/Unity/"/>
-    
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
+    
+    <category term="Tool" scheme="https://qwe321qwe321qwe321.github.io/tags/Tool/"/>
     
   </entry>
   
@@ -175,8 +194,6 @@
 &lt;p&gt;&lt;img src=&quot;/images/github_storage_limit_notification.png&quot; alt=&quot;恭喜你即將用爆囉，請快點升級方案&quot; /&gt;&lt;/p&gt;</summary>
     
     
-    
-    <category term="專案管理" scheme="https://qwe321qwe321qwe321.github.io/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/"/>
     
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
@@ -203,8 +220,6 @@
     
     
     
-    <category term="Web" scheme="https://qwe321qwe321qwe321.github.io/categories/Web/"/>
-    
     
     <category term="Github" scheme="https://qwe321qwe321qwe321.github.io/tags/Github/"/>
     
@@ -229,8 +244,6 @@
 &lt;p&gt;但這次的Github Action不同，他提供的是「雲端服務」，也就是說我們不需要有自己的伺服器，它免費提供各平台的裝置供我們使用。&lt;/p&gt;</summary>
     
     
-    
-    <category term="專案管理" scheme="https://qwe321qwe321qwe321.github.io/categories/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/"/>
     
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
@@ -263,8 +276,6 @@
     
     
     
-    <category term="Gamedev" scheme="https://qwe321qwe321qwe321.github.io/categories/Gamedev/"/>
-    
     
     <category term="Unity" scheme="https://qwe321qwe321qwe321.github.io/tags/Unity/"/>
     
@@ -291,10 +302,8 @@ Here is the article: &lt;a href=&quot;https://docs.google.com/document/d/1iNSQIy
     
     
     
-    <category term="Gamedev" scheme="https://qwe321qwe321qwe321.github.io/categories/Gamedev/"/>
     
-    
-    <category term="Game Research" scheme="https://qwe321qwe321qwe321.github.io/tags/Game-Research/"/>
+    <category term="Game Design" scheme="https://qwe321qwe321qwe321.github.io/tags/Game-Design/"/>
     
   </entry>
   

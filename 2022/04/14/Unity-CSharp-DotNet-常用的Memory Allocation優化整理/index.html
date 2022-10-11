@@ -885,6 +885,11 @@ Profiler<span class="token punctuation">.</span><span class="token function">End
           </div>
           <div class="post-foot-prev">
             
+              <a href="/2022/10/11/Embed-GlslEditor-in-Markdown/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -940,6 +945,33 @@ Profiler<span class="token punctuation">.</span><span class="token function">End
       </div>
     
   </div>
+  
+<!-- This part is only generated if the post have glsl=true property. -->
+<link type="text/css" rel="stylesheet" href="/glsl/glslEditor.css">
+<script type="application/javascript" src="/glsl/glslEditor.js"></script>
+<script type="text/javascript">
+    // parse EDITORS
+	var ccList = document.querySelectorAll(".glslEditorCanvas");
+	for(var i = 0; i < ccList.length; i++){
+        let codeblock = ccList[i].querySelector("textarea");
+        if (codeblock) {
+            let code = codeblock.value;
+            //console.log(code);
+            ccList[i].removeChild(codeblock);
+            var editor = new GlslEditor(ccList[i], {
+                canvas_size: 250,
+                canvas_follow: true,
+                canvas_float: 'right',
+                theme: 'monokai',
+                tooltips: true,
+                exportIcon: true,
+            });
+            editor.setContent(code);
+        }
+    }
+</script>
+
+
 
 
         
