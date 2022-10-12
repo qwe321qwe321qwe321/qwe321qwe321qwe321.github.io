@@ -22,7 +22,7 @@ function isActiveCat() {
   let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 
   // 页面所有标题列表
-  let headerLinkList = document.getElementsByClassName("headerlink")
+  let headerLinkList = document.getElementsByClassName("markdownIt-Anchor")
 
   // 页面所有目录列表
   let catLinkList = document.getElementsByClassName("toc-link")
