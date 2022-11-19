@@ -250,7 +250,7 @@ MathJax = {
 <p>有了腳本以後，再來就需要把腳本整合到Action內，最好是在完成上傳artifact以後執行清除腳本。</p>
 <h2 id="將token加入secrets"><a class="markdownIt-Anchor" href="#將token加入secrets"></a> <s>將Token加入Secrets</s></h2>
 <p>因為我們不希望直接明碼保存personal token在repo裡，加上github也不會讓你這麼做(當你上傳token明碼時會自動撤銷該token)。</p>
-<p>~~所以我們需要把token放到repo的secrets中，~~之後再從action config裡傳入shell script。</p>
+<p><s>所以我們需要把token放到repo的secrets中，之後再從action config裡傳入shell script。</s></p>
 <p><em>(2020/03/01更新)</em> 不需要手動做這個步驟，Github會自動產生「該repo的讀寫相關權限之token」在Secrets中命名為<code>GITHUB_TOKEN</code>(雖然你從web上看不到)，詳細請參考這篇<a target="_blank" rel="noopener" href="https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token">官方文件</a>。</p>
 <h2 id="shell-script"><a class="markdownIt-Anchor" href="#shell-script"></a> Shell Script</h2>
 <p>再次修改剛剛上面提供的腳本，由於我希望參數化都在action的config檔裡面處理就好，而這個腳本不要帶有任何參數，所以修改一下腳本，如下。</p>
