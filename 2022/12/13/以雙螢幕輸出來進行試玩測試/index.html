@@ -151,20 +151,42 @@ MathJax = {
           
       </div>
       <div class="markdown-body">
-        <p>上週五六日我們團隊參加了實體的遊戲展，這是我們第一次參加這種實體展，也算是第一次開放讓一般玩家試玩的機會。</p>
+        <blockquote>
+<p>這篇其實是心得雜談，沒甚麼實作經驗分享。</p>
+</blockquote>
+<p>上週五六日我們團隊參加了實體的遊戲展，這是我們第一次參加這種實體展，也算是第一次開放讓一般玩家試玩的機會。</p>
 <p>之前聽朋友說有一種測試方式是用雙螢幕輸出不同內容，一邊是單純的遊戲畫面，另一邊是會顯示log、fps等各種debug資訊的遊戲畫面。<br />
 這樣一來就能在不打擾玩家的前提下有效紀錄所有發生的問題。<br />
-我覺得寫這個好像很好玩，於是決定在這次參展試試。<br />
-功能寫出來之後我才想到，好像可以接個in game console，這樣子在玩家的遊玩過程中甚至可以偷打指令。</p>
-<h1 id="雙螢幕輸出"><a class="markdownIt-Anchor" href="#雙螢幕輸出"></a> 雙螢幕輸出</h1>
+我覺得寫這個好像很好玩，於是決定在這次參展試試。</p>
+<span id="more"></span>
+<h1 id="雙螢幕輸出的成果"><a class="markdownIt-Anchor" href="#雙螢幕輸出的成果"></a> 雙螢幕輸出的成果</h1>
+<p>總而言之先上成果，具體來說我到底希望做到什麼樣子，不過我照片拍很少所以也有點難正確地示意。<br />
+<img src="/images/g8-1.jpg" alt="現場照片" /> <em>我們遊戲是第一排的 Bionic Bay</em></p>
+<p>以玩家視角來看，我們攤位上其實就只有兩個螢幕、兩隻手把、兩隻耳機在桌上的配置。</p>
+<p>而實際上的這個時候的我是位在背板後方的小房間內，看著其中一台是筆電的螢幕來檢視玩家當前有沒有發生任何異樣。</p>
+<p><img src="/images/g8-2.jpg" alt="後台的螢幕畫面" /></p>
+<p>主要檢查點有：</p>
+<ul>
+<li>Console 有沒有噴error ？</li>
+<li>Frame Rate 在哪個場景是否突然不穩？</li>
+<li>長期運行之下有沒有 Memory Leak 的狀況？</li>
+<li>玩家是否需要顯示提示？</li>
+</ul>
+<p>以結果來說執行上還蠻成功的，唯二當下遇到但沒處理好的事情是：</p>
+<ol>
+<li>雙螢幕輸出的垂直同步出現問題，某一邊的螢幕會無法正確垂直同步導致螢幕撕裂。</li>
+<li>OBS 錄影設定沒搞好，最後錄影變成還是錄玩家看到的遊戲畫面那一端</li>
+</ol>
+<h1 id="實作與執行"><a class="markdownIt-Anchor" href="#實作與執行"></a> 實作與執行</h1>
+<h2 id="雙螢幕輸出"><a class="markdownIt-Anchor" href="#雙螢幕輸出"></a> 雙螢幕輸出</h2>
 <p>具體實作很簡單，<br />
 參考這篇官方文檔即可： <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/MultiDisplay.html">https://docs.unity3d.com/Manual/MultiDisplay.html</a></p>
-<h1 id="in-game-console"><a class="markdownIt-Anchor" href="#in-game-console"></a> In-game console</h1>
+<h2 id="in-game-console"><a class="markdownIt-Anchor" href="#in-game-console"></a> In-game console</h2>
 <p>功能寫出來之後我才想到，好像可以接個 in game console，這樣子在玩家的遊玩過程中甚至可以偷打指令。<br />
 於是翻了各個github開源專案，找到一個最能滿足我需求的repo，功能極強：<br />
 <a target="_blank" rel="noopener" href="https://github.com/DavidF-Dev/Unity-DeveloperConsole">https://github.com/DavidF-Dev/Unity-DeveloperConsole</a><br />
 於是就花一天接進去了。</p>
-<h1 id="沒教學"><a class="markdownIt-Anchor" href="#沒教學"></a> 沒教學</h1>
+<h2 id="沒教學"><a class="markdownIt-Anchor" href="#沒教學"></a> 沒教學</h2>
 <p>然後展出前幾天又想到，我們到現在教學都還因為各種原因生不出來，但現場口頭告知感覺很破壞體驗。<br />
 所以最後幾天才很隨便地寫一個文字提示系統，然後又開始爭論到底哪裡要顯示哪裡不需要顯示，破不破壞沉浸感，會不會讓玩家覺得自己被當白癡(戰神的案例)。</p>
 <p>最後就…全部手動按。</p>
@@ -172,7 +194,7 @@ MathJax = {
 也好在我可以雙螢幕躲在後面按，玩家比較不會覺得是被工作人員提示到，甚至因為有接了console，基本上想打甚麼內容都可以。</p>
 <p>不過理想歸理想，最後還是很常靠我同事現場提示。<br />
 而且雙螢幕+錄影計畫會把我的筆電燒爆，導致有lag發生，好險玩家沒怎麼抱怨。</p>
-<h1 id="修正與迭代"><a class="markdownIt-Anchor" href="#修正與迭代"></a> 修正與迭代</h1>
+<h1 id="關卡設計的修正與迭代"><a class="markdownIt-Anchor" href="#關卡設計的修正與迭代"></a> 關卡設計的修正與迭代</h1>
 <p>這也是我第一次充分感受到我們遊戲的 standalone editor + 雲端更新功能在實體展有奇效。<br />
 正好展出時間是從下午開始，能夠克服時差，造就了我們能夠：</p>
 <ul>
@@ -185,8 +207,12 @@ MathJax = {
 </ul>
 <p>三天下來，有破完的平均遊戲時間是33.9分鐘 -&gt; 30.1分鐘 -&gt; 27.8分鐘。<br />
 全部破完百分比是71% -&gt; 75% -&gt; 84%，剩下枝微末節的改進內容和數據可能有機會會寫成別篇文章吧。</p>
-<p>最後，很感謝主辦也很感謝友人邀請，雖然爆幹累，但意外地有很多收穫。<br />
-為我們畸形的合作開發模式注入了一劑強心針，也讓我損失了一隻xbox手把。</p>
+<p>最後還是很感謝G8主辦也很感謝友人邀請，這是我們第一次參加實體展，雖然爆幹累，但意外地有很多收穫。為我們畸形的合作開發模式注入了一劑強心針，也讓我損失了一隻xbox手把。</p>
+<h1 id="插曲"><a class="markdownIt-Anchor" href="#插曲"></a> 插曲</h1>
+<p>因為我們後台房間其實是四組共用的，而我基本上一整天都窩在裡面盯後台螢幕，所以別組的人每次一進來就是看到我這個怪人坐在地板上駝背看筆電。<br />
+應該是在第一天快結束的時候，我們後方的<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1858450/_/?l=tchinese">即刻離職</a>開發者就問說：「嗯？你們怎麼不把外面的桌子往前移一點點，然後把筆電放在螢幕後方這樣子」</p>
+<p><img src="https://i.imgur.com/prF8oK2.png" alt="圖片來源: https://www.youtube.com/watch?v=pG0dwHAiLUw" /></p>
+<p>「靠，真的耶，我是白痴」</p>
 
       </div>
       
@@ -219,11 +245,6 @@ MathJax = {
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2023/01/29/%E8%B5%B0%E6%8D%B7%E5%BE%91%EF%BC%8C%E7%B5%90%E6%9E%9C%E9%83%BD%E6%98%AF%E7%B9%9E%E9%81%A0%E8%B7%AF/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
-            
           </div>
         </div>
       
@@ -235,7 +256,7 @@ MathJax = {
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA"><span class="toc-text"> 雙螢幕輸出</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#in-game-console"><span class="toc-text"> In-game console</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B2%92%E6%95%99%E5%AD%B8"><span class="toc-text"> 沒教學</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%AE%E6%AD%A3%E8%88%87%E8%BF%AD%E4%BB%A3"><span class="toc-text"> 修正與迭代</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA%E7%9A%84%E6%88%90%E6%9E%9C"><span class="toc-text"> 雙螢幕輸出的成果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%A6%E4%BD%9C%E8%88%87%E5%9F%B7%E8%A1%8C"><span class="toc-text"> 實作與執行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA"><span class="toc-text"> 雙螢幕輸出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#in-game-console"><span class="toc-text"> In-game console</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%92%E6%95%99%E5%AD%B8"><span class="toc-text"> 沒教學</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%9C%E5%8D%A1%E8%A8%AD%E8%A8%88%E7%9A%84%E4%BF%AE%E6%AD%A3%E8%88%87%E8%BF%AD%E4%BB%A3"><span class="toc-text"> 關卡設計的修正與迭代</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E6%9B%B2"><span class="toc-text"> 插曲</span></a></li></ol>
     </div>
   </div>
 
