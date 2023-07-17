@@ -238,6 +238,20 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://qwe321qwe321qwe321.github.io/tags/Game-Jam/</loc>
+    <lastmod>2023-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://qwe321qwe321qwe321.github.io/tags/Visual-Design/</loc>
+    <lastmod>2023-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
 </urlset>
