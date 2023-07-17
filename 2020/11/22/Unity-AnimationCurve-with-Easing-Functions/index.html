@@ -159,9 +159,9 @@ MathJax = {
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>因為專案需求，我需要用Unity在runtime生成一個particle system，並且一些curve參數的曲線需要套用easing function的曲線。</p>
-<p>而Unity的曲線一律都是AnimationCurve，但goo了一下也沒找到有人做過Easing AnimationCurve，大概都只有硬拆N個sample點直接當AnimationCurve的keyframe這種暴力解。我不喜歡這種方法，理由其一他的使用效能絕對比較爛，再來是結果的形狀也不見得足夠接近。</p>
-<p>理論上應該可以找到盡可能小的keyframe數量來建構EasingFunction的方法，所以就有了這次的嘗試。</p>
+<p>因為專案需求，我需要用 Unity 在 runtime 生成一個 particle system ，並且一些 curve 參數的曲線需要套用 easing function 的曲線。</p>
+<p>而 Unity 的曲線一律都是 AnimationCurve ，但 goo 了一下也沒找到有人做過 Easing AnimationCurve ，大概都只有硬拆 N 個 sample 點直接當 AnimationCurve 的 keyframes 這種暴力解。我不喜歡這種方法，理由其一他的使用效能絕對比較爛，再來是結果的形狀也不見得足夠接近。</p>
+<p>理論上應該可以找到盡可能小的 keyframe 數量來建構 EasingFunction 的方法，所以就有了這次的嘗試。</p>
 <span id="more"></span>
 <h2 id="準備環境"><a class="markdownIt-Anchor" href="#準備環境"></a> 準備環境</h2>
 <ul>

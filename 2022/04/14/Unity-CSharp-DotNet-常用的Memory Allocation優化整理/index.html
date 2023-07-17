@@ -11,7 +11,7 @@
   
   <title>
     
-      Unity/C#.Net 常用的Memory Allocation優化整理 
+      Unity/C#.Net 常用的 Memory Allocation 優化整理 
       
       
       |
@@ -132,7 +132,7 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Unity/C#.Net 常用的Memory Allocation優化整理</div>
+      <div class="post-title">Unity/C#.Net 常用的 Memory Allocation 優化整理</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
@@ -159,17 +159,17 @@ MathJax = {
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>正式full-time開發目前這個2D遊戲專案前後也有快2年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成Zero Allocation的方式。</p>
+<p>正式 full-tim e開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成Zero Allocation 的方式。</p>
 <h1 id="zero-allocation"><a class="markdownIt-Anchor" href="#zero-allocation"></a> Zero Allocation</h1>
-<p>Zero Allocation嚴格定義是指不做任何dynamic/heap memory allocation，不過在Unity/C#.Net這裡我會比較喜歡解釋成「不做任何重複的heap allocation」，所以使用object pooling時第一次必要的allocation可以被接受，之後要二次使用時會從pool中拿回之前使用過的memory以避免第二次allocate。</p>
+<p>Zero Allocation 嚴格定義是指不做任何 dynamic/heap memory allocation，不過在 Unity/C#.Net 這裡我會比較喜歡解釋成「不做任何重複的heap allocation」，所以使用 object pooling 時第一次必要的 allocation 可以被接受，之後要二次使用時會從 pool 中拿回之前使用過的 memory 以避免第二次 allocate。</p>
 <h1 id="why"><a class="markdownIt-Anchor" href="#why"></a> Why?</h1>
-<p>首先memory allocation本身算是一個大開銷，再者C#語言有Garbage Collection這個大坑，GC讓你不需要也沒辦法主動釋放你申請使用的heap memory，更會無預警的執行<code>GC.Collect()</code>導致那個瞬間的遊戲畫面卡頓。</p>
+<p>首先 memory allocation 本身算是一個大開銷，再者 C# 語言有 Garbage Collection 這個大坑，GC 讓你不需要也沒辦法主動釋放你申請使用的 heap memory，更會無預警的執行 <code>GC.Collect()</code> 導致那個瞬間的遊戲畫面卡頓。</p>
 <blockquote>
-<p>可能有人會說你可以主動執行<code>GC.Collect()</code>來主動釋放記憶體，但執行這個方法的代價很高，它會掃一遍所有的記憶體來尋找unused，這個搜尋行為本身就貴到不能隨便使用了。</p>
+<p>可能有人會說你可以主動執行 <code>GC.Collect()</code> 來主動釋放記憶體，但執行這個方法的代價很高，它會掃一遍所有的記憶體來尋找 unused，這個搜尋行為本身就貴到不能隨便使用了。</p>
 </blockquote>
-<p>所以優化方向當然是盡可能地減少memory allocation，並大幅地重複利用它們。</p>
-<p>特別是Unity的那些<code>Update</code>, <code>FixedUpdate</code>, <code>LateUpdate</code>等幾乎每個frame都會執行的方法絕對要是Zero Allocation，這算是我自己對專案的最基本優化要求。</p>
-<p><em>因為我們的環境是在unity底下，所以以下我會直接把Heap Memory Allocation稱為 <strong>GC.Alloc</strong></em>，這是在Unity Profiler中使用的名詞，也方便我們直接觀察。</p>
+<p>所以優化方向當然是盡可能地減少 memory allocation ，並大幅地重複利用它們。</p>
+<p>特別是Unity的那些 <code>Update</code> , <code>FixedUpdate</code>, <code>LateUpdate</code> 等幾乎每個frame都會執行的方法絕對要是Zero Allocation，這算是我自己對專案的最基本優化要求。</p>
+<p><em>因為我們的環境是在 unity 底下，所以以下我會直接把 Heap Memory Allocation 稱為 <strong>GC.Alloc</strong></em>，這是在 Unity Profiler 中使用的名詞，也方便我們直接觀察。</p>
 <span id="more"></span>
 <h1 id="when-is-heap-memory-allocated"><a class="markdownIt-Anchor" href="#when-is-heap-memory-allocated"></a> When is heap memory allocated?</h1>
 <p>首先我們要知道哪些行為會導致GC.Alloc，其實就是: <strong>實例化一個類別(class)物件</strong>。</p>
@@ -1241,7 +1241,7 @@ Profiler<span class="token punctuation">.</span><span class="token function">End
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Unity%2FC%23.Net%20%E5%B8%B8%E7%94%A8%E7%9A%84Memory%20Allocation%E5%84%AA%E5%8C%96%E6%95%B4%E7%90%86 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2022%2F04%2F14%2FUnity-CSharp-DotNet-%25E5%25B8%25B8%25E7%2594%25A8%25E7%259A%2584Memory%2520Allocation%25E5%2584%25AA%25E5%258C%2596%25E6%2595%25B4%25E7%2590%2586%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Unity%2FC%23.Net%20%E5%B8%B8%E7%94%A8%E7%9A%84%20Memory%20Allocation%20%E5%84%AA%E5%8C%96%E6%95%B4%E7%90%86 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2022%2F04%2F14%2FUnity-CSharp-DotNet-%25E5%25B8%25B8%25E7%2594%25A8%25E7%259A%2584Memory%2520Allocation%25E5%2584%25AA%25E5%258C%2596%25E6%2595%25B4%25E7%2590%2586%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         

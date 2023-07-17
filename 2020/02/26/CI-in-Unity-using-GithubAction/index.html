@@ -11,7 +11,7 @@
   
   <title>
     
-      CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 
+      CI in Unity using Github Actions 使用 Github Actions 自動化測試建置 Unity 專案 
       
       
       |
@@ -132,7 +132,7 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案</div>
+      <div class="post-title">CI in Unity using Github Actions 使用 Github Actions 自動化測試建置 Unity 專案</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
@@ -165,57 +165,57 @@ MathJax = {
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>最近發現了Github的新功能<strong>Action</strong>，它用作<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219083">CI/CD</a>服務，以Unity來說只需要CI(Continuos Integration)。</p>
-<p>我最早接觸到CI/CD概念的是LAB的學長教的，當時用的是Jekins且是架在LAB的電腦上。但是最後那個專案其實也沒在用CI和Unit Test，單純是架爽的當經驗值。<br />
-之後我所接觸的專案都沒再碰這塊了，感覺是web相關或是大公司才會比較用到。另一方面是我也沒租VPS服務或有一台電腦給我架伺服器，所以一直沒機會再碰這東西。</p>
-<p>但這次的Github Action不同，他提供的是「雲端服務」，也就是說我們不需要有自己的伺服器，它免費提供各平台的裝置供我們使用。</p>
+<p>最近發現了 Github 的新功能 <strong>Action</strong>，它用作 <a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10219083">CI/CD</a> 服務，以 Unity 來說只需要 CI(Continuos Integration)。</p>
+<p>我最早接觸到 CI/CD 概念的是 LAB 的學長教的，當時用的是 Jekins 且是架在LAB的電腦上。但是最後那個專案其實也沒在用 CI 和 Unit Test，單純是架爽的當經驗值。<br />
+之後我所接觸的專案都沒再碰這塊了，感覺是 web 相關或是大公司才會比較用到。另一方面是我也沒租 VPS 服務或有一台電腦給我架伺服器，所以一直沒機會再碰這東西。</p>
+<p>但這次的 Github Action 不同，他提供的是「雲端服務」，也就是說我們不需要有自己的伺服器，它免費提供各平台的裝置供我們使用。</p>
 <span id="more"></span>
-<p>雖然聽說<a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/ci/">Gitlab</a>早有這功能，但我一直沒有機會轉去使用Gitlab，畢竟Github都給我免費的Pro會員了，先用完再說。</p>
+<p>雖然聽說 <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/ci/">Gitlab</a> 早有這功能，但我一直沒有機會轉去使用 Gitlab，畢竟 Github 都給我免費的Pro會員了，先用完再說。</p>
 <p>這篇單純記錄我遇到的問題與解決過程，廢話太多可以直接下拉至<a href="#%E6%88%90%E6%9E%9C%E7%95%AB%E9%9D%A2">成果</a>或<a href="#%E5%B0%88%E6%A1%88%E7%B6%B2%E5%9D%80">專案網址</a></p>
 <h1 id="the-issues-of-ci-in-unity"><a class="markdownIt-Anchor" href="#the-issues-of-ci-in-unity"></a> The issues of CI in Unity</h1>
 <p>花了幾天碰了這坑，遇到不少問題，絕大多數應該是Unity本身的問題。</p>
 <h2 id="授權-activation-license"><a class="markdownIt-Anchor" href="#授權-activation-license"></a> 授權 Activation License</h2>
-<p>我當初用Jekins的年代還沒有這東西，印象是Personal版不需要帳密也能直接編譯(?)<br />
-現在版本的Unity不論Personal還是Pro通通都要登入並申請授權，即使以Personal版本來說這件事情根本不重要(反正都免費)。<br />
-這導致用Batch compile的問題很多，可以Google到一堆類似問題，而且到現在我也還沒有一個完美解。</p>
-<p>目前的方法是用Unity的離線授權方法，如下:</p>
+<p>我當初用 Jekins 的年代還沒有這東西，印象是 Personal 版不需要帳密也能直接編譯(?)<br />
+現在版本的 Unity 不論 Personal 還是 Pro 通通都要登入並申請授權，即使以 Personal 版本來說這件事情根本不重要(反正都免費)。<br />
+這導致用 Batch compile 的問題很多，可以 Google 到一堆類似問題，而且到現在我也還沒有一個完美解。</p>
+<p>目前的方法是用 Unity 的離線授權方法，如下:</p>
 <ol>
-<li>先在你的虛擬機/Docker上取得「申請授權檔」，通常叫Unity20XX.X.X.alf，依版本而定。</li>
-<li>前往<a target="_blank" rel="noopener" href="https://license.unity3d.com/manual">Unity授權網站</a>，登入後上傳剛剛那個alf檔。</li>
-<li>取得Unit_v20XX.X.ulf檔，即我們需要的手動授權檔。</li>
-<li>使用Unity batch時加入參數<code>-manualLicenseFile $FILE_PATH</code>即可完成授權。</li>
+<li>先在你的虛擬機/ Docker 上取得「申請授權檔」，通常叫 Unity20XX.X.X.alf ，依版本而定。</li>
+<li>前往 <a target="_blank" rel="noopener" href="https://license.unity3d.com/manual">Unity 授權網站</a>，登入後上傳剛剛那個 alf 檔。</li>
+<li>取得 Unit_v20XX.X.ulf 檔，即我們需要的手動授權檔。</li>
+<li>使用 Unity batch 時加入參數 <code>-manualLicenseFile $FILE_PATH</code> 即可完成授權。</li>
 </ol>
-<p>但是這方法還是很爛，因為這個授權檔會過期(Expired)，不確定確切時間，約莫1~2個禮拜就要更換一次。</p>
+<p>但是這方法還是很爛，因為這個授權檔會過期( Expired )，不確定確切時間，約莫 1~2 個禮拜就要更換一次。</p>
 <blockquote>
-<p>那不要用離線授權，直接用帳密的形式跑unity batch mode呢？</p>
+<p>那不要用離線授權，直接用帳密的形式跑 unity batch mode 呢？</p>
 </blockquote>
-<p>沒用，因為不明原因，Batch mode無法自動更新License。<br />
+<p>沒用，因為不明原因， Batch mode 無法自動更新 License。<br />
 會彈出以下訊息:</p>
 <pre class="line-numbers language-none"><code class="language-none">Cancelling DisplayDialog: Failed to activate&#x2F;update license. Timeout occured while trying to update license. Please try again later or contact support@unity3d.com
 This should not be called in batch mode.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>Google了一番沒有好的解決方法就作罷。</p>
-<p>另外可以看看這篇在Unity論壇上的討論: <a target="_blank" rel="noopener" href="https://forum.unity.com/threads/my-disappointing-experience-using-unity-in-a-ci-pipeline.737678/">My disappointing experience using Unity in a CI pipeline</a>，依照官方回應看來是只支援plus/pro版本的auto-activate，personal版就下去。</p>
+<p>Google 了一番沒有好的解決方法就作罷。</p>
+<p>另外可以看看這篇在 Unity 論壇上的討論: <a target="_blank" rel="noopener" href="https://forum.unity.com/threads/my-disappointing-experience-using-unity-in-a-ci-pipeline.737678/">My disappointing experience using Unity in a CI pipeline</a>，依照官方回應看來是只支援 plus / pro 版本的 auto-activate， personal 版就下去。</p>
 <blockquote>
-<p>那有沒有機會用爬蟲的形式取得alf檔完成自動補授權呢？</p>
+<p>那有沒有機會用爬蟲的形式取得 alf 檔完成自動補授權呢？</p>
 </blockquote>
 <p>目前還沒試過，雖然內心覺得應該可行，但發現別人包好的插件都沒有包含這塊，所以估計有什麼大坑，總之沒什麼把握。</p>
-<p>這邊有在github上找到幾個類似做法的repo，但是我嘗試過都沒辦法用了，等有心人去改吧。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/MizoTake/unity-license-activate">https://github.com/MizoTake/unity-license-activate</a> - NodeJs寫的，已失效。<br />
-<a target="_blank" rel="noopener" href="https://github.com/RedpointGames/UnityAutomaticLicensor">https://github.com/RedpointGames/UnityAutomaticLicensor</a> - C#寫的，因為只支援windows沒試過。</p>
+<p>這邊有在 github 上找到幾個類似做法的 repo，但是我嘗試過都沒辦法用了，等有心人去改吧。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MizoTake/unity-license-activate">https://github.com/MizoTake/unity-license-activate</a> - NodeJs 寫的，已失效。<br />
+<a target="_blank" rel="noopener" href="https://github.com/RedpointGames/UnityAutomaticLicensor">https://github.com/RedpointGames/UnityAutomaticLicensor</a> - C# 寫的，因為只支援 windows 沒試過。</p>
 <h1 id="github-action"><a class="markdownIt-Anchor" href="#github-action"></a> Github Action</h1>
-<p>回到開頭所說的Action服務，要在Unity使用這個服務我使用了webbertakken寫的Unity-Actions。</p>
+<p>回到開頭所說的 Action 服務，要在 Unity 使用這個服務我使用了 webbertakken 寫的 Unity-Actions。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/webbertakken/unity-actions">Unity Actions</a> - 大合集
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/unity-request-activation-file">Request Activation File</a> - 自動取得alf檔(申請授權檔)。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/unity-request-activation-file">Request Activation File</a> - 自動取得 alf 檔(申請授權檔)。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/unity-test-runner">Test Runner</a> - Unit Test for PlayMode and EditMode.</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/unity-builder">Builder</a> - Build Executable for multi-platform.</li>
 </ul>
 </li>
 </ul>
 <h2 id="usage"><a class="markdownIt-Anchor" href="#usage"></a> Usage</h2>
-<p>這裡先用Request Activation File下面所給的Usage code來看。</p>
-<p>先創一個檔案放至你的repo目錄中<code>.github/workflows/activation.yml</code>。<br />
+<p>這裡先用 Request Activation File 下面所給的 Usage code 來看。</p>
+<p>先創一個檔案放至你的 repo 目錄中 <code>.github/workflows/activation.yml</code>。<br />
 內容如下:</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Acquire activation file <span class="token comment"># 該Action的名稱，將顯示在Github Action的頁面UI</span>
 <span class="token key atrule">on</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>push<span class="token punctuation">]</span> <span class="token comment">#觸發Action的條件，目前是只要有任何push就會觸發</span>
@@ -237,28 +237,28 @@ This should not be called in batch mode.<span aria-hidden="true" class="line-num
             <span class="token key atrule">name</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> steps.getManualLicenseFile.outputs.filePath <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token comment"># 引用上面step1的輸出值(outputs)</span>
             <span class="token key atrule">path</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> steps.getManualLicenseFile.outputs.filePath <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token comment"># 引用上面step1的輸出值(outputs)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p>Github Action的config使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/YAML">YAML</a>格式來撰寫，這邊就不說YAML的各個語法如何撰寫，只針對我們需要知道的訊息解釋。</p>
+<p>Github Action的config使用 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/YAML">YAML</a> 格式來撰寫，這邊就不說YAML的各個語法如何撰寫，只針對我們需要知道的訊息解釋。</p>
 </blockquote>
-<p>我在每一行都加上了註解，需要重點注意的是第2行的<code>on</code>、第6行的<code>runs-on</code>以及第14行以下的<code>Artifact</code>。</p>
+<p>我在每一行都加上了註解，需要重點注意的是第 2 行的<code>on</code>、第 6 行的 <code>runs-on</code> 以及第 14 行以下的 <code>Artifact</code>。</p>
 <ul>
-<li>on: 描述該Action是如何被觸發的，參考接下來的主題<a href="#Trigger-Methods">Trigger Methods</a>。</li>
-<li>runs-on: 描述該Action將會運行在哪個裝置上，可參考官網給的<a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on">裝置列表</a>。
+<li>on: 描述該 Action 是如何被觸發的，參考接下來的主題 <a href="#Trigger-Methods">Trigger Methods</a>。</li>
+<li>runs-on: 描述該 Action 將會運行在哪個裝置上，可參考官網給的<a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on">裝置列表</a>。
 <ul>
 <li>基本上我們都直接用ubuntu-latest運行，之後在裡面用docker跑我們要的環境即可。</li>
 </ul>
 </li>
-<li>Artifact: 直翻是人工製品，在CI領域就只是輸出檔(可能有其他意義歡迎糾正我)。它將會顯示在Action頁面中供使用者下載，與release頁面的package相似。
+<li>Artifact: 直翻是人工製品，在 CI 領域就只是輸出檔(可能有其他意義歡迎糾正我)。它將會顯示在 Action 頁面中供使用者下載，與 release 頁面的 package 相似。
 <ul>
-<li>在上面情況是用來輸出alf檔給我們下載用。</li>
+<li>在上面情況是用來輸出 alf 檔給我們下載用。</li>
 </ul>
 </li>
 </ul>
 <h2 id="trigger-methods"><a class="markdownIt-Anchor" href="#trigger-methods"></a> Trigger Methods</h2>
-<p>觸發Action的方式，這裡我只列下幾個我有用到的，詳情可以參考<a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/events-that-trigger-workflows">Github官方教學</a>。</p>
+<p>觸發 Action 的方式，這裡我只列下幾個我有用到的，詳情可以參考 <a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/events-that-trigger-workflows">Github 官方教學</a>。</p>
 <ol>
-<li>push: 在任何push指令後觸發。非常實用，CI的目標就是要在專案變更時重新build一次確認運行是否正確。
+<li>push: 在任何 push 指令後觸發。非常實用，CI 的目標就是要在專案變更時重新 build 一次確認運行是否正確。
 <ul>
-<li>可以加上branches參數，使得它只會在你想要的branch被push時觸發，如:</li>
+<li>可以加上 branches 參數，使得它只會在你想要的 branch 被 push 時觸發，如:</li>
 </ul>
  <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">on</span><span class="token punctuation">:</span>
   <span class="token comment"># Trigger the workflow on push</span>
@@ -268,18 +268,18 @@ This should not be called in batch mode.<span aria-hidden="true" class="line-num
       <span class="token punctuation">-</span> master
       <span class="token punctuation">-</span> branch_A<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request">pull_request</a>: 在任何pull request發生時觸發。
+<li><a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#pull-request-event-pull_request">pull_request</a>: 在任何 pull request 發生時觸發。
 <ul>
-<li>除了可以加上branches參數，還可以加上types參數來描述更細節的觸發方法。</li>
+<li>除了可以加上 branches 參數，還可以加上 types 參數來描述更細節的觸發方法。</li>
 </ul>
  <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">on</span><span class="token punctuation">:</span>
   <span class="token key atrule">pull_request</span><span class="token punctuation">:</span>
       <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>master<span class="token punctuation">]</span> <span class="token comment"># 表示如果其它branch開了一個pull request to master時觸發，但它仍然是執行在其它branch上。</span>
       <span class="token key atrule">types</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>assigned<span class="token punctuation">,</span> opened<span class="token punctuation">,</span> synchronize<span class="token punctuation">,</span> reopened<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p>注意YAML格式要描述multi-value時有兩種方法:</p>
+<p>注意 YAML 格式要描述 multi-value 時有兩種方法:</p>
 <ol>
-<li>寫成單行的[master, branch_A]陣列(Array)形式</li>
+<li>寫成單行的 [master, branch_A] 陣列(Array)形式</li>
 <li>或是多行的清單(List)形式，如下</li>
 </ol>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">branches</span><span class="token punctuation">:</span> 
@@ -290,7 +290,7 @@ This should not be called in batch mode.<span aria-hidden="true" class="line-num
 </li>
 <li><a target="_blank" rel="noopener" href="https://help.github.com/en/actions/reference/events-that-trigger-workflows#external-events-repository_dispatch">repository_dispatch</a>: 由API收到特定request後觸發，也是唯一一個可以從Github以外觸發Action的方法。
 <ul>
-<li>外部呼叫的API細節可參考<a target="_blank" rel="noopener" href="https://developer.github.com/v3/repos/#create-a-repository-dispatch-event">官方文件</a>，但我覺得官方文件寫得很爛，實際上是看<a target="_blank" rel="noopener" href="http://www.btellez.com/posts/triggering-github-actions-with-webhooks.html">這篇</a>才成功。</li>
+<li>外部呼叫的 API 細節可參考<a target="_blank" rel="noopener" href="https://developer.github.com/v3/repos/#create-a-repository-dispatch-event">官方文件</a>，但我覺得官方文件寫得很爛，實際上是看<a target="_blank" rel="noopener" href="http://www.btellez.com/posts/triggering-github-actions-with-webhooks.html">這篇</a>才成功。</li>
 <li>這邊我就照搬方法，如下:
 <ol>
 <li>先申請Personal Access Token才能Call API</li>
@@ -862,7 +862,7 @@ eyJoaXN0b3J5IjpbLTE1MTI2MjIxMTRdfQ==
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CI%20in%20Unity%20using%20Github%20Actions%20%E4%BD%BF%E7%94%A8Github%20Actions%E8%87%AA%E5%8B%95%E5%8C%96%E6%B8%AC%E8%A9%A6%E5%BB%BA%E7%BD%AEUnity%E5%B0%88%E6%A1%88 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2020%2F02%2F26%2FCI-in-Unity-using-GithubAction%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CI%20in%20Unity%20using%20Github%20Actions%20%E4%BD%BF%E7%94%A8%20Github%20Actions%20%E8%87%AA%E5%8B%95%E5%8C%96%E6%B8%AC%E8%A9%A6%E5%BB%BA%E7%BD%AE%20Unity%20%E5%B0%88%E6%A1%88 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2020%2F02%2F26%2FCI-in-Unity-using-GithubAction%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         

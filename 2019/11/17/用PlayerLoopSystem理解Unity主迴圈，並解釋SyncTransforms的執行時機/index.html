@@ -11,7 +11,7 @@
   
   <title>
     
-      用PlayerLoopSystem理解Unity主迴圈，並解釋SyncTransforms的執行時機 
+      用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機 
       
       
       |
@@ -132,7 +132,7 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">用PlayerLoopSystem理解Unity主迴圈，並解釋SyncTransforms的執行時機</div>
+      <div class="post-title">用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
@@ -161,15 +161,15 @@ MathJax = {
         <p><em>本篇文章撰寫於2019/11/17，版本為 Unity2018.4</em></p>
 <h1 id="原由"><a class="markdownIt-Anchor" href="#原由"></a> 原由</h1>
 <p>最近卡在一個問題:<br />
-「<a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Physics-autoSyncTransforms.html">Physics2D.autoSyncTransforms</a> = false的情況下，Unity內部到底何時會進行Sync？」<br />
-根據<a target="_blank" rel="noopener" href="https://forum.unity.com/threads/physics-synctransforms-questions.487424/">官方工程師的講法</a>，如果關閉時應該是只會在FixedUpdate以前Sync一次，其他時間點不會同步。<br />
-但經過測試，疑似在Update期間也會Sync啊？<br />
+「<a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Physics-autoSyncTransforms.html">Physics2D.autoSyncTransforms</a> = false 的情況下，Unity內部到底何時會進行 Sync？」<br />
+根據<a target="_blank" rel="noopener" href="https://forum.unity.com/threads/physics-synctransforms-questions.487424/">官方工程師的講法</a>，如果關閉時應該是只會在FixedUpdate 以前 Sync 一次，其他時間點不會同步。<br />
+但經過測試，疑似在 Update 期間也會 Sync 啊？<br />
 偏偏Unity官網提供的<a target="_blank" rel="noopener" href="https://docs.unity3d.com/2018.4/Documentation/Manual/ExecutionOrder.html">執行順序圖</a>根本沒有寫到何時Sync。</p>
-<p>於是後來翻到了Unity有提供一個實驗性的底層API: <a target="_blank" rel="noopener" href="https://docs.unity3d.com/2018.4/Documentation/ScriptReference/Experimental.LowLevel.PlayerLoop.html">PlayerLoop</a><br />
-它號稱可以讓使用者修改Unity主迴圈，因此這對我們分析Unity執行順序非常有幫助。</p>
+<p>於是後來翻到了 Unity 有提供一個實驗性的底層 API : <a target="_blank" rel="noopener" href="https://docs.unity3d.com/2018.4/Documentation/ScriptReference/Experimental.LowLevel.PlayerLoop.html">PlayerLoop</a><br />
+它號稱可以讓使用者修改 Unity 主迴圈，因此這對我們分析 Unity 執行順序非常有幫助。</p>
 <span id="more"></span>
 <h1 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h1>
-<p>將整個主迴圈Print出來:</p>
+<p>將整個主迴圈列出來:</p>
 <pre class="line-numbers language-none"><code class="language-none">ROOT NODE
 	Initialization
 		PlayerUpdateTime
@@ -292,11 +292,11 @@ MathJax = {
 		ProfilerEndFrame
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>蠻複雜的，需要一個視覺化的UI比較好觀察。</p>
-<p>在網路上找到一位網友Lotte用PlayerLoop寫了一個<a target="_blank" rel="noopener" href="https://www.patreon.com/posts/unity-2018-1-16336053">視覺化看主迴圈執行順序的腳本</a><br />
+<p>在網路上找到一位網友 Lotte 用 PlayerLoop 寫了一個<a target="_blank" rel="noopener" href="https://www.patreon.com/posts/unity-2018-1-16336053">視覺化看主迴圈執行順序的腳本</a><br />
 這不但是一個很好參考的使用案例，更是一個功能強大的腳本。<br />
 也因此接下來就用這個腳本來修改成我要的功能。</p>
-<p>首先，先建一個Singleton的測試腳本掛在有Rigidbody的物件上。<br />
-腳本寫了一個檢查是否Sync的方法，回傳True代表已經Sync了。</p>
+<p>首先，先建一個 Singleton 的測試腳本掛在有 Rigidbody2D 的物件上。<br />
+腳本寫了一個檢查是否 Sync 的方法，回傳 True 代表已經 Sync 了。</p>
 <pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">public static bool TestIfSyncTransforms() &#123;
     &#x2F;&#x2F; Singleton.
     if (s_Instance &#x3D;&#x3D; null) &#123;
@@ -310,7 +310,7 @@ MathJax = {
     &#125;
     return false;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在Default PlayerLoop內將的每個Update之間插入一個CustomSyncTestUpdate。</p>
+<p>在 Default PlayerLoop 內將的每個 Update 之間插入一個 CustomSyncTestUpdate。</p>
 <pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">&#x2F;&#x2F; 修改Lotte腳本內的方法
 PlayerLoopSystem GenerateCustomLoop() &#123;
     &#x2F;&#x2F; Note: this also resets the loop to its defalt state first.
@@ -359,8 +359,8 @@ PlayerLoopSystem GenerateCustomLoop() &#123;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>插入後的主迴圈長這樣:<br />
 <img src="https://i.imgur.com/Hif4O3o.png" alt="" /></p>
-<p>另外在測試物件上的腳本也添加以下Code來檢查是否Sync:<br />
-(Log中以綠色字體顯示)</p>
+<p>另外在測試物件上的腳本也添加以下 Code 來檢查是否 Sync :<br />
+(Log 中以綠色字體顯示)</p>
 <pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">private void FixedUpdate() &#123;
     Debug.Log(&quot;&lt;color&#x3D;green&gt;FixedUpdate!&lt;&#x2F;color&gt;&quot;);
     bool sync &#x3D; TestIfSyncTransforms();
@@ -385,30 +385,30 @@ private void LateUpdate() &#123;
     &#125;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="測試結果"><a class="markdownIt-Anchor" href="#測試結果"></a> 測試結果</h1>
-<p>經Log發現，僅在Physics2DFixedUpdate時更新。<br />
+<p>經 Log 發現，僅在 Physics2DFixedUpdate 時更新。<br />
 <img src="https://i.imgur.com/tzGso3d.png" alt="" /><br />
-照順序來看，可以得知Physics2DFixedUpdate就是InternalPhysicsUpdate。<br />
-而且Sync只會在InternalPhysicsUpdate的時候才更新。照工程師的說法，應該是一進去就先Sync。<br />
-經測試，以transform.position為優先，rigidbody.position會直接被蓋掉。</p>
-<p>但是之前若將Rigidbody.Interpolation打開，會變以下結果:<br />
+照順序來看，可以得知 Physics2DFixedUpdate 就是 InternalPhysicsUpdate。<br />
+而且 Sync 只會在 InternalPhysicsUpdate 的時候才更新。照工程師的說法，應該是一進去就先 Sync。<br />
+經測試，以 <code>Transform.position</code> 為優先，<code>Rigidbody2D.position</code> 會直接被蓋掉。</p>
+<p>但是之前若將 <code>Rigidbody2D.Interpolation</code> 打開，會變以下結果:<br />
 <img src="https://i.imgur.com/b6cxaJG.png" alt="" /><br />
-多了個Physics2DUpdate的時候會Sync。</p>
-<p>這個Physics2DUpdate是每次Update()以前都會跑的，位於PreUpdate階段。<br />
+多了個 Physics2DUpdate 的時候會 Sync。</p>
+<p>這個 Physics2DUpdate 是每次 Update() 以前都會跑的，位於 PreUpdate 階段。<br />
 <img src="https://i.imgur.com/FaOWCMG.png" alt="" /><br />
-可以理解成，Interpolation修改transform.position的地方就是這個Physics2DUpdate。<br />
-所以當他發現transform.position是dirty狀態時會直接Sync，而不會覆蓋過去。</p>
+可以理解成，Interpolation 修改 transform.position 的地方就是這個 Physics2DUpdate。<br />
+所以當他發現 <code>transform.position</code> 是 dirty 狀態時會直接 Sync，而不會覆蓋過去。</p>
 <h1 id="結論"><a class="markdownIt-Anchor" href="#結論"></a> 結論</h1>
-<p>當你要修改Rigidbody物件的座標時，不管改Transform.position或是Rigidbody.position本身都可行，但有以下注意事項:</p>
+<p>當你要修改 Rigidbody2D 物件的座標時，不管改 <code>Transform.position</code> 或是 <code>Rigidbody2D.position</code> 本身都可行，但有以下注意事項:</p>
 <ul>
-<li>若同時修改Rigidbody和Transform，以Transform為主。</li>
+<li>若同時修改 Rigidbody 和 Transform，以 Transform 為主。</li>
 <li>根據<a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Rigidbody-position.html">官網說明</a>，修改Transform效能較差，因為它需要多走Sync的步驟。</li>
-<li>關閉AutoSync的情況下:
+<li>關閉 <code>autoSyncTransforms</code> 的情況下:
 <ul>
-<li>沒有開啟Interpolation時，每次InternalPhysics執行前才會Sync。</li>
-<li>開啟Interpolation時，除了每次InternalPhysics執行前會Sync以外，每次Update以前也會Sync。</li>
+<li>沒有開啟 Interpolation 時，每次 InternalPhysics 執行前才會 Sync。</li>
+<li>開啟 Interpolation 時，除了每次 InternalPhysics 執行前會 Sync 以外，每次 Update 以前也會 Sync。</li>
 </ul>
 </li>
-<li>所以頻繁更新Transform的情況下就別開Interpolation了，因為有開跟沒開一樣都會被蓋掉。</li>
+<li>所以頻繁更新 Transform 的情況下就別開 Interpolation 了，因為有開跟沒開一樣都會被蓋掉。</li>
 </ul>
 <h1 id="20210829更新"><a class="markdownIt-Anchor" href="#20210829更新"></a> 2021/08/29更新</h1>
 <p>最近在測試時發現Unity2019.4已經不是上面那個邏輯了＝＝<br />
@@ -781,7 +781,7 @@ private void LateUpdate() &#123;
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E7%94%A8PlayerLoopSystem%E7%90%86%E8%A7%A3Unity%E4%B8%BB%E8%BF%B4%E5%9C%88%EF%BC%8C%E4%B8%A6%E8%A7%A3%E9%87%8BSyncTransforms%E7%9A%84%E5%9F%B7%E8%A1%8C%E6%99%82%E6%A9%9F + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2019%2F11%2F17%2F%25E7%2594%25A8PlayerLoopSystem%25E7%2590%2586%25E8%25A7%25A3Unity%25E4%25B8%25BB%25E8%25BF%25B4%25E5%259C%2588%25EF%25BC%258C%25E4%25B8%25A6%25E8%25A7%25A3%25E9%2587%258BSyncTransforms%25E7%259A%2584%25E5%259F%25B7%25E8%25A1%258C%25E6%2599%2582%25E6%25A9%259F%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E7%94%A8%20PlayerLoopSystem%20%E7%90%86%E8%A7%A3%20Unity%20%E4%B8%BB%E8%BF%B4%E5%9C%88%EF%BC%8C%E4%B8%A6%E8%A7%A3%E9%87%8B%20SyncTransforms%20%E7%9A%84%E5%9F%B7%E8%A1%8C%E6%99%82%E6%A9%9F + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2019%2F11%2F17%2F%25E7%2594%25A8PlayerLoopSystem%25E7%2590%2586%25E8%25A7%25A3Unity%25E4%25B8%25BB%25E8%25BF%25B4%25E5%259C%2588%25EF%25BC%258C%25E4%25B8%25A6%25E8%25A7%25A3%25E9%2587%258BSyncTransforms%25E7%259A%2584%25E5%259F%25B7%25E8%25A1%258C%25E6%2599%2582%25E6%25A9%259F%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
