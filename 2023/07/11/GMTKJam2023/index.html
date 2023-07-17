@@ -11,7 +11,7 @@
   
   <title>
     
-      以雙螢幕輸出來進行試玩測試 
+      我參加了 GMTK Game Jam 2023 
       
       
       |
@@ -132,95 +132,131 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">以雙螢幕輸出來進行試玩測試</div>
+      <div class="post-title">我參加了 GMTK Game Jam 2023</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
-          2022-12-13 12:44:27
+          2023-07-11 05:01:04
         </span>
         
-              <span class="post-tags">
-                <i class="iconfont icon-tags" title="Tags"></i>
-                
-                <span class="span--tag">
-                  <a href="/tags/Unity/" title="Unity">
-                    <b>#</b> Unity
-                  </a>
-                </span>
-                
-              </span>
-          
       </div>
       <div class="markdown-body">
         <blockquote>
-<p>這篇其實是心得雜談，沒甚麼實作經驗分享。</p>
+<p>這篇文沒有打算認真介紹 GMTK Game Jam，隨意聊聊參賽的心得。</p>
 </blockquote>
-<p>上週五六日我們團隊參加了實體的遊戲展，這是我們第一次參加這種實體展，也算是第一次開放讓一般玩家試玩的機會。</p>
-<p>之前聽朋友說有一種測試方式是用雙螢幕輸出不同內容，一邊是單純的遊戲畫面，另一邊是會顯示log、fps等各種debug資訊的遊戲畫面。<br />
-這樣一來就能在不打擾玩家的前提下有效紀錄所有發生的問題。<br />
-我覺得寫這個好像很好玩，於是決定在這次參展試試。</p>
-<span id="more"></span>
-<h1 id="雙螢幕輸出的成果"><a class="markdownIt-Anchor" href="#雙螢幕輸出的成果"></a> 雙螢幕輸出的成果</h1>
-<p>總而言之先上成果，具體來說我到底希望做到什麼樣子，不過我照片拍很少所以也有點難正確地示意。<br />
-<img src="/images/g8-1.jpg" alt="現場照片" /> <em>我們遊戲是第一排的 Bionic Bay</em></p>
-<p>以玩家視角來看，我們攤位上其實就只有兩個螢幕、兩隻手把、兩隻耳機在桌上的配置。</p>
-<p>而實際上的這個時候的我是位在背板後方的小房間內，看著其中一台是筆電的螢幕來檢視玩家當前有沒有發生任何異樣。</p>
-<p><img src="/images/g8-2.jpg" alt="後台的螢幕畫面" /></p>
-<p>主要檢查點有：</p>
-<ul>
-<li>Console 有沒有噴error ？</li>
-<li>Frame Rate 在哪個場景是否突然不穩？</li>
-<li>長期運行之下有沒有 Memory Leak 的狀況？</li>
-<li>玩家是否需要顯示提示？</li>
-</ul>
-<p>以結果來說執行上還蠻成功的，唯二當下遇到但沒處理好的事情是：</p>
+<p>週末六日 48 小時參加了線上的 GMTK Game Jam，主題是「ROLES REVERSED」，是要我們改變遊戲的操作對象，在一個常見的遊戲類型中以一個不常見的角度來遊玩（這我的解釋）。<br />
+舉例說 「Tetris 但你操作的是整個關卡」、「 Pong but you play as the ball 」之類的。<br />
+或者更單純的敵我雙方反轉（<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/953490/CARRION/">Carrion</a>、<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/629820/Maneater/">Maneater</a>）也符合主題。<br />
+需要更多解釋可以直接看主題影片：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7JhCPhqWTas">This year’s theme is…</a><br />
+（純照字面意思的話 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/70300/VVVVVV/">VVVVVV</a> 不知道能不能過，如果不能，那一定是因為複數 <code>S</code> 在搞。）</p>
+<p>我直到禮拜五才想到報名，實際看了主題後我才真正決定要參賽，因為「OOO but XXX」就是個常見的優秀創作公式，感覺很有趣。<br />
+我之前參加 game jam 的經驗都是組隊，儘管 GMTK Game Jam 是線上的活動，我之前兩次經驗也都是找認識的人窩在 LAB 裡面做。<br />
+但我其實一直都挺想嘗試 solo 參賽，一方面所有決定自己做很爽、完全沒有溝通成本，也符合我彆扭的個性；另一方面壓力沒那麼大（跟我的 side projects 一樣毫無責任感，沒做完就沒做完）。</p>
+<p>缺點也很顯而易見，時間已經夠少了（48hr）還要處理所有事情，從發想設計、程式、美術、音樂、到投稿資料等雜事都要幹。<br />
+剩下的缺點倒還好 – 像是沒人幫你踩剎車，容易自我感覺良好或是瘋狂浪費時間在沒意義的小事上。<br />
+但我覺得那些也不全然是壞事，我自己就很喜歡看到一些開發者鑽牛角尖在一個超小的事情上打轉，這種工程主義與個人執著的碰撞才是 Indie 的浪漫。<br />
+當然在有金錢壓力的商業作品上這樣幹是欠揍啦，但 game jam 這種鼓勵發揮想法的活動放飛一下也無所謂吧（但請不要害到隊友）。</p>
+<h1 id="發想遊戲玩法"><a class="markdownIt-Anchor" href="#發想遊戲玩法"></a> 發想遊戲玩法</h1>
+<p>畢竟這次是非常玩法導向的主題（其實每次都是），而且我自己做遊戲也全都是玩法優先的設計，理所當然要先決定玩法才有辦法開始做。<br />
+大概前 1 個小時我完全是無頭蒼蠅狀態，我覺得這是一個好發揮的主題，但要怎麼發揮地不落入俗套就很難了，尤其我有自覺我只能靠純玩法噱頭來來顯現差異性。<br />
+總之是一邊看著 Discord 群組各個參賽者的討論，一邊跟一個在當兵放假的朋友隨意閒聊想法，內心想著還是我乾脆不做了。<br />
+其實也是我那位朋友的一句話讓我有了這次遊戲的確切想法<br />
+「還是骰子遊戲？你當上帝」<br />
+「靠杯」<br />
+最後就有了這次的遊戲標題<br />
+<strong>「Turn-based strategy but you are RNG」</strong><br />
+簡單說就是在一個回合制策略的遊戲架構之下，你扮演的不是角色本身，而是「RNG （亂數產生器）」。<br />
+其實「玩弄亂數表」的概念是我曾思考過的遊戲點子之一。發想起點是玩某些戰棋遊戲被敵人 1% 爆擊搞死、或是我方 90% 命中率卻打不中這種會想「幹你 RNG 」的場面氣到，進而想到如果玩家扮演的就是 RNG 本身那是否還蠻有趣的 –<br />
+<strong>你要想盡辦法讓亂數的順序有利於我方士兵，以達成小蝦米搏贏大鯨魚的奇蹟場面</strong>。<br />
+但這個點子一直沒有做出來也只是因為我覺得這個架構的大前提是要有一個足夠有趣的戰棋遊戲本身，但戰棋遊戲的系統之繁多，實在沒空做。</p>
+<p>要在 Game Jam 做出這個概念的話我不可能真的去做我從未做過的 「戰略遊戲（tactics）」，也就是那些有空間概念、移動指令、範圍攻擊的策略遊戲，那實在太複雜了。<br />
+而且我的目標是用亂數玩弄命中率、爆擊率等機率數值，那其實完全不需要空間概念才對，所以最後做成了很純粹的帶有命中、爆擊的回合制戰鬥遊戲。</p>
+<h1 id="設定美術風格"><a class="markdownIt-Anchor" href="#設定美術風格"></a> 設定美術風格</h1>
+<p>因為我本身也就只是個程式，想要 solo 參賽首先要克服的最大的問題是我根本不會畫畫。<br />
+這對我來說應該是起頭最難的一件事情，我知道有些工程師完全可以在不仰賴美術的前提下開發。但至少在創作上，我個人是非常吃重視覺效果的，更可以說很多功能設計也都是先有美術風格後才有辦法順水推舟發展出來的結果。我非常難做出「先設計一個泛用風格但功能完整，最後才決定美術風格」的遊戲，我相信經驗老道的製作人有辦法，但我個人還是著重在以現有內容迭代新想法的設計。</p>
+<p>總之要解決美術風格的問題，大概剩這幾種解法：</p>
 <ol>
-<li>雙螢幕輸出的垂直同步出現問題，某一邊的螢幕會無法正確垂直同步導致螢幕撕裂。</li>
-<li>OBS 錄影設定沒搞好，最後錄影變成還是錄玩家看到的遊戲畫面那一端</li>
+<li>挑一個不怎麼需要畫畫技術的美術風格（最好是 Shader 套上去就可以讓基礎 3D 模型完美展現出風格的那種）</li>
+<li>買現成素材瘋狂 bashing （大部分人應該是這樣，缺點是蒐集素材跟美術 Sense 很難搞）</li>
+<li>AI Art（但這次參賽規則明確禁止任何 Generative AI）</li>
+<li>完全不管美術，意思到了就好 （那遊戲會很挑玩家）</li>
 </ol>
-<h1 id="實作與執行"><a class="markdownIt-Anchor" href="#實作與執行"></a> 實作與執行</h1>
-<h2 id="雙螢幕輸出"><a class="markdownIt-Anchor" href="#雙螢幕輸出"></a> 雙螢幕輸出</h2>
-<p>具體實作很簡單，<br />
-參考這篇官方文檔即可： <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/MultiDisplay.html">https://docs.unity3d.com/Manual/MultiDisplay.html</a></p>
-<h2 id="in-game-console"><a class="markdownIt-Anchor" href="#in-game-console"></a> In-game console</h2>
-<p>功能寫出來之後我才想到，好像可以接個 in game console，這樣子在玩家的遊玩過程中甚至可以偷打指令。<br />
-於是翻了各個github開源專案，找到一個最能滿足我需求的repo，功能極強：<br />
-<a target="_blank" rel="noopener" href="https://github.com/DavidF-Dev/Unity-DeveloperConsole">https://github.com/DavidF-Dev/Unity-DeveloperConsole</a><br />
-於是就花一天接進去了。</p>
-<h2 id="沒教學"><a class="markdownIt-Anchor" href="#沒教學"></a> 沒教學</h2>
-<p>然後展出前幾天又想到，我們到現在教學都還因為各種原因生不出來，但現場口頭告知感覺很破壞體驗。<br />
-所以最後幾天才很隨便地寫一個文字提示系統，然後又開始爭論到底哪裡要顯示哪裡不需要顯示，破不破壞沉浸感，會不會讓玩家覺得自己被當白癡(戰神的案例)。</p>
-<p>最後就…全部手動按。</p>
-<p>往好處想，手動按也可以是一種測試項目，可以量化得知到底哪些提示是不需要，哪些是必須的。<br />
-也好在我可以雙螢幕躲在後面按，玩家比較不會覺得是被工作人員提示到，甚至因為有接了console，基本上想打甚麼內容都可以。</p>
-<p>不過理想歸理想，最後還是很常靠我同事現場提示。<br />
-而且雙螢幕+錄影計畫會把我的筆電燒爆，導致有lag發生，好險玩家沒怎麼抱怨。</p>
-<h1 id="關卡設計的修正與迭代"><a class="markdownIt-Anchor" href="#關卡設計的修正與迭代"></a> 關卡設計的修正與迭代</h1>
-<p>這也是我第一次充分感受到我們遊戲的 standalone editor + 雲端更新功能在實體展有奇效。<br />
-正好展出時間是從下午開始，能夠克服時差，造就了我們能夠：</p>
+<p>我最後是用 1. + 4.解<br />
+主要是想參考 <a target="_blank" rel="noopener" href="https://store.steampowered.com/developer/sokpop">Sokpop</a> 或 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/736260/Baba_Is_You/">BABA IS YOU</a> 的那種塗鴉風，那首先需要的就是「抖抖抖」的視覺效果。<br />
+實作參考這篇 <a target="_blank" rel="noopener" href="https://www.alanzucconi.com/2019/04/16/sprite-doodle-shader-effect/">Sprite Doodle Shader Effect</a><br />
+之後嘗試搭配我小學生等級的破爛畫技看看<br />
+先看沒動的樣子：<br />
+<img src="/images/gmtk2023/doodle_0.png" alt="" /></p>
+<p>開抖：<br />
+<img src="/images/gmtk2023/doodle_1.gif" alt="" /></p>
+<p>可能是我自我感覺良好，但我覺得抖抖風格已經十足有效了，小學生等級的畫技都可以凹成生動活潑的塗鴉風格，最棒的是我甚至不需要為了人物以外的圖片畫多張 Sprite 動畫（一般實現這種抖抖感是 2 到 3 張 Sprites 交替顯示）。<br />
+所以好了，美術風格就這樣吧。</p>
+<p>說的容易啦，但視覺摸索到這個階段我已經花了<strong>整整 15 小時</strong>。<br />
+期間有朝幾個方向嘗試：</p>
 <ul>
-<li>同事站在外面招待玩家</li>
-<li>我窩在裡面看雙螢幕的debug畫面分析問題，然後同步回報給開發夥伴(第二天開始改成dc實況)</li>
-<li>開發夥伴在家修正關卡問題並更新上傳</li>
-<li>等這位玩家結束之後立刻下載更新關卡<br />
-也好險能這樣修正，否則第一天初期的幾個遊玩過程真是慘不忍睹。<br />
-不過程式上的bug當然現場就沒辦法修，只能晚上回家一邊看錄影一邊修正。</li>
+<li>點陣風格，素材全用現成 + <a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/propixelizer-177877">ProPixelizer</a>
+<ul>
+<li>ProPixelizer 買了很久但現在是第一次用，因為他是 Per Object Shader 所以不太好用，優點是可以訂製個別物件的細節啦，但我求速成就不好用。</li>
 </ul>
-<p>三天下來，有破完的平均遊戲時間是33.9分鐘 -&gt; 30.1分鐘 -&gt; 27.8分鐘。<br />
-全部破完百分比是71% -&gt; 75% -&gt; 84%，剩下枝微末節的改進內容和數據可能有機會會寫成別篇文章吧。</p>
-<p>最後還是很感謝G8主辦也很感謝友人邀請，這是我們第一次參加實體展，雖然爆幹累，但意外地有很多收穫。為我們畸形的合作開發模式注入了一劑強心針，也讓我損失了一隻xbox手把。</p>
-<h1 id="插曲"><a class="markdownIt-Anchor" href="#插曲"></a> 插曲</h1>
-<p>因為我們後台房間其實是四組共用的，而我基本上一整天都窩在裡面盯後台螢幕，所以別組的人每次一進來就是看到我這個怪人坐在地板上駝背看筆電。<br />
-應該是在第一天快結束的時候，我們後方的<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1858450/_/?l=tchinese">即刻離職</a>開發者就問說：「嗯？你們怎麼不把外面的桌子往前移一點點，然後把筆電放在螢幕後方這樣子」</p>
-<p><img src="https://i.imgur.com/prF8oK2.png" alt="圖片來源: https://www.youtube.com/watch?v=pG0dwHAiLUw" /></p>
-<p>「靠，真的耶，我是白痴」</p>
-
+</li>
+<li>寫實風格，素材全用現成的。做成像是在打桌遊的感覺，不需要有人物。（可參考 Tabletop Simulator 或 Inscryption 、Hands of Fate 這種）
+<ul>
+<li>太久沒碰 3D Lighting ，一時弄不出好看的光影效果，而且 HDRP 不支援 WebGL 最後就放棄。</li>
+</ul>
+</li>
+</ul>
+<h1 id="本篇重點所以單人參賽會有什麼問題"><a class="markdownIt-Anchor" href="#本篇重點所以單人參賽會有什麼問題"></a> 本篇重點，所以單人參賽會有什麼問題？</h1>
+<p>假設你把以上問題都克服了，像我一樣自豪自己已經算某種成功的 solodev 的話，請你還是多留 1 小時給你的 itch 設定，尤其你如果完全沒有上傳經驗的話更應該如此。</p>
+<p>最後實在太慌亂 + 沒有投稿經驗。<br />
+我大概剩 20 分鐘的時候才點開 GMTK Game Jam 的 itch 投稿頁，<br />
+點了 Submit ，<br />
+沿著彈出窗口選了 Create New Project ，<br />
+填寫標題、介紹、上傳封面、 Windows 版遊戲，<br />
+Save。<br />
+好了安心了，剩下一點時間我來試試 WebGL build 好了，因為照之前的經驗沒有 WebGL 版本的話很難讓人去試玩和評價。<br />
+Build 是 Build 出來了，但上傳之後遇到一些狗屎問題：</p>
+<ul>
+<li>預設的 Compression Format 是 gzip，而 itch 不支援（改用 Brotli 或 Disabled 就可以）</li>
+<li>輸出 Resolution 有問題，我以 1920x1080 為標準開發，但是在 itch 上預設會變成一個很小而且長寬比錯誤的解析度（好像是640x480之類的）而且不能全螢幕= =，搞了很久還跑去載了個 <a target="_blank" rel="noopener" href="https://seansleblanc.itch.io/better-minimal-webgl-template">Better Minimal WebGL Template</a> 來套也一樣。結果是在 itch 的設定裡面有 Embed options 可以直接改大小和全螢幕按鈕顯示與否。</li>
+<li>某些超短的音效在 WebGL 版中消失了，我後來開 Audacity 去拉長音軌重新 build 才修好。</li>
+</ul>
+<blockquote>
+<p>在打這篇文的時候才查到羽毛的這篇 <a target="_blank" rel="noopener" href="https://featherchung.wordpress.com/2020/08/23/unity-build-to-itch-io/">將 Unity 專案上傳至 itch.io 經驗談</a>，有把 WebGL 和 itch 的坑都寫出來了，請參加 Game Jam 前都讀一下。</p>
+</blockquote>
+<p>最後其實主辦方最後有延長一個小時讓我們上傳，所以我才有空修這堆 WebGL 和 itch 的屎，但修完之後也差不多壓線了。<br />
+截止時間過了之後，我鬆了一口氣，有好好完賽了。</p>
+<p>正當我想要好好欣賞 6K 多個投稿作品，順便看一下自己封面圖在這之中足不足夠顯眼的時候，</p>
+<p>我發現我搜尋不到自己的遊戲。</p>
+<p>反覆確認之後，我搞懂了，<strong>我 根 本 沒 有 投 稿</strong>。<br />
+對，我確實在截止時間前，我是把遊戲做出來了也上傳 <a target="_blank" rel="noopener" href="http://itch.io">itch.io</a> 了，但我沒有投稿進 GMTK Game Jam。</p>
+<p>後來問了同樣有參賽的友人，正確的流程是在 Create New Project 之後，你還要再回去 Game Jam 頁面按 Submit 並選擇符合資格的專案才代表參賽。</p>
+<p>總而言之，我之所以文思泉湧、洋洋灑灑地寫了這一大篇文章就只為了一件事 –</p>
+<p>.<br />
+.<br />
+.<br />
+.<br />
+.<br />
+.<br />
+.<br />
+.<br />
+.<br />
+.</p>
+<p><em><strong>沒錯，就是抱怨！哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈嗚</strong></em></p>
+<p>.<br />
+.<br />
+.</p>
+<p>好啦都讀到這裡了，還是曬一下完成的作品</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://pedev.itch.io/turn-based-strategy-but-you-are-rng">Turn-based strategy but you are RNG 遊戲頁面</a><br />
+（教學說明請直接看遊戲頁面底下的圖片）</p>
+</blockquote>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/maALEyZyyQA" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2022/10/11/Embed-GlslEditor-in-Markdown/" target="_self">
+              <a href="/2022/12/13/%E4%BB%A5%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA%E4%BE%86%E9%80%B2%E8%A1%8C%E8%A9%A6%E7%8E%A9%E6%B8%AC%E8%A9%A6/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -229,27 +265,11 @@ MathJax = {
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime" title="Update time"></i>
-              2022-12-13 12:44:27
+              2023-07-11 05:01:04
             </span>
             
-                  <span class="post-tags">
-                    <i class="iconfont icon-tags" title="Tags"></i>
-                    
-                    <span class="span--tag">
-                      <a href="/tags/Unity/" title="Unity">
-                        <b>#</b> Unity
-                      </a>
-                    </span>
-                    
-                  </span>
-              
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2023/07/11/GMTKJam2023/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -262,7 +282,7 @@ MathJax = {
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA%E7%9A%84%E6%88%90%E6%9E%9C"><span class="toc-text"> 雙螢幕輸出的成果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%A6%E4%BD%9C%E8%88%87%E5%9F%B7%E8%A1%8C"><span class="toc-text"> 實作與執行</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA"><span class="toc-text"> 雙螢幕輸出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#in-game-console"><span class="toc-text"> In-game console</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%92%E6%95%99%E5%AD%B8"><span class="toc-text"> 沒教學</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%9C%E5%8D%A1%E8%A8%AD%E8%A8%88%E7%9A%84%E4%BF%AE%E6%AD%A3%E8%88%87%E8%BF%AD%E4%BB%A3"><span class="toc-text"> 關卡設計的修正與迭代</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E6%9B%B2"><span class="toc-text"> 插曲</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BC%E6%83%B3%E9%81%8A%E6%88%B2%E7%8E%A9%E6%B3%95"><span class="toc-text"> 發想遊戲玩法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A8%AD%E5%AE%9A%E7%BE%8E%E8%A1%93%E9%A2%A8%E6%A0%BC"><span class="toc-text"> 設定美術風格</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E7%AF%87%E9%87%8D%E9%BB%9E%E6%89%80%E4%BB%A5%E5%96%AE%E4%BA%BA%E5%8F%83%E8%B3%BD%E6%9C%83%E6%9C%89%E4%BB%80%E9%BA%BC%E5%95%8F%E9%A1%8C"><span class="toc-text"> 本篇重點，所以單人參賽會有什麼問題？</span></a></li></ol>
     </div>
   </div>
 
@@ -307,31 +327,6 @@ MathJax = {
     
   </div>
   
-<!-- This part is only generated if the post have glsl=true property. -->
-<link type="text/css" rel="stylesheet" href="/glsl/glslEditor.css">
-<script type="application/javascript" src="/glsl/glslEditor.js"></script>
-<script type="text/javascript">
-    // parse EDITORS
-	var ccList = document.querySelectorAll(".glslEditorCanvas");
-	for(var i = 0; i < ccList.length; i++){
-        let codeblock = ccList[i].querySelector("textarea");
-        if (codeblock) {
-            let code = codeblock.value;
-            //console.log(code);
-            ccList[i].removeChild(codeblock);
-            var editor = new GlslEditor(ccList[i], {
-                canvas_size: 250,
-                canvas_follow: true,
-                canvas_float: 'right',
-                theme: 'monokai',
-                tooltips: true,
-                exportIcon: true,
-            });
-            editor.setContent(code);
-        }
-    }
-</script>
-
 
 
 
@@ -601,12 +596,12 @@ MathJax = {
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%BB%A5%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA%E4%BE%86%E9%80%B2%E8%A1%8C%E8%A9%A6%E7%8E%A9%E6%B8%AC%E8%A9%A6 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2022%2F12%2F13%2F%25E4%25BB%25A5%25E9%259B%2599%25E8%259E%25A2%25E5%25B9%2595%25E8%25BC%25B8%25E5%2587%25BA%25E4%25BE%2586%25E9%2580%25B2%25E8%25A1%258C%25E8%25A9%25A6%25E7%258E%25A9%25E6%25B8%25AC%25E8%25A9%25A6%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%88%91%E5%8F%83%E5%8A%A0%E4%BA%86%20GMTK%20Game%20Jam%202023 + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2F2023%2F07%2F11%2FGMTKJam2023%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/2022/12/13/%E4%BB%A5%E9%9B%99%E8%9E%A2%E5%B9%95%E8%BC%B8%E5%87%BA%E4%BE%86%E9%80%B2%E8%A1%8C%E8%A9%A6%E7%8E%A9%E6%B8%AC%E8%A9%A6/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/2023/07/11/GMTKJam2023/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         

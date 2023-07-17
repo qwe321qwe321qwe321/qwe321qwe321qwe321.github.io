@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="/css/github-markdown.css">
 <link rel="stylesheet" href="/css/highlight.css">
 <link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/video-container.css">
 
 
   <!-- jquery3.3.1 -->
@@ -167,7 +168,7 @@ MathJax = {
 <p>於是後來翻到了Unity有提供一個實驗性的底層API: <a target="_blank" rel="noopener" href="https://docs.unity3d.com/2018.4/Documentation/ScriptReference/Experimental.LowLevel.PlayerLoop.html">PlayerLoop</a><br />
 它號稱可以讓使用者修改Unity主迴圈，因此這對我們分析Unity執行順序非常有幫助。</p>
 <span id="more"></span>
-<h2 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h2>
+<h1 id="流程"><a class="markdownIt-Anchor" href="#流程"></a> 流程</h1>
 <p>將整個主迴圈Print出來:</p>
 <pre class="line-numbers language-none"><code class="language-none">ROOT NODE
 	Initialization
@@ -296,94 +297,94 @@ MathJax = {
 也因此接下來就用這個腳本來修改成我要的功能。</p>
 <p>首先，先建一個Singleton的測試腳本掛在有Rigidbody的物件上。<br />
 腳本寫了一個檢查是否Sync的方法，回傳True代表已經Sync了。</p>
-<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">TestIfSyncTransforms</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// Singleton.</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>s_Instance <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token comment">// Check if sync transform.</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>Vector2<span class="token punctuation">)</span>s_Instance<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>position <span class="token operator">==</span> s_Instance<span class="token punctuation">.</span>m_Rigidbody2D<span class="token punctuation">.</span>position<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">// Modify transform for next checking.</span>
-        s_Instance<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>position <span class="token operator">+=</span> Vector3<span class="token punctuation">.</span>right<span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">public static bool TestIfSyncTransforms() &#123;
+    &#x2F;&#x2F; Singleton.
+    if (s_Instance &#x3D;&#x3D; null) &#123;
+        return false;
+    &#125;
+    &#x2F;&#x2F; Check if sync transform.
+    if ((Vector2)s_Instance.transform.position &#x3D;&#x3D; s_Instance.m_Rigidbody2D.position) &#123;
+        &#x2F;&#x2F; Modify transform for next checking.
+        s_Instance.transform.position +&#x3D; Vector3.right;
+        return true;
+    &#125;
+    return false;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在Default PlayerLoop內將的每個Update之間插入一個CustomSyncTestUpdate。</p>
-<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs"><span class="token comment">// 修改Lotte腳本內的方法</span>
-<span class="token return-type class-name">PlayerLoopSystem</span> <span class="token function">GenerateCustomLoop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// Note: this also resets the loop to its defalt state first.</span>
-    <span class="token class-name"><span class="token keyword">var</span></span> playerLoop <span class="token operator">=</span> PlayerLoop<span class="token punctuation">.</span><span class="token function">GetDefaultPlayerLoop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    hasCustomPlayerLoop <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">&#x2F;&#x2F; 修改Lotte腳本內的方法
+PlayerLoopSystem GenerateCustomLoop() &#123;
+    &#x2F;&#x2F; Note: this also resets the loop to its defalt state first.
+    var playerLoop &#x3D; PlayerLoop.GetDefaultPlayerLoop();
+    hasCustomPlayerLoop &#x3D; true;
     
-    <span class="token comment">// 僅插入從FixedUpdate至Update之間的所有內部Update</span>
-    <span class="token class-name"><span class="token keyword">int</span></span> subSystemListFrom <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> <span class="token comment">// Fixed Update</span>
-    <span class="token class-name"><span class="token keyword">int</span></span> subSystemListTo <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> <span class="token comment">// Update</span>
+    &#x2F;&#x2F; 僅插入從FixedUpdate至Update之間的所有內部Update
+    int subSystemListFrom &#x3D; 2; &#x2F;&#x2F; Fixed Update
+    int subSystemListTo &#x3D; 4; &#x2F;&#x2F; Update
 
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> subSystemListFrom<span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> subSystemListTo<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name"><span class="token keyword">var</span></span> updateSystem <span class="token operator">=</span> playerLoop<span class="token punctuation">.</span>subSystemList<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token class-name"><span class="token keyword">var</span></span> newList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">List<span class="token punctuation">&lt;</span>PlayerLoopSystem<span class="token punctuation">></span></span><span class="token punctuation">(</span>updateSystem<span class="token punctuation">.</span>subSystemList<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// Insert the start event.</span>
-        newList<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> CustomSyncTestUpdate<span class="token punctuation">.</span><span class="token function">GetNewSystem</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"&#123;0&#125; Start"</span><span class="token punctuation">,</span> updateSystem<span class="token punctuation">.</span>type<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> newList<span class="token punctuation">.</span>Count<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name"><span class="token keyword">var</span></span> subUpdate <span class="token operator">=</span> newList<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
-            newList<span class="token punctuation">.</span><span class="token function">Insert</span><span class="token punctuation">(</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> CustomSyncTestUpdate<span class="token punctuation">.</span><span class="token function">GetNewSystem</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"After &#123;0&#125;"</span><span class="token punctuation">,</span> subUpdate<span class="token punctuation">.</span>type<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            j <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">// convert the list back to an array and plug it into the Update system.</span>
-        updateSystem<span class="token punctuation">.</span>subSystemList <span class="token operator">=</span> newList<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// dont forget to put our newly edited System back into the main player loop system!!</span>
-        playerLoop<span class="token punctuation">.</span>subSystemList<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> updateSystem<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    for (int i &#x3D; subSystemListFrom; i &lt;&#x3D; subSystemListTo; i++) &#123;
+        var updateSystem &#x3D; playerLoop.subSystemList[i];
+        var newList &#x3D; new List&lt;PlayerLoopSystem&gt;(updateSystem.subSystemList);
+        &#x2F;&#x2F; Insert the start event.
+        newList.Insert(0, CustomSyncTestUpdate.GetNewSystem(string.Format(&quot;&#123;0&#125; Start&quot;, updateSystem.type.Name)));
+        for (int j &#x3D; 1; j &lt; newList.Count; j++) &#123;
+            var subUpdate &#x3D; newList[j];
+            newList.Insert(j + 1, CustomSyncTestUpdate.GetNewSystem(string.Format(&quot;After &#123;0&#125;&quot;, subUpdate.type.Name)));
+            j +&#x3D; 1;
+        &#125;
+        &#x2F;&#x2F; convert the list back to an array and plug it into the Update system.
+        updateSystem.subSystemList &#x3D; newList.ToArray();
+        &#x2F;&#x2F; dont forget to put our newly edited System back into the main player loop system!!
+        playerLoop.subSystemList[i] &#x3D; updateSystem;
+    &#125;
 
-    <span class="token keyword">return</span> playerLoop<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">struct</span> <span class="token class-name">CustomSyncTestUpdate</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">PlayerLoopSystem</span> <span class="token function">GetNewSystem</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> testScope<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">PlayerLoopSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            type <span class="token operator">=</span> <span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token type-expression class-name">CustomSyncTestUpdate</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            updateDelegate <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">UpdateFunction</span><span class="token punctuation">(</span>testScope<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    return playerLoop;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">public struct CustomSyncTestUpdate &#123;
+    public static PlayerLoopSystem GetNewSystem(string testScope) &#123;
+        return new PlayerLoopSystem() &#123;
+            type &#x3D; typeof(CustomSyncTestUpdate),
+            updateDelegate &#x3D; () &#x3D;&gt; UpdateFunction(testScope)
+        &#125;;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">UpdateFunction</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> testScope<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name"><span class="token keyword">bool</span></span> sync <span class="token operator">=</span> SyncTransformsTester<span class="token punctuation">.</span><span class="token function">TestIfSyncTransforms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>sync<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// 若有Sync則Log以紅字顯示</span>
-            Debug<span class="token punctuation">.</span><span class="token function">LogFormat</span><span class="token punctuation">(</span><span class="token string">"&lt;color=red>[&#123;0&#125;]: &#123;1&#125;&lt;/color>"</span><span class="token punctuation">,</span> testScope<span class="token punctuation">,</span> sync<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-            Debug<span class="token punctuation">.</span><span class="token function">LogFormat</span><span class="token punctuation">(</span><span class="token string">"[&#123;0&#125;]: &#123;1&#125;"</span><span class="token punctuation">,</span> testScope<span class="token punctuation">,</span> sync<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public static void UpdateFunction(string testScope) &#123;
+        bool sync &#x3D; SyncTransformsTester.TestIfSyncTransforms();
+        if (sync) &#123;
+            &#x2F;&#x2F; 若有Sync則Log以紅字顯示
+            Debug.LogFormat(&quot;&lt;color&#x3D;red&gt;[&#123;0&#125;]: &#123;1&#125;&lt;&#x2F;color&gt;&quot;, testScope, sync);
+        &#125; else &#123;
+            Debug.LogFormat(&quot;[&#123;0&#125;]: &#123;1&#125;&quot;, testScope, sync);
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>插入後的主迴圈長這樣:<br />
 <img src="https://i.imgur.com/Hif4O3o.png" alt="" /></p>
 <p>另外在測試物件上的腳本也添加以下Code來檢查是否Sync:<br />
 (Log中以綠色字體顯示)</p>
-<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">FixedUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>FixedUpdate!&lt;/color>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token class-name"><span class="token keyword">bool</span></span> sync <span class="token operator">=</span> <span class="token function">TestIfSyncTransforms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>sync<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Debug<span class="token punctuation">.</span><span class="token function">LogFormat</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>[&#123;0&#125;]: &#123;1&#125;&lt;/color>"</span><span class="token punctuation">,</span> <span class="token string">"FixedUpdate"</span><span class="token punctuation">,</span> sync<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+<pre class="line-numbers language-cs" data-language="cs"><code class="language-cs">private void FixedUpdate() &#123;
+    Debug.Log(&quot;&lt;color&#x3D;green&gt;FixedUpdate!&lt;&#x2F;color&gt;&quot;);
+    bool sync &#x3D; TestIfSyncTransforms();
+    if (sync) &#123;
+        Debug.LogFormat(&quot;&lt;color&#x3D;green&gt;[&#123;0&#125;]: &#123;1&#125;&lt;&#x2F;color&gt;&quot;, &quot;FixedUpdate&quot;, sync);
+    &#125;
+&#125;
 
-<span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>Update!&lt;/color>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token class-name"><span class="token keyword">bool</span></span> sync <span class="token operator">=</span> <span class="token function">TestIfSyncTransforms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>sync<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Debug<span class="token punctuation">.</span><span class="token function">LogFormat</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>[&#123;0&#125;]: &#123;1&#125;&lt;/color>"</span><span class="token punctuation">,</span> <span class="token string">"Update"</span><span class="token punctuation">,</span> sync<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+private void Update() &#123;
+    Debug.Log(&quot;&lt;color&#x3D;green&gt;Update!&lt;&#x2F;color&gt;&quot;);
+    bool sync &#x3D; TestIfSyncTransforms();
+    if (sync) &#123;
+        Debug.LogFormat(&quot;&lt;color&#x3D;green&gt;[&#123;0&#125;]: &#123;1&#125;&lt;&#x2F;color&gt;&quot;, &quot;Update&quot;, sync);
+    &#125;
+&#125;
 
-<span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">LateUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Debug<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>LateUpdate!&lt;/color>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token class-name"><span class="token keyword">bool</span></span> sync <span class="token operator">=</span> <span class="token function">TestIfSyncTransforms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>sync<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Debug<span class="token punctuation">.</span><span class="token function">LogFormat</span><span class="token punctuation">(</span><span class="token string">"&lt;color=green>[&#123;0&#125;]: &#123;1&#125;&lt;/color>"</span><span class="token punctuation">,</span> <span class="token string">"Update"</span><span class="token punctuation">,</span> sync<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="測試結果"><a class="markdownIt-Anchor" href="#測試結果"></a> 測試結果</h2>
+private void LateUpdate() &#123;
+    Debug.Log(&quot;&lt;color&#x3D;green&gt;LateUpdate!&lt;&#x2F;color&gt;&quot;);
+    bool sync &#x3D; TestIfSyncTransforms();
+    if (sync) &#123;
+        Debug.LogFormat(&quot;&lt;color&#x3D;green&gt;[&#123;0&#125;]: &#123;1&#125;&lt;&#x2F;color&gt;&quot;, &quot;Update&quot;, sync);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="測試結果"><a class="markdownIt-Anchor" href="#測試結果"></a> 測試結果</h1>
 <p>經Log發現，僅在Physics2DFixedUpdate時更新。<br />
 <img src="https://i.imgur.com/tzGso3d.png" alt="" /><br />
 照順序來看，可以得知Physics2DFixedUpdate就是InternalPhysicsUpdate。<br />
@@ -396,7 +397,7 @@ MathJax = {
 <img src="https://i.imgur.com/FaOWCMG.png" alt="" /><br />
 可以理解成，Interpolation修改transform.position的地方就是這個Physics2DUpdate。<br />
 所以當他發現transform.position是dirty狀態時會直接Sync，而不會覆蓋過去。</p>
-<h2 id="結論"><a class="markdownIt-Anchor" href="#結論"></a> 結論</h2>
+<h1 id="結論"><a class="markdownIt-Anchor" href="#結論"></a> 結論</h1>
 <p>當你要修改Rigidbody物件的座標時，不管改Transform.position或是Rigidbody.position本身都可行，但有以下注意事項:</p>
 <ul>
 <li>若同時修改Rigidbody和Transform，以Transform為主。</li>
@@ -409,7 +410,7 @@ MathJax = {
 </li>
 <li>所以頻繁更新Transform的情況下就別開Interpolation了，因為有開跟沒開一樣都會被蓋掉。</li>
 </ul>
-<h2 id="20210829更新"><a class="markdownIt-Anchor" href="#20210829更新"></a> 2021/08/29更新</h2>
+<h1 id="20210829更新"><a class="markdownIt-Anchor" href="#20210829更新"></a> 2021/08/29更新</h1>
 <p>最近在測試時發現Unity2019.4已經不是上面那個邏輯了＝＝<br />
 差別是不管有沒有開啟Interpolation，每次Update以前都會在PreUpdate.Physics2DUpdate階段Sync回Rigidbody。</p>
 
@@ -466,7 +467,7 @@ MathJax = {
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%94%B1"><span class="toc-text"> 原由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text"> 流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C"><span class="toc-text"> 測試結果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-text"> 結論</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20210829%E6%9B%B4%E6%96%B0"><span class="toc-text"> 2021&#x2F;08&#x2F;29更新</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%94%B1"><span class="toc-text"> 原由</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-text"> 流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C"><span class="toc-text"> 測試結果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-text"> 結論</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#20210829%E6%9B%B4%E6%96%B0"><span class="toc-text"> 2021&#x2F;08&#x2F;29更新</span></a></li></ol>
     </div>
   </div>
 
