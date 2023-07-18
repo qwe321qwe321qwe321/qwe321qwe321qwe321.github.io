@@ -6,7 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="這篇接續上一篇 CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 後面所提及的容量限制問題。" />
+  <meta name="description" content="前言 這篇接續上一篇 CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 後面所提及的容量限制問題。 上次說過，依照原本的方法大概build不用10次，Github容量就會爆了。 於是大概在第7次的時候就會收到這種信:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/2020/02/27/Solve-the-problem-of-redundant-artifacts-in-Github-Actions/index.html">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 這篇接續上一篇 CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 後面所提及的容量限制問題。 上次說過，依照原本的方法大概build不用10次，Github容量就會爆了。 於是大概在第7次的時候就會收到這種信:">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit_notification.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_list_artifacts_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_list_artifacts_2.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_artifacts_2.png">
+<meta property="article:published_time" content="2020-02-26T17:23:00.000Z">
+<meta property="article:modified_time" content="2020-02-26T17:23:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit.png">
+
   
   
   <title>Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts | PE工具箱</title>

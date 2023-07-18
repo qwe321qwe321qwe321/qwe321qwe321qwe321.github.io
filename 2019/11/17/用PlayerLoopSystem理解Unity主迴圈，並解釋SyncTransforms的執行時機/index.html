@@ -6,8 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="最近卡在一個問題:
-「Physics2D.autoSyncTransforms = false 的情況下，Unity內部到底何時會進行 Sync？」" />
+  <meta name="description" content="本篇文章撰寫於2019&#x2F;11&#x2F;17，版本為 Unity2018.4  原由 最近卡在一個問題: 「Physics2D.autoSyncTransforms &#x3D; false 的情況下，Unity內部到底何時會進行 Sync？」 根據官方工程師的講法，如果關閉時應該是只會在FixedUpdate 以前 Sync 一次，其他時間點不會同步。 但經過測試，疑似在 Update 期間也會 Sync 啊？ 偏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/2019/11/17/%E7%94%A8PlayerLoopSystem%E7%90%86%E8%A7%A3Unity%E4%B8%BB%E8%BF%B4%E5%9C%88%EF%BC%8C%E4%B8%A6%E8%A7%A3%E9%87%8BSyncTransforms%E7%9A%84%E5%9F%B7%E8%A1%8C%E6%99%82%E6%A9%9F/index.html">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="本篇文章撰寫於2019&#x2F;11&#x2F;17，版本為 Unity2018.4  原由 最近卡在一個問題: 「Physics2D.autoSyncTransforms &#x3D; false 的情況下，Unity內部到底何時會進行 Sync？」 根據官方工程師的講法，如果關閉時應該是只會在FixedUpdate 以前 Sync 一次，其他時間點不會同步。 但經過測試，疑似在 Update 期間也會 Sync 啊？ 偏">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/Hif4O3o.png">
+<meta property="og:image" content="https://i.imgur.com/tzGso3d.png">
+<meta property="og:image" content="https://i.imgur.com/b6cxaJG.png">
+<meta property="og:image" content="https://i.imgur.com/FaOWCMG.png">
+<meta property="article:published_time" content="2019-11-17T08:30:00.000Z">
+<meta property="article:modified_time" content="2019-11-17T08:30:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Physics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/Hif4O3o.png">
+
   
   
   <title>用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機 | PE工具箱</title>

@@ -6,7 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="因為專案需求，我需要用 Unity 在 runtime 生成一個 particle system ，並且一些 curve 參數的曲線需要套用 easing function 的曲線。" />
+  <meta name="description" content="前言 因為專案需求，我需要用 Unity 在 runtime 生成一個 particle system ，並且一些 curve 參數的曲線需要套用 easing function 的曲線。 而 Unity 的曲線一律都是 AnimationCurve ，但 goo 了一下也沒找到有人做過 Easing AnimationCurve ，大概都只有硬拆 N 個 sample 點直接當 Animati">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity AnimationCurve with Easing Functions">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/2020/11/22/Unity-AnimationCurve-with-Easing-Functions/index.html">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 因為專案需求，我需要用 Unity 在 runtime 生成一個 particle system ，並且一些 curve 參數的曲線需要套用 easing function 的曲線。 而 Unity 的曲線一律都是 AnimationCurve ，但 goo 了一下也沒找到有人做過 Easing AnimationCurve ，大概都只有硬拆 N 個 sample 點直接當 Animati">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bezier.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bezier_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/EaseInOutBounce.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/EaseInExpo.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/EaseInOutCubic.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/EaseInOutElastic.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/EasingAnimationCurve_overview.gif">
+<meta property="article:published_time" content="2020-11-21T20:57:00.000Z">
+<meta property="article:modified_time" content="2020-11-21T20:57:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Tool">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/bezier.png">
+
   
   
   <title>Unity AnimationCurve with Easing Functions | PE工具箱</title>

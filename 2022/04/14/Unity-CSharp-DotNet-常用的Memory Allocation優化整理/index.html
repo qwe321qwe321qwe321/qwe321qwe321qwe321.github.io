@@ -6,7 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="正式 full-time 開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成 Zero Allocation 的方式。" />
+  <meta name="description" content="前言 正式 full-time 開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成 Zero Allocation 的方式。  Zero Allocation Zero Allocation 嚴格定義是指不做任何 dynamic&#x2F;heap memory allocation，不過在 Unity&#x2F;C#.Net 這裡我會比較喜歡解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity&#x2F;C#.Net 常用的 Memory Allocation 優化整理">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/2022/04/14/Unity-CSharp-DotNet-%E5%B8%B8%E7%94%A8%E7%9A%84Memory%20Allocation%E5%84%AA%E5%8C%96%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 正式 full-time 開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成 Zero Allocation 的方式。  Zero Allocation Zero Allocation 嚴格定義是指不做任何 dynamic&#x2F;heap memory allocation，不過在 Unity&#x2F;C#.Net 這裡我會比較喜歡解">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/30u0Cpn.png">
+<meta property="og:image" content="https://i.imgur.com/cfEUXdD.png">
+<meta property="og:image" content="https://i.imgur.com/fwjzPmY.png">
+<meta property="og:image" content="https://i.imgur.com/abyczvK.png">
+<meta property="og:image" content="https://i.imgur.com/VblsShi.png">
+<meta property="og:image" content="https://i.imgur.com/IBIn6oo.png">
+<meta property="og:image" content="https://i.imgur.com/AlYuR6u.png">
+<meta property="og:image" content="https://i.imgur.com/2kJ1FDC.png">
+<meta property="og:image" content="https://i.imgur.com/OqvAdxp.png">
+<meta property="article:published_time" content="2022-04-13T23:24:00.000Z">
+<meta property="article:modified_time" content="2022-04-13T23:24:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/30u0Cpn.png">
+
   
   
   <title>Unity/C#.Net 常用的 Memory Allocation 優化整理 | PE工具箱</title>
