@@ -151,7 +151,7 @@ MathJax = {
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>正式 full-tim e開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成Zero Allocation 的方式。</p>
+<p>正式 full-time 開發目前這個 2D 遊戲專案前後也有快 2 年半左右，前前後後時常在優化性能，這篇文想單純整理一下我優化記憶體來盡量達成 Zero Allocation 的方式。</p>
 <h1 id="zero-allocation"><a class="markdownIt-Anchor" href="#zero-allocation"></a> Zero Allocation</h1>
 <p>Zero Allocation 嚴格定義是指不做任何 dynamic/heap memory allocation，不過在 Unity/C#.Net 這裡我會比較喜歡解釋成「不做任何重複的heap allocation」，所以使用 object pooling 時第一次必要的 allocation 可以被接受，之後要二次使用時會從 pool 中拿回之前使用過的 memory 以避免第二次 allocate。</p>
 <h1 id="why"><a class="markdownIt-Anchor" href="#why"></a> Why?</h1>
