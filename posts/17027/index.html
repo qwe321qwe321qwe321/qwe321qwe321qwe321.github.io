@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-tw" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="Game,Unity,Programming" />
+  <meta name="author" content="PeDev" />
+  <meta name="description" content="​The purpose of this post is to show the latest case studies based on Scroll Back: The Theory and Practice of Cameras in Side-Scrollers in GDC2015. Here is the article: English 本文目的是延續一個在GDC2015的議程Scr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="More Examples for Practice of Cameras in Side-Scrollers (2D Platformer)">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/17027/">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="​The purpose of this post is to show the latest case studies based on Scroll Back: The Theory and Practice of Cameras in Side-Scrollers in GDC2015. Here is the article: English 本文目的是延續一個在GDC2015的議程Scr">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/4pzimXm.gif">
+<meta property="og:image" content="https://imgur.com/h4soFCD.gif">
+<meta property="og:image" content="https://imgur.com/yiTfP6l.gif">
+<meta property="og:image" content="https://imgur.com/raz0JIn.gif">
+<meta property="og:image" content="https://imgur.com/mMkwSTQ.gif">
+<meta property="og:image" content="https://imgur.com/ysQXv2T.gif">
+<meta property="og:image" content="https://imgur.com/ZdVNgL6.gif">
+<meta property="og:image" content="https://imgur.com/fOTNQh1.gif">
+<meta property="og:image" content="https://imgur.com/27HTHKK.gif">
+<meta property="og:image" content="https://imgur.com/jZcc1uX.gif">
+<meta property="og:image" content="https://imgur.com/mmBhSSG.gif">
+<meta property="og:image" content="https://imgur.com/fE1ZzP8.gif">
+<meta property="og:image" content="https://imgur.com/Jj6HiOy.gif">
+<meta property="og:image" content="https://imgur.com/WghtRBz.gif">
+<meta property="article:published_time" content="2019-11-13T09:10:00.000Z">
+<meta property="article:modified_time" content="2019-11-13T09:10:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Game Design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/4pzimXm.gif">
+<meta name="twitter:site" content="@qwe321qwe321qwe321">
+
+  
+  
+  <title>More Examples for Practice of Cameras in Side-Scrollers (2D Platformer) | PE工具箱</title>
+
+  
+    <link rel="apple-touch-icon" href="/melody-favicon.ico">
+    <link rel="icon" href="/melody-favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/video-container.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="/js/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/profile/avatar.gif" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">PeDev</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/portfolio/">
+          <a href="/portfolio/">Portfolio</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">More Examples for Practice of Cameras in Side-Scrollers (2D Platformer)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2019-11-13 17:10:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Game-Design/" title="Game Design">
+                    <b>#</b> Game Design
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>​The purpose of this post is to show the latest case studies based on <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a> in GDC2015.<br />
+Here is the article: <a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1iNSQIyNpVGHeak6isbP6AHdHD50gs8MNXF1GCf08efg/pub?embedded=true#h.kskmkvkk89rz">English</a></p>
+<p>本文目的是延續一個在GDC2015的議程<a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a>的個案研究，以近幾年的橫板平台遊戲的攝影機行為為例。<br />
+這裡有Johnson大的翻譯文章可以參考: <a target="_blank" rel="noopener" href="https://igdshare.org/content/gdc2015-2d-scrolling-itay-keren">中文</a></p>
+<p><em>Warning: High Data Usage by GIFs</em><br />
+<em>高流量警告: 下文有大量GIF圖</em></p>
+<span id="more"></span>
+<h1 id="sampling-method"><a class="markdownIt-Anchor" href="#sampling-method"></a> Sampling Method</h1>
+<p>The tool for recording and drawing: <a target="_blank" rel="noopener" href="https://github.com/NickeManarin/ScreenToGif/releases">ScreenToGif</a> - an open-source and lightweight software.</p>
+<p>我們並沒有精準地測量準確的位置與範圍，因為目的僅分析相機的行為模式，不研究實際數值上的變化。<br />
+We only care about the behavior of the camera instead of the changed value of the camera position. Therefore, we didn’t measure precisely, the lines and ranges are just sketched by intuition instead.</p>
+<h1 id="case-studies-in-recent-years"><a class="markdownIt-Anchor" href="#case-studies-in-recent-years"></a> Case Studies in recent years</h1>
+<p>目前只考慮<strong>一般左右移動</strong>的攝影機行為，<strong>不考慮</strong>特定焦點、鎖敵、多重目標情形下的攝影機行為。<br />
+因此，有鼠標、游標、瞄準方向等會影響攝影機行為的遊戲也先<strong>不考慮</strong>。<br />
+For now, we <strong>only care</strong> about <strong>the horizontal movement</strong> of cameras and <strong>don’t care</strong> about the special camera behavior, such as focusing on the enemy, multiple targets, or a special target.<br />
+Therefore, there is <strong>no game</strong> which has a cursor, aiming arrow or aiming symbol that may affect their camera</p>
+<h2 id="celeste"><a class="markdownIt-Anchor" href="#celeste"></a> Celeste</h2>
+<p><img src="https://i.imgur.com/4pzimXm.gif" alt="" /></p>
+<h2 id="dead-cells"><a class="markdownIt-Anchor" href="#dead-cells"></a> Dead Cells</h2>
+<p><img src="https://imgur.com/h4soFCD.gif" alt="" /></p>
+<h2 id="deaths-gambit"><a class="markdownIt-Anchor" href="#deaths-gambit"></a> Death’s Gambit</h2>
+<p><img src="https://imgur.com/yiTfP6l.gif" alt="" /></p>
+<h2 id="dungeon-muchines"><a class="markdownIt-Anchor" href="#dungeon-muchines"></a> Dungeon Muchines</h2>
+<p><img src="https://imgur.com/raz0JIn.gif" alt="" /></p>
+<h2 id="hollow-knight"><a class="markdownIt-Anchor" href="#hollow-knight"></a> Hollow Knight</h2>
+<p><img src="https://imgur.com/mMkwSTQ.gif" alt="" /></p>
+<h2 id="limbo"><a class="markdownIt-Anchor" href="#limbo"></a> Limbo</h2>
+<p><img src="https://imgur.com/ysQXv2T.gif" alt="" /></p>
+<h2 id="momodora"><a class="markdownIt-Anchor" href="#momodora"></a> Momodora</h2>
+<p><img src="https://imgur.com/ZdVNgL6.gif" alt="" /></p>
+<h2 id="ori-and-the-blind-foreset"><a class="markdownIt-Anchor" href="#ori-and-the-blind-foreset"></a> Ori and the Blind Foreset</h2>
+<p><img src="https://imgur.com/fOTNQh1.gif" alt="" /></p>
+<h2 id="sundered"><a class="markdownIt-Anchor" href="#sundered"></a> Sundered</h2>
+<p><img src="https://imgur.com/27HTHKK.gif" alt="" /></p>
+<h2 id="tonhou-luna-night"><a class="markdownIt-Anchor" href="#tonhou-luna-night"></a> Tonhou Luna Night</h2>
+<p><img src="https://imgur.com/jZcc1uX.gif" alt="" /></p>
+<h2 id="rabi-ribi"><a class="markdownIt-Anchor" href="#rabi-ribi"></a> Rabi-Ribi</h2>
+<p><img src="https://imgur.com/mmBhSSG.gif" alt="" /></p>
+<h2 id="broforce"><a class="markdownIt-Anchor" href="#broforce"></a> Broforce</h2>
+<p><img src="https://imgur.com/fE1ZzP8.gif" alt="" /></p>
+<h2 id="terraria"><a class="markdownIt-Anchor" href="#terraria"></a> Terraria</h2>
+<p><img src="https://imgur.com/Jj6HiOy.gif" alt="" /></p>
+<h2 id="starbound"><a class="markdownIt-Anchor" href="#starbound"></a> Starbound</h2>
+<p><img src="https://imgur.com/WghtRBz.gif" alt="" /></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2019-11-13 17:10:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Game-Design/" title="Game Design">
+                        <b>#</b> Game Design
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/posts/44801/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sampling-method"><span class="toc-text"> Sampling Method</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#case-studies-in-recent-years"><span class="toc-text"> Case Studies in recent years</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#celeste"><span class="toc-text"> Celeste</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dead-cells"><span class="toc-text"> Dead Cells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deaths-gambit"><span class="toc-text"> Death’s Gambit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dungeon-muchines"><span class="toc-text"> Dungeon Muchines</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hollow-knight"><span class="toc-text"> Hollow Knight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#momodora"><span class="toc-text"> Momodora</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ori-and-the-blind-foreset"><span class="toc-text"> Ori and the Blind Foreset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sundered"><span class="toc-text"> Sundered</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tonhou-luna-night"><span class="toc-text"> Tonhou Luna Night</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rabi-ribi"><span class="toc-text"> Rabi-Ribi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#broforce"><span class="toc-text"> Broforce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#terraria"><span class="toc-text"> Terraria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#starbound"><span class="toc-text"> Starbound</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://pedevmakesgame.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+  
+
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2023 PeDev</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + More%20Examples%20for%20Practice%20of%20Cameras%20in%20Side-Scrollers%20(2D%20Platformer) + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F17027%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/posts/17027/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

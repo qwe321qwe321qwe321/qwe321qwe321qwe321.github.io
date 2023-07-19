@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-tw" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="Game,Unity,Programming" />
+  <meta name="author" content="PeDev" />
+  <meta name="description" content="前言 這篇接續上一篇 CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 後面所提及的容量限制問題。 上次說過，依照原本的方法大概build不用10次，Github容量就會爆了。 於是大概在第7次的時候就會收到這種信:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/5378/">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 這篇接續上一篇 CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案 後面所提及的容量限制問題。 上次說過，依照原本的方法大概build不用10次，Github容量就會爆了。 於是大概在第7次的時候就會收到這種信:">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit_notification.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_list_artifacts_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_list_artifacts_2.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/github_api_artifacts_2.png">
+<meta property="article:published_time" content="2020-02-26T17:23:00.000Z">
+<meta property="article:modified_time" content="2020-02-26T17:23:00.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/github_storage_limit.png">
+<meta name="twitter:site" content="@qwe321qwe321qwe321">
+
+  
+  
+  <title>Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts | PE工具箱</title>
+
+  
+    <link rel="apple-touch-icon" href="/melody-favicon.ico">
+    <link rel="icon" href="/melody-favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/video-container.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="/js/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/profile/avatar.gif" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">PeDev</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/portfolio/">
+          <a href="/portfolio/">Portfolio</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2020-02-27 01:23:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Unity/" title="Unity">
+                    <b>#</b> Unity
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Github/" title="Github">
+                    <b>#</b> Github
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/CI-CD/" title="CI/CD">
+                    <b>#</b> CI/CD
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p><img src="/images/github_storage_limit.png" alt="從0.8G以上的危機降到了0.26G" /></p>
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>這篇接續上一篇 <a href="/2020/02/26/CI-in-Unity-using-GithubAction/">CI in Unity using Github Actions 使用Github Actions自動化測試建置Unity專案</a> 後面所提及的容量限制問題。</p>
+<p>上次說過，依照原本的方法大概build不用10次，Github容量就會爆了。<br />
+於是大概在第7次的時候就會收到這種信:</p>
+<p><img src="/images/github_storage_limit_notification.png" alt="恭喜你即將用爆囉，請快點升級方案" /></p>
+<span id="more"></span>
+<p>我是收到了這封信的時候才驚覺原來github有容量限制，之前一直以為可以隨便我塞到飽，或許寫個接口還能當作雲端硬碟使用(?)</p>
+<p>總之收到這封信以後我才開始正視這個問題，好險是有找到解決方案，不然我絕對會放棄使用Github Actions作為重要專案的CI服務。</p>
+<p>我只是單純記錄解決的過程，文筆會有些雜亂且廢話居多。</p>
+<h1 id="目標"><a class="markdownIt-Anchor" href="#目標"></a> 目標</h1>
+<p>目標很簡單，需要可以自動刪除<strong>過期</strong>或<strong>多餘</strong>的artifacts的方法。</p>
+<p><strong>過期</strong>或<strong>多餘</strong>的定義也很單純，我只要保留<strong>前N個版本</strong>的執行檔/輸出檔，其餘就是多餘且過期的。</p>
+<h1 id="操作artifacts的api"><a class="markdownIt-Anchor" href="#操作artifacts的api"></a> 操作Artifacts的API</h1>
+<p>Github的REST API v3有提供這樣的API，參考<a target="_blank" rel="noopener" href="https://developer.github.com/v3/actions/artifacts/#delete-an-artifact">這裡</a>。</p>
+<ul>
+<li>List all artifact of the repo  <pre class="line-numbers language-none"><code class="language-none">GET &#x2F;repos&#x2F;:owner&#x2F;:repo&#x2F;actions&#x2F;artifacts<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>Delete specific artifact  <pre class="line-numbers language-none"><code class="language-none">DELETE &#x2F;repos&#x2F;:owner&#x2F;:repo&#x2F;actions&#x2F;artifacts&#x2F;:artifact_id<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<p>以我上次的專案為例，想取得所有artifacts的資訊可以直接連到</p>
+<p><a target="_blank" rel="noopener" href="https://api.github.com/repos/qwe321qwe321qwe321/Unity-with-Github-Actions-example/actions/artifacts">https://api.github.com/repos/qwe321qwe321qwe321/Unity-with-Github-Actions-example/actions/artifacts</a></p>
+<p>來查看。</p>
+<p><img src="/images/github_api_list_artifacts_1.png" alt="可以看到這裡有36個artifacts" /></p>
+<p>有了這些API就好解決了，可以寫個腳本來爬artifacts的資訊再進行刪除。</p>
+<h1 id="清除腳本"><a class="markdownIt-Anchor" href="#清除腳本"></a> 清除腳本</h1>
+<p>本來想自己寫，但結果不用。查到<a target="_blank" rel="noopener" href="https://github.community/t5/GitHub-Actions/Delete-artifacts/td-p/38188/page/3">這篇</a>發現有人已經寫好了！再次感謝 lelegard 這位仁兄。</p>
+<p>他的gist: <a target="_blank" rel="noopener" href="https://gist.github.com/lelegard/6a428f67ee08e86d0c2f1af3f4a633d0">https://gist.github.com/lelegard/6a428f67ee08e86d0c2f1af3f4a633d0</a></p>
+<p>使用前記得dependencies要裝一裝，主要就jq要另外裝而已，也就<code>apt-get install jq</code>解決。</p>
+<p>但是我用了一下發現一個小bug: 遇到名稱包含空白的artifact時<code>print</code>會噴錯，<br />
+於是就fork順便幫他改了一下，以下是<a target="_blank" rel="noopener" href="https://gist.github.com/qwe321qwe321qwe321/efae4569576006624c34f23b2dd76a58">修改後的版本</a>:</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/usr/bin/env bash</span>
+
+<span class="token comment"># Customize those three lines with your repository and credentials:</span>
+<span class="token assign-left variable">REPO</span><span class="token operator">=</span>https://api.github.com/repos/OWNER/REPO
+<span class="token assign-left variable">GITHUB_USER</span><span class="token operator">=</span>your-github-user-name
+<span class="token assign-left variable">GITHUB_TOKEN</span><span class="token operator">=</span>token-with-workflow-rights-on-repo <span class="token comment"># 這個token需要repo相關的權限</span>
+
+<span class="token comment"># Number of most recent versions to keep for each artifact:</span>
+<span class="token assign-left variable">KEEP</span><span class="token operator">=</span><span class="token number">5</span> <span class="token comment"># 保留的前N新的版本數量</span>
+
+<span class="token comment"># A shortcut to call GitHub API.</span>
+<span class="token function-name function">ghapi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token function">curl</span> --silent --location --user <span class="token variable">$GITHUB_USER</span><span class="token builtin class-name">:</span><span class="token variable">$GITHUB_TOKEN</span> <span class="token string">"<span class="token variable">$@</span>"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+<span class="token comment"># A temporary file which receives HTTP response headers.</span>
+<span class="token assign-left variable">TMPFILE</span><span class="token operator">=</span>/tmp/tmp.<span class="token variable">$$</span>
+
+<span class="token comment"># An associative array, key: artifact name, value: number of artifacts of that name.</span>
+<span class="token builtin class-name">declare</span> -A ARTCOUNT
+
+<span class="token comment"># Process all artifacts on this repository, loop on returned "pages".</span>
+<span class="token assign-left variable">URL</span><span class="token operator">=</span><span class="token variable">$REPO</span>/actions/artifacts
+<span class="token keyword">while</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> -n <span class="token string">"<span class="token variable">$URL</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+
+    <span class="token comment"># Get current page, get response headers in a temporary file.</span>
+    <span class="token assign-left variable">JSON</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>ghapi --dump-header $TMPFILE <span class="token string">"<span class="token variable">$URL</span>"</span><span class="token variable">)</span></span>
+
+    <span class="token comment"># Get URL of next page. Will be empty if we are at the last page.</span>
+    <span class="token assign-left variable">URL</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">grep</span> <span class="token string">'^Link:'</span> <span class="token string">"<span class="token variable">$TMPFILE</span>"</span> <span class="token operator">|</span> <span class="token function">tr</span> <span class="token string">','</span> <span class="token string">'\n'</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'rel="next"'</span> <span class="token operator">|</span> <span class="token function">head</span> -1 <span class="token operator">|</span> <span class="token function">sed</span> -e <span class="token string">'s/.*&lt;//'</span> -e <span class="token string">'s/>.*//'</span><span class="token variable">)</span></span>
+    <span class="token function">rm</span> -f <span class="token variable">$TMPFILE</span>
+
+    <span class="token comment"># Number of artifacts on this page:</span>
+    <span class="token assign-left variable">COUNT</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">(</span>jq <span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span>$JSON <span class="token operator">-</span>r '.artifacts <span class="token operator">|</span> length'<span class="token punctuation">)</span> <span class="token variable">))</span></span> <span class="token comment"># 這裡是取得artifact的數量</span>
+
+    <span class="token comment"># Loop on all artifacts on this page.</span>
+    <span class="token keyword">for</span> <span class="token variable"><span class="token punctuation">((</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> $i <span class="token operator">&lt;</span> $COUNT<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">))</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+		
+        <span class="token comment"># Get name of artifact and count instances of this name.</span>
+        <span class="token assign-left variable">name</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>jq <span class="token operator">&lt;&lt;&lt;</span>$JSON -r <span class="token string">".artifacts[<span class="token variable">$i</span>].name?"</span><span class="token variable">)</span></span> <span class="token comment"># 這裡是取得第i個artifact的名稱</span>
+        ARTCOUNT<span class="token punctuation">[</span><span class="token variable">$name</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">((</span> $&#123;ARTCOUNT[$name]&#125; <span class="token variable">))</span></span> + <span class="token number">1</span><span class="token punctuation">))</span> <span class="token comment"># 以名稱為key，儲存目前有多少個相同名稱的artifacts</span>
+		<span class="token comment">#printf "#%d %s - %d\n" $i "$name" $&#123;ARTCOUNT[$name]&#125;</span>
+        <span class="token comment"># Check if we must delete this one.</span>
+        <span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token variable">$&#123;ARTCOUNT<span class="token punctuation">[</span>$name<span class="token punctuation">]</span>&#125;</span> -gt <span class="token variable">$KEEP</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span> <span class="token comment">#若超過$KEEP的量則刪除</span>
+            <span class="token assign-left variable">id</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>jq <span class="token operator">&lt;&lt;&lt;</span>$JSON -r <span class="token string">".artifacts[<span class="token variable">$i</span>].id?"</span><span class="token variable">)</span></span> <span class="token comment"># 取得id以便得到url</span>
+            <span class="token assign-left variable">size</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">(</span>jq <span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span>$JSON <span class="token operator">-</span>r ".artifacts[$i].size_in_bytes<span class="token operator">?</span>"<span class="token punctuation">)</span> <span class="token variable">))</span></span>
+            <span class="token builtin class-name">printf</span> <span class="token string">"Deleting %s #%d, %d bytes<span class="token entity" title="\n">\n</span>"</span> <span class="token string">"<span class="token variable">$name</span>"</span> <span class="token variable">$&#123;ARTCOUNT<span class="token punctuation">[</span>$name<span class="token punctuation">]</span>&#125;</span> <span class="token variable">$size</span>
+            ghapi -X DELETE <span class="token variable">$REPO</span>/actions/artifacts/<span class="token variable">$id</span> <span class="token comment"># DELETE API</span>
+        <span class="token keyword">fi</span>
+    <span class="token keyword">done</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>參數設定好後直接運行即可清除多餘的Artifacts。</p>
+<p>注意DELETE API需要額外的存取repo權限，所以需要去申請一個personal access token，或是直接用上一篇發送<code>repository_dispath</code>用的那組token也行。</p>
+<h1 id="整合github-actions"><a class="markdownIt-Anchor" href="#整合github-actions"></a> 整合Github Actions</h1>
+<p>有了腳本以後，再來就需要把腳本整合到Action內，最好是在完成上傳artifact以後執行清除腳本。</p>
+<h2 id="將token加入secrets"><a class="markdownIt-Anchor" href="#將token加入secrets"></a> <s>將Token加入Secrets</s></h2>
+<p>因為我們不希望直接明碼保存personal token在repo裡，加上github也不會讓你這麼做(當你上傳token明碼時會自動撤銷該token)。</p>
+<p><s>所以我們需要把token放到repo的secrets中，之後再從action config裡傳入shell script。</s></p>
+<p><em>(2020/03/01更新)</em> 不需要手動做這個步驟，Github會自動產生「該repo的讀寫相關權限之token」在Secrets中命名為<code>GITHUB_TOKEN</code>(雖然你從web上看不到)，詳細請參考這篇<a target="_blank" rel="noopener" href="https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token">官方文件</a>。</p>
+<h2 id="shell-script"><a class="markdownIt-Anchor" href="#shell-script"></a> Shell Script</h2>
+<p>再次修改剛剛上面提供的腳本，由於我希望參數化都在action的config檔裡面處理就好，而這個腳本不要帶有任何參數，所以修改一下腳本，如下。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/usr/bin/env bash</span>
+
+<span class="token comment"># Customize those three lines with your repository and credentials:</span>
+<span class="token comment"># Split the string "username/repo" into two parts.</span>
+<span class="token assign-left variable">GITHUB_USER</span><span class="token operator">=</span><span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">'/'</span> -f1 <span class="token operator">&lt;&lt;&lt;</span> $OWNER_AND_REPO<span class="token variable">)</span></span>"</span>
+<span class="token assign-left variable">GITHUB_REPO</span><span class="token operator">=</span><span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">'/'</span> -f2 <span class="token operator">&lt;&lt;&lt;</span> $OWNER_AND_REPO<span class="token variable">)</span></span>"</span>
+<span class="token assign-left variable">GITHUB_TOKEN</span><span class="token operator">=</span><span class="token variable">$PERSONAL_TOKEN</span>
+<span class="token assign-left variable">REPO</span><span class="token operator">=</span>https://api.github.com/repos/<span class="token variable">$GITHUB_USER</span>/<span class="token variable">$GITHUB_REPO</span>
+
+<span class="token comment"># Number of most recent versions to keep for each artifact:</span>
+<span class="token assign-left variable">KEEP</span><span class="token operator">=</span><span class="token variable">$KEEPING_COUNT</span>
+
+<span class="token builtin class-name">echo</span> <span class="token environment constant">USER</span><span class="token builtin class-name">:</span> <span class="token variable">$GITHUB_USER</span>
+<span class="token builtin class-name">echo</span> REPO: <span class="token variable">$GITHUB_REPO</span>
+<span class="token builtin class-name">echo</span> Keep: <span class="token variable">$KEEP</span>
+
+<span class="token comment"># A shortcut to call GitHub API.</span>
+<span class="token function-name function">ghapi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token function">curl</span> --silent --location --user <span class="token variable">$GITHUB_USER</span><span class="token builtin class-name">:</span><span class="token variable">$GITHUB_TOKEN</span> <span class="token string">"<span class="token variable">$@</span>"</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+<span class="token comment"># A temporary file which receives HTTP response headers.</span>
+<span class="token assign-left variable">TMPFILE</span><span class="token operator">=</span>/tmp/tmp.<span class="token variable">$$</span>
+
+<span class="token comment"># An associative array, key: artifact name, value: number of artifacts of that name.</span>
+<span class="token builtin class-name">declare</span> -A ARTCOUNT
+
+<span class="token comment"># Process all artifacts on this repository, loop on returned "pages".</span>
+<span class="token assign-left variable">URL</span><span class="token operator">=</span><span class="token variable">$REPO</span>/actions/artifacts
+<span class="token keyword">while</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> -n <span class="token string">"<span class="token variable">$URL</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+
+    <span class="token comment"># Get current page, get response headers in a temporary file.</span>
+    <span class="token assign-left variable">JSON</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>ghapi --dump-header $TMPFILE <span class="token string">"<span class="token variable">$URL</span>"</span><span class="token variable">)</span></span>
+
+    <span class="token comment"># Get URL of next page. Will be empty if we are at the last page.</span>
+    <span class="token assign-left variable">URL</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">grep</span> <span class="token string">'^Link:'</span> <span class="token string">"<span class="token variable">$TMPFILE</span>"</span> <span class="token operator">|</span> <span class="token function">tr</span> <span class="token string">','</span> <span class="token string">'\n'</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'rel="next"'</span> <span class="token operator">|</span> <span class="token function">head</span> -1 <span class="token operator">|</span> <span class="token function">sed</span> -e <span class="token string">'s/.*&lt;//'</span> -e <span class="token string">'s/>.*//'</span><span class="token variable">)</span></span>
+    <span class="token function">rm</span> -f <span class="token variable">$TMPFILE</span>
+
+    <span class="token comment"># Number of artifacts on this page:</span>
+    <span class="token assign-left variable">COUNT</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">(</span>jq <span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span>$JSON <span class="token operator">-</span>r '.artifacts <span class="token operator">|</span> length'<span class="token punctuation">)</span> <span class="token variable">))</span></span>
+	
+	<span class="token builtin class-name">echo</span> There are <span class="token variable">$COUNT</span> artifacts <span class="token keyword">in</span> <span class="token variable">$OWNER_AND_REPO</span>
+
+    <span class="token comment"># Loop on all artifacts on this page.</span>
+    <span class="token keyword">for</span> <span class="token variable"><span class="token punctuation">((</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> $i <span class="token operator">&lt;</span> $COUNT<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">))</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+		
+        <span class="token comment"># Get name of artifact and count instances of this name.</span>
+        <span class="token assign-left variable">name</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>jq <span class="token operator">&lt;&lt;&lt;</span>$JSON -r <span class="token string">".artifacts[<span class="token variable">$i</span>].name?"</span><span class="token variable">)</span></span>
+        ARTCOUNT<span class="token punctuation">[</span><span class="token variable">$name</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">((</span> $&#123;ARTCOUNT[$name]&#125; <span class="token variable">))</span></span> + <span class="token number">1</span><span class="token punctuation">))</span>
+		<span class="token comment">#printf "#%d %s - %d\n" $i "$name" $&#123;ARTCOUNT[$name]&#125;</span>
+        <span class="token comment"># Check if we must delete this one.</span>
+        <span class="token keyword">if</span> <span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token variable">$&#123;ARTCOUNT<span class="token punctuation">[</span>$name<span class="token punctuation">]</span>&#125;</span> -gt <span class="token variable">$KEEP</span> <span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+            <span class="token assign-left variable">id</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span>jq <span class="token operator">&lt;&lt;&lt;</span>$JSON -r <span class="token string">".artifacts[<span class="token variable">$i</span>].id?"</span><span class="token variable">)</span></span>
+            <span class="token assign-left variable">size</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span> $<span class="token punctuation">(</span>jq <span class="token operator">&lt;&lt;</span><span class="token operator">&lt;</span>$JSON <span class="token operator">-</span>r ".artifacts[$i].size_in_bytes<span class="token operator">?</span>"<span class="token punctuation">)</span> <span class="token variable">))</span></span>
+            <span class="token builtin class-name">printf</span> <span class="token string">"Deleting %s #%d, %d bytes<span class="token entity" title="\n">\n</span>"</span> <span class="token string">"<span class="token variable">$name</span>"</span> <span class="token variable">$&#123;ARTCOUNT<span class="token punctuation">[</span>$name<span class="token punctuation">]</span>&#125;</span> <span class="token variable">$size</span>
+            ghapi -X DELETE <span class="token variable">$REPO</span>/actions/artifacts/<span class="token variable">$id</span>
+        <span class="token keyword">fi</span>
+    <span class="token keyword">done</span>
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第5、6行是字串切割，把&quot;owner/repo&quot;的字串切成owner和repo兩個，從<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/312280/split-string-by-delimiter-and-get-n-th-element">這篇</a>找到如何在shell切割字串。之所以要這樣搞是因為action config那邊只能取得&quot;owner/repo&quot;這樣的字串資料。</p>
+<p>有了這個腳本後，我把它放到<code>.github/workflows/purging-artifacts.sh</code>，因為它只跟actions有依賴關係，我不希望它出現在我的repo首頁或其他地方。</p>
+<h2 id="action-configyaml"><a class="markdownIt-Anchor" href="#action-configyaml"></a> Action Config(YAML)</h2>
+<p>多做一個job如下。</p>
+<pre class="line-numbers language-YAML" data-language="YAML"><code class="language-YAML">purgeArtifacts: # 清除多餘的artifacts
+  needs: [testAllModes] # 等到全部人跑完以後
+  name: Purging the redundant artifacts.
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions&#x2F;checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
+      with:
+        lfs: true # 要不要下載git-lfs檔，即大型檔案。
+    - name: Purging the redundant artifacts.
+      run: | # 這個|符號表示多行輸入
+        chmod +x .&#x2F;.github&#x2F;workflows&#x2F;purging-artifacts.sh # 改執行權限
+        .&#x2F;.github&#x2F;workflows&#x2F;purging-artifacts.sh # 跑寫好的shell
+      env: 
+        PERSONAL_TOKEN: $&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125; # 將GITHUB_TOKEN設定為環境變數
+        KEEPING_COUNT: 1 # 保存前N新的artifacts 
+        OWNER_AND_REPO: $&#123;&#123; github.repository &#125;&#125; # The string combine owner and repository. For example, Codertocat&#x2F;Hello-World.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我把這段放在Tester.yml的testAllMode之後，詳情請看<a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-with-Github-Actions-example/blob/642df53a38470afccf50d266f798c5575b0e866c/.github/workflows/tester.yml#L41">原始碼</a> (←但是注意這是舊版的原始碼，我還手動塞了個<code>PERSONAL_TOKEN</code>到Secrets裡面，實際上可以直接用<code>GITHUB_TOKEN</code>)。</p>
+<h2 id="先看看成果"><a class="markdownIt-Anchor" href="#先看看成果"></a> 先看看成果</h2>
+<p>把剛剛修改的成果push到一個新分支(branch)，只讓它觸發tester事件。</p>
+<p>之後我們再看一次artifacts列表:</p>
+<p><img src="/images/github_api_list_artifacts_2.png" alt="只剩8個artifacts" /></p>
+<p>分別是:</p>
+<ul>
+<li>Test results for playmode</li>
+<li>Test results for editmode</li>
+<li>StandaloneWindows64 Build</li>
+<li>StandaloneOSX Build</li>
+<li>StandaloneLinux64 Build</li>
+<li>Unity_v2018.4.13f1.alf</li>
+</ul>
+<p>蛤？明明只有6個。</p>
+<p>其實是Test result都各多了一個，這不算是我預期的結果。猜想應該是當下runner那次的結果還沒更新到artifacts list上，所以purging的時候還沒有它們，因此才會多出來一組。</p>
+<p>這樣的話也算好解決，目前想到兩個方法:</p>
+<ol>
+<li>多傳個當前runner生成的artifact名稱傳給purging script檢測，將該名稱的數量額外減1。</li>
+<li>把purging的步驟移至單獨一個action，該action必須檢測其它所有actions都跑完了才執行。</li>
+</ol>
+<p>第2個應該比較好，因為purging畢竟是全部檢查全部清掃的script，理論上test+build之後只要最後運行一次就好了，這樣也不用跑好幾次沒意義的步驟了。</p>
+<p><s>但是，目前先不花時間測試這些方法，現在這樣已經解決1G容量限制的大麻煩了。</s></p>
+<p>我選擇第2個方法來修正這個問題。</p>
+<h2 id="添加purging-action"><a class="markdownIt-Anchor" href="#添加purging-action"></a> 添加Purging Action</h2>
+<p>我在Github上找到了 <a target="_blank" rel="noopener" href="https://github.com/WyriHaximus/github-action-wait-for-status">github-action-wait-for-status</a>，它可以等待其它Actions跑完後取得status(success/failure)才繼續執行下一個step，這樣我就可以利用這個方法做Purging Artifacts。</p>
+<p><em>但是它目前release版本只有0.1.0且star不多，感覺還不是很穩定，斟酌使用</em></p>
+<ol>
+<li>把原本的Tester.yml改回原樣。</li>
+<li>添加新的config至<code>.github/workflows/purging-artifacts.yml</code>，內容如下: <pre class="line-numbers language-YAML" data-language="YAML"><code class="language-YAML">name: Auto Purging Artifacts
+on: 
+      push: &#123; &#125; # 任意push觸發(配合Tester用)
+      pull_request: &#123; branches: [master] &#125; # 僅在pull request to master時觸發(配合Builder使用)
+   jobs:
+  autoPurge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: &#39;Wait for status checks&#39;
+        id: waitforstatuschecks
+        uses: &quot;WyriHaximus&#x2F;github-action-wait-for-status@0.1.0&quot;
+        with:
+              ignoreActions: autoPurge # 略過檢查自己
+              checkInterval: 13 # 每13秒檢查一次
+            env:
+          GITHUB_TOKEN: &quot;$&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125;&quot;
+      - uses: actions&#x2F;checkout@v2 # checkout方法用來clone本專案(repo)到裝置內。
+      - name: Purging the redundant artifacts.
+        run: | # 這個|符號表示多行輸入
+          chmod +x .&#x2F;.github&#x2F;workflows&#x2F;purging-artifacts.sh # 改執行權限
+          .&#x2F;.github&#x2F;workflows&#x2F;purging-artifacts.sh # 跑寫好的shell
+        env: 
+          PERSONAL_TOKEN: $&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125; # 將GITHUB_TOKEN設定為環境變數
+          KEEPING_COUNT: 1 # 保存前N新的artifacts 
+          OWNER_AND_REPO: $&#123;&#123; github.repository &#125;&#125; # The string combine owner and repository. For example, Codertocat&#x2F;Hello-World.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>完成，commit並push上去。</li>
+</ol>
+<h1 id="成果"><a class="markdownIt-Anchor" href="#成果"></a> 成果</h1>
+<p>等跑完action後，再打開一次artifacts列表。</p>
+<p><img src="/images/github_api_artifacts_2.png" alt="剩6個了" /></p>
+<p>這樣就正確無誤了，同名的artifacts只保留最新的一份。</p>
+<p>這樣應該算是成功透過<strong>保留最少的檔案</strong>來避免塞爆1G容量限制了。</p>
+<h1 id="專案網址"><a class="markdownIt-Anchor" href="#專案網址"></a> 專案網址</h1>
+<p>Github: <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-with-Github-Actions-example/tree/purging-artifacts">https://github.com/qwe321qwe321qwe321/Unity-with-Github-Actions-example/tree/purging-artifacts</a></p>
+<h1 id="參考網站"><a class="markdownIt-Anchor" href="#參考網站"></a> 參考網站</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.community/t5/GitHub-Actions/Delete-artifacts/td-p/38188">https://github.community/t5/GitHub-Actions/Delete-artifacts/td-p/38188</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.github.com/v3/actions/artifacts/#delete-an-artifact">https://developer.github.com/v3/actions/artifacts/#delete-an-artifact</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/lelegard/6a428f67ee08e86d0c2f1af3f4a633d0">https://gist.github.com/lelegard/6a428f67ee08e86d0c2f1af3f4a633d0</a></li>
+<li><a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/312280/split-string-by-delimiter-and-get-n-th-element">https://unix.stackexchange.com/questions/312280/split-string-by-delimiter-and-get-n-th-element</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/posts/31900/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2020-02-27 01:23:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Unity/" title="Unity">
+                        <b>#</b> Unity
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Github/" title="Github">
+                        <b>#</b> Github
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/CI-CD/" title="CI/CD">
+                        <b>#</b> CI/CD
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/posts/27130/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A8%99"><span class="toc-text"> 目標</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9Cartifacts%E7%9A%84api"><span class="toc-text"> 操作Artifacts的API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E8%85%B3%E6%9C%AC"><span class="toc-text"> 清除腳本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E5%90%88github-actions"><span class="toc-text"> 整合Github Actions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%87token%E5%8A%A0%E5%85%A5secrets"><span class="toc-text"> 將Token加入Secrets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell-script"><span class="toc-text"> Shell Script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#action-configyaml"><span class="toc-text"> Action Config(YAML)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E7%9C%8B%E7%9C%8B%E6%88%90%E6%9E%9C"><span class="toc-text"> 先看看成果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0purging-action"><span class="toc-text"> 添加Purging Action</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%90%E6%9E%9C"><span class="toc-text"> 成果</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%88%E6%A1%88%E7%B6%B2%E5%9D%80"><span class="toc-text"> 專案網址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E7%B6%B2%E7%AB%99"><span class="toc-text"> 參考網站</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://pedevmakesgame.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+  
+
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2023 PeDev</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Solve%20the%20problem%20of%20the%20redundant%20artifacts%20in%20Github%20Actions%20%E6%B8%85%E9%99%A4%20Github%20Actions%20%E4%B8%AD%E5%A4%9A%E9%A4%98%E7%9A%84%20Artifacts + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F5378%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/posts/5378/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
