@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh-tw" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="Game,Unity,Programming" />
+  <meta name="author" content="PeDev" />
+  <meta name="description" content="前言 這是第一篇《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的角色控制開始說明好了。 這大概也是從開案初期直到最近幾個月都還有持續調整的一個系統，非常有可能在我寫完這篇文章以後又有功能大幅修改。  這篇文章純討論角色控制、角色物理，不會包含「角色動畫」、「攝影機」等等其他功能。   只是個 2D 遊戲的角色控制是能有多複雜？ 先上一張圖：  這是 Bionic Bay 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Character Controller for 2D Platformer (1&#x2F;n)">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/61013/">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 這是第一篇《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的角色控制開始說明好了。 這大概也是從開案初期直到最近幾個月都還有持續調整的一個系統，非常有可能在我寫完這篇文章以後又有功能大幅修改。  這篇文章純討論角色控制、角色物理，不會包含「角色動畫」、「攝影機」等等其他功能。   只是個 2D 遊戲的角色控制是能有多複雜？ 先上一張圖：  這是 Bionic Bay 的">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/01.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_2.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000611.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000715.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000735.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000803.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T002243.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T002341.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_var_1.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004744.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004033.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011340.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011614.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T012508.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T012835.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T013515.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T015404.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T020231.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T021324.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T022237.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif">
+<meta property="article:published_time" content="2023-07-22T09:54:57.898Z">
+<meta property="article:modified_time" content="2023-07-22T09:54:57.898Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Gamedev">
+<meta property="article:tag" content="Physics">
+<meta property="article:tag" content="Bionic Bay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/01.png">
+<meta name="twitter:site" content="@qwe321qwe321qwe321">
+
+  
+  
+  <title>Character Controller for 2D Platformer (1/n) | PE工具箱</title>
+
+  
+    <link rel="apple-touch-icon" href="/melody-favicon.ico">
+    <link rel="icon" href="/melody-favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/pedev-ext.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="/js/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/profile/avatar.gif" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">PeDev</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/portfolio/">
+          <a href="/portfolio/">Portfolio</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Character Controller for 2D Platformer (1/n)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2023-07-22 17:54:57
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Unity/" title="Unity">
+                    <b>#</b> Unity
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Gamedev/" title="Gamedev">
+                    <b>#</b> Gamedev
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Physics/" title="Physics">
+                    <b>#</b> Physics
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Bionic-Bay/" title="Bionic Bay">
+                    <b>#</b> Bionic Bay
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>這是第一篇《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的角色控制開始說明好了。<br />
+這大概也是從開案初期直到最近幾個月都還有持續調整的一個系統，非常有可能在我寫完這篇文章以後又有功能大幅修改。</p>
+<blockquote>
+<p>這篇文章純討論角色控制、角色物理，<strong>不會</strong>包含「角色動畫」、「攝影機」等等其他功能。</p>
+</blockquote>
+<h1 id="只是個-2d-遊戲的角色控制是能有多複雜"><a class="markdownIt-Anchor" href="#只是個-2d-遊戲的角色控制是能有多複雜"></a> 只是個 2D 遊戲的角色控制是能有多複雜？</h1>
+<p>先上一張圖：</p>
+<p><img src="/images/bb-001-character-controller/01.png" alt="" /></p>
+<p>這是 Bionic Bay 的<strong>主角物理控制器</strong>的腳本（不含外觀、動畫和 Input 管理）在 Inspector 的樣子。<br />
+各個 Module 對應單一功能，有些 Module 雖然實作了不過目前沒用上（沒打勾）。</p>
+<p>稍微摘要各個 Module 功能：</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hero Movement</td>
+<td>角色移動的核心模組（提供角色速度、旋轉、四方向的接觸狀態、移動函數、碰撞檢測）。</td>
+</tr>
+<tr>
+<td>Horizontal Movement</td>
+<td>控制角色水平方向（左右）的速度、加速度。</td>
+</tr>
+<tr>
+<td>Gravity</td>
+<td>控制角色承受的重力、垂直方向速度（不使用內建重力）。</td>
+</tr>
+<tr>
+<td>Jump</td>
+<td>控制普通跳躍的強度、高度。</td>
+</tr>
+<tr>
+<td>Jump Holding</td>
+<td>跳躍後如果未按住跳躍鍵會快速消耗目前上升速度。</td>
+</tr>
+<tr>
+<td>Wall Slide</td>
+<td>角色滑行於左右兩側的牆壁的功能。</td>
+</tr>
+<tr>
+<td>Wall Jump</td>
+<td>控制牆壁滑行狀態下的跳躍。</td>
+</tr>
+<tr>
+<td>Edge Climber</td>
+<td>（未實裝）這是學 Ori 的實作，人物靠近牆壁與地面轉角的時候如果有按住跳躍鍵則會自動上升推進一小段。</td>
+</tr>
+<tr>
+<td>Ground Connector</td>
+<td>使角色得以<strong>站立於任何物件之上並隨之移動</strong>的系統。</td>
+</tr>
+<tr>
+<td>Ledge Grab</td>
+<td>角色可以用手攀附住<strong>符合角度的任意物體邊緣</strong>的系統。</td>
+</tr>
+<tr>
+<td>Ledge Jump</td>
+<td>攀附狀態的跳躍。</td>
+</tr>
+<tr>
+<td>Crouch</td>
+<td>蹲下功能，包含爬行功能。</td>
+</tr>
+<tr>
+<td>Push</td>
+<td>以動態調整的力道<strong>推動任意動態物件</strong>的系統（實際上遊戲沒用到）。</td>
+</tr>
+<tr>
+<td>Slip</td>
+<td>在地面上滑行的功能（當站在過於顛頗的地面時觸發）。</td>
+</tr>
+<tr>
+<td>Slip Jump</td>
+<td>控制地面滑行的跳躍。</td>
+</tr>
+<tr>
+<td>Body Interpolator</td>
+<td>自行實作 Rigidbody.interpolation 的功能（因為一些理由不允許使用內建的）。</td>
+</tr>
+<tr>
+<td>Contact Colliders</td>
+<td>儲存當前與角色有碰撞的所有 Collider 列表。</td>
+</tr>
+<tr>
+<td>Dash</td>
+<td>角色突進翻滾的功能。</td>
+</tr>
+<tr>
+<td>Dash Holding</td>
+<td>（未實裝）若玩家沒有按住按鍵則會縮短翻滾距離的功能。</td>
+</tr>
+<tr>
+<td>Contraollable Dash</td>
+<td>玩家在翻滾過程中可以<strong>直接透過方向鍵調整突進距離</strong>的功能。</td>
+</tr>
+<tr>
+<td>Capsule Collider Resizer</td>
+<td>調整角色 Collider 大小的功能，用於蹲下、移動縮小 Collider。</td>
+</tr>
+<tr>
+<td>Preswap</td>
+<td>遊戲中的「標記」（或稱攻擊）動作。</td>
+</tr>
+<tr>
+<td>Ragdoll</td>
+<td>就 Ragdoll 功能，之後開一篇來講。</td>
+</tr>
+<tr>
+<td>Roll</td>
+<td>這是從 Dash 中再切出來的滾動狀態，主要是供 Bounce ray 等特殊情況下的滾動狀態使用。</td>
+</tr>
+</tbody>
+</table>
+<p>我也不打算把所有功能都展開來聊，這第一篇文章會先以一個（我認為）最基本的橫向卷軸跳躍遊戲應該要處理好的系統開始介紹 – 也就是「移動」和「跳躍」。</p>
+<p><em>因為我覺得一篇也寫不完整個 Bionic Bay 角色控制的所有功能，沒意外會分三篇以上。</em></p>
+<h1 id="移動與跳躍是能有多複雜"><a class="markdownIt-Anchor" href="#移動與跳躍是能有多複雜"></a> 移動與跳躍？是能有多複雜？</h1>
+<p>橫向卷軸遊戲是一個非常容易入門的類型，但非常可惜的是有太多案例是連最基本的這兩件事情都沒做好，不太確定到底是線上的教學參差不齊還是有什麼問題。<br />
+以前一些 know-how 的資源比較分散，不過自從 GMTK 做了這個 <a target="_blank" rel="noopener" href="https://gmtk.itch.io/platformer-toolkit">Platformer Toolkit</a> 之後我都直接推他。</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/zWi0jgghGcI" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<p><a target="_blank" rel="noopener" href="https://gmtk.itch.io/platformer-toolkit">https://gmtk.itch.io/platformer-toolkit</a><br />
+英文看的懂的話，<strong>強 烈 建 議 去 操 作 一 遍</strong>。<br />
+（然後建議下載 Standalone 執行檔，因為 WebGL 的版本閹割了一些東西）</p>
+<p>另外推薦一個很少看過有人分享的參考資料：<a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a>，是一篇 2015 年發表專門研究 2D 平台跳躍遊戲的跳躍和移動參數的論文，他本身就提及很多 know-how 了，然後嚴謹程度是從「定義參數」、「測量參數的方法」到「測量得出幾款經典遊戲的移動、跳躍參數」，都超爆幹詳細的那種，很值得讀。</p>
+<p>接下來我就借用一下這個 Toolkit 和那篇論文來介紹幾個重要知識點。</p>
+<h1 id="1-水平移動的速度參數"><a class="markdownIt-Anchor" href="#1-水平移動的速度參數"></a> 1. 水平移動的速度參數</h1>
+<p><img src="/images/bb-001-character-controller/horizontal_movement_1.png" alt="" /><br />
+最基本的東西，讓你的角色左右移動的時候會有比較順滑自然的感受，幾乎每一個橫向卷軸遊戲都會有自己一套參數組。</p>
+<p>我常用的參數跟 GMTK 一致，分別有：</p>
+<ul>
+<li>最高速度（Max Speed）：就可控制的上限速度。</li>
+<li>加速度（acceleration）： 在速度 0 到最高速度之間，方向鍵持續按住的情況下的加速度（每秒提升多少速度）。</li>
+<li>減速度（deceleration）： 在速度 0 到最高速度之間，放開方向鍵時的減速度（每秒降低多少速度）。</li>
+<li>轉向加速度（Turn Acceleration 或 Turn Speed）：當目前角色移動方向與輸入方向不同的時候的加速度。</li>
+</ul>
+<p>然後 GMTK 這裡在空中移動時的水平移動參數是用另一組，分別是 Air Acceleration 、 Air Control 、Air Brake。<br />
+這裡我不確定它們實際上的數值意義，我體感大致分別是「空中狀態的加速度」、「空中狀態的轉向加速度」、「空中狀態的減速度」。</p>
+<p>但我不知道為什麼他要用三個新名詞，我 Bionic Bay 這邊的做法是「地面上」和「空中」狀態分別都有自己一組同名參數，如下圖。</p>
+<p><img src="/images/bb-001-character-controller/horizontal_movement_2.png" alt="" /><br />
+<em>（先無視 Extra Max Speed，之後別篇再解釋）</em><br />
+上面這組速度參數的效果是要做成：</p>
+<ul>
+<li>地面上的左右移動反應比較即時（加減速度都相對高），如果只是方向鍵放開的情況會小小滑行，而急著需要轉方向的時候會很快地改變方向。</li>
+<li>在空中會比較慣性運動（減速度很低），加速度與地面相同代表你可以做到「先垂直起跳，然後往前移動」的超人動作，轉向速度比減速度高代表你有一定程度改變方向的能力（C 字跳）。</li>
+</ul>
+<blockquote>
+<p>空中的水平移動還有一些變種參數，比如有些遊戲會引入空中摩擦力（Air Friction），讓水平速度降低，形成非對稱跳躍曲線，後面會提到。</p>
+</blockquote>
+<h2 id="幾款經典橫向遊戲的參數"><a class="markdownIt-Anchor" href="#幾款經典橫向遊戲的參數"></a> 幾款經典橫向遊戲的參數</h2>
+<p>這裡引用論文數據，圖中橘線表示按鍵按下去的時間點，綠線代表放開的時間點。</p>
+<h3 id="castlevania"><a class="markdownIt-Anchor" href="#castlevania"></a> Castlevania</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T000611.png" alt="2023-07-23T000611" /><br />
+典型的只有全速和零速度的設計，相當於加速度、減速度都無限大。<br />
+早年重戰鬥的動作遊戲都這樣（沒記錯的話洛克人也是），好處是反應速度快，可控性高。</p>
+<h3 id="super-meat-boy"><a class="markdownIt-Anchor" href="#super-meat-boy"></a> Super Meat Boy</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T000715.png" alt="2023-07-23T000715" /><br />
+Super Meat Boy 採用低加速度的設計，讓玩家有一個累積速度的過程。<br />
+特別的是他的減速度無限大，代表你手一放開就停止了，這個設計怪怪的比較像 bug ，晚點會提。</p>
+<h3 id="super-mario-bro"><a class="markdownIt-Anchor" href="#super-mario-bro"></a> Super Mario Bro</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T000735.png" alt="2023-07-23T000735" /><br />
+瑪利歐就是典型的低加速低減速的超高慣性運動，會讓人有很滑很飄的控制感。</p>
+<h3 id="limbo"><a class="markdownIt-Anchor" href="#limbo"></a> Limbo</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T000803.png" alt="2023-07-23T000803" /><br />
+Limbo 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更可控一點。<br />
+但它的數據比較特別的是最大速度和加速度都會受到輸入的值影響，而且不是線性成長。</p>
+<h3 id="轉向加速度turn-acceleration"><a class="markdownIt-Anchor" href="#轉向加速度turn-acceleration"></a> 轉向加速度（Turn Acceleration）</h3>
+<p>然後是它們各自的轉向加速度，因為 Castlevania 本來就可以瞬間轉向就不列了。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T002243.png" alt="2023-07-23T002243" /><br />
+（圖片中的橘線表示按下反方向輸入的時間點，綠線表示速度到達 0 的時間點。）</p>
+<p>看到這，有沒有感覺哪裡怪怪的？</p>
+<p><strong>Super Meat Boy 的轉向加速度（Turn Acceleration）竟然比它的減速度（Deceleration）還低！</strong></p>
+<p>這代表什麼？<br />
+「如果你在 Super Meat Boy 中想要緊急改變方向，那你應該直接放開移動鍵，讓角色瞬間停下來，之後再推動方向鍵去讓玩家加速。」</p>
+<p>這個設計超級問號的，因為所有玩家想要緊急改變方向的直覺反應都是<strong>直接反向輸入</strong>，但你這樣做反而會滑行更久。所以我偏向認為只是開發者設定錯誤而已，減速度不應該是無限大才對。</p>
+<h3 id="數值表格"><a class="markdownIt-Anchor" href="#數值表格"></a> 數值表格</h3>
+<p>最後論文有幫我們整理成一張表格，還多補了一個 Braid 的參數，直接看數字比較清楚：<br />
+<img src="/images/bb-001-character-controller/2023-07-23T002341.png" alt="2023-07-23T002341" /></p>
+<blockquote>
+<p>嚴格來說水平速度參數組的選擇沒有對錯，你只要了解為什麼數值要這樣設計、它們能帶來什麼樣的效果。</p>
+</blockquote>
+<h1 id="2-跳躍速度-高度與重力gravity"><a class="markdownIt-Anchor" href="#2-跳躍速度-高度與重力gravity"></a> 2. 跳躍速度、高度與重力（Gravity）</h1>
+<p><strong>起跳速度</strong>（一般稱為 Takeoff Velocity）和<strong>跳躍高度</strong>算是同一個參數的兩個不同表示形式，因為你已知重力加速度（g）多少就能將兩者直接轉換。<br />
+<img src="/images/bb-001-character-controller/jump_var_1.gif" alt="" /><br />
+一般建議直接以「跳躍高度」作為參數來設定會比較好，因為它比較直觀，而且也與關卡設計息息相關。</p>
+<p>而重力本身更單純，通常就只是個固定 g 值（現實是 9.81 m/s），一直持續施加在角色的垂直速度上。<br />
+稍微值得提的是有些遊戲會有所謂 <strong>Terminal Velocity</strong> ，代表<strong>最高的下墜速度</strong>，角色下墜不會比這個速度更快。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T004744.png" alt="2023-07-23T004744" /><br />
+如上圖， Mario 和 Braid 就明顯有 Terminal Velocity。<br />
+（Platformer Toolkit 把 Terminal Velocity 參數放在 Assists 類別）</p>
+<p>而這部分也沒什麼其他參數了，Toolkit 裡面是多附贈了一個 <strong>Down Gravity</strong> 參數，是讓你墜落時所受到的重力加速度比上升中還要大，使得落地時間減少。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T004033.png" alt="2023-07-23T004033" /><br />
+我自己沒有很喜歡這種重力感就沒實作在 Bionic Bay 上。<br />
+例如 <a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste 就有用這招</a>，不過他的本意是反過來 – 「讓起跳上升期間的重力減半」，而且效果很輕微，因為它本身的 Terminal Velocity 很低（很快就進入等速墜落）所以它用這個的代價也很低。</p>
+<blockquote>
+<p>雖然直接使用 Down Gravity 的效果我不喜歡，但 Down Gravity 的概念在「可控制的跳躍高度」被發揚光大。</p>
+</blockquote>
+<h2 id="幾款經典橫向遊戲的參數-2"><a class="markdownIt-Anchor" href="#幾款經典橫向遊戲的參數-2"></a> 幾款經典橫向遊戲的參數</h2>
+<h3 id="super-meat-boy-2"><a class="markdownIt-Anchor" href="#super-meat-boy-2"></a> Super Meat Boy</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T011340.png" alt="2023-07-23T011340" /><br />
+非常典型的對稱跳躍曲線，沒有多做任何特別參數處理的結果。</p>
+<h3 id="super-mario-bro-2"><a class="markdownIt-Anchor" href="#super-mario-bro-2"></a> Super Mario Bro</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T011614.png" alt="2023-07-23T011614" /><br />
+瑪利歐有個很妙的設計 – 你水平移動速度越快就能跳得越高，就是在鼓勵你全速移動、助跑跳高。</p>
+<blockquote>
+<p>至於你可能會發現瑪莉歐的曲線是<strong>非對稱</strong>的，這代表它也有 Down Gravity 嗎？（在 Platformer Toolkit 的瑪莉歐 preset 中是把它當成是有 Down Gravity 的設計）<br />
+先說結論，它<strong>並沒有 Down Gravity</strong>。真正的原因是下面會提到的「可控制跳躍高度」設計。</p>
+</blockquote>
+<h3 id="limbo-2"><a class="markdownIt-Anchor" href="#limbo-2"></a> Limbo</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T012508.png" alt="2023-07-23T012508" /><br />
+Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也就 0.2 秒，所以單就這個設計的實際差異不大。<br />
+也因此有了以下一個新設計：<br />
+<img src="/images/bb-001-character-controller/2023-07-23T012835.png" alt="2023-07-23T012835" /><br />
+基於助跑距離是否有超出一個範圍，會區分成短跳和長跳，短跳的起跳速度較低，進而鼓勵玩家助跑跳躍。</p>
+<p>Limbo 還有個更特別的設計是它的起跳速度（Takeoff Velocity）是有額外的水平向前速度。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T013515.png" alt="2023-07-23T013515" /><br />
+（藍線是假設不包含向前速度的跳躍曲線，紅色是實際加上了向前速度的跳躍曲線）<br />
+雖然幅度不大，但它可以讓你在前跳的時候獲得一定向前的速度。</p>
+<blockquote>
+<p>你可能又會發現 Limbo 的跳躍曲線也是<strong>非對稱</strong>的，這是因為它有空氣摩擦力（Air Friction）設計導致水平移動的速度會被抑制。</p>
+</blockquote>
+<h3 id="數值表格-2"><a class="markdownIt-Anchor" href="#數值表格-2"></a> 數值表格</h3>
+<p><img src="/images/bb-001-character-controller/2023-07-23T015404.png" alt="2023-07-23T015404" /></p>
+<h1 id="3-可控制的跳躍高度"><a class="markdownIt-Anchor" href="#3-可控制的跳躍高度"></a> 3. 可控制的跳躍高度</h1>
+<p>一般來說遊戲都會實作這個「動態跳躍高度」的功能，概念是「<strong>按住</strong>跳躍越久跳越高，按住時間越短跳越低」。<br />
+但是光這個單一概念就可以有好幾種實作方法，這邊會列出來各個做法。</p>
+<h2 id="放開時上升速度直接歸零"><a class="markdownIt-Anchor" href="#放開時上升速度直接歸零"></a> 放開時，上升速度直接歸零</h2>
+<p>讓按住跳躍鍵的結果等同於原始跳躍高度，但是一放開按鍵就會讓上升速度歸零。<br />
+這應該是很常見的做法，因為實作非常簡單，而做出來的效果會非常有立即性（因為放開的瞬間即跳躍的最高點）。<br />
+現有案例：Super Meat Boy。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T020231.png" alt="2023-07-23T020231" /><br />
+這個做法讓玩家<strong>可控性</strong>最高，缺點是<strong>小跳的跳躍軌跡不自然</strong>，因為放開按鍵的瞬間角色會直接停止並開始墜落，少了「減速過程」。</p>
+<h2 id="按住時持續給予向上的力"><a class="markdownIt-Anchor" href="#按住時持續給予向上的力"></a> 按住時，持續給予向上的力</h2>
+<p>讓瞬按瞬放的跳躍結果等同於原始設定的跳躍高度，但你如果有按住的話會持續給予一個向上的力（直到消耗完為止）。<br />
+這是瑪莉歐的做法，這個做法跟上一個做法可以說完全相反，我不確定有沒有其他遊戲也這樣做。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T021324.png" alt="2023-07-23T021324" /><br />
+這個做法的玩家可控性稍差一點（因為放開後還要一段時間才到頂端），優點是跳躍曲線比較好看、自然。<br />
+但缺點很明顯，<strong>大跳的上升軌跡不太自然</strong>、數值不好設計（因為你設定的起始跳躍高度是小跳高度）。</p>
+<h2 id="放開時給予一個向下的力down-gravity"><a class="markdownIt-Anchor" href="#放開時給予一個向下的力down-gravity"></a> 放開時，給予一個向下的力（Down Gravity）</h2>
+<p>讓按住跳躍鍵的結果等同於原始跳躍高度，但是一放開按鍵就會被添加一個額外的 Down Gravity 來把原始的起跳速度（Takeoff Velocity）抵銷掉為止。<br />
+這算是第一種方法的改良版，可以解決<strong>小跳的不自然感</strong>，缺點是可控性就降低了一點（因為放開後還要一段時間才到頂端）。<br />
+現有案例：Limbo、Ori and the Blind Forest、Bionic Bay。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T022237.png" alt="2023-07-23T022237" /><br />
+沒錯！我們 Bionic Bay 最終採用這個方案，我自己也覺得這是最佳解。</p>
+<p>實作上要稍微注意的點是，它的目的是「抵銷起跳速度」，並不是單純的讓下降的重力變大，當你的原始起跳速度已經被重力抵銷完了（即按住大跳的情況）就沒必要在加額外的 Down Gravity 了。</p>
+<blockquote>
+<p>這裡用 Down Gravity 是為了對應文章前面提及的，論文中的用詞是 Release Drag。</p>
+</blockquote>
+<h1 id="4-coyote-time-edge-jump-短時間容許離地後跳躍"><a class="markdownIt-Anchor" href="#4-coyote-time-edge-jump-短時間容許離地後跳躍"></a> 4. Coyote Time / Edge Jump （短時間容許離地後跳躍）</h1>
+<p>這個專有名詞眾說紛紜，也有被稱為 <a target="_blank" rel="noopener" href="http://kpulv.com/123/Platforming_Ledge_Forgiveness/">Platforming Ledge Forgiveness</a>。<br />
+因為 Celeste 做太好了所以我就一律用他們使用的名詞 Coyote Time 來稱呼了。<br />
+這個「輔助功能」直接看 Celeste 的 GIF 圖就能懂了：<br />
+<img src="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif" alt="" /></p>
+<p>硬要說明的話就是「當角色離地後 N 毫秒內仍可以進行跳躍動作」。<br />
+實作很單純，把<strong>可跳躍判定</strong>從 <code>IsGrounded</code> 換成 <code>CoyoteTime &gt; 0</code> 就好。<br />
+而 <code>CoyoteTime</code> 會在 <code>IsGrounded == false</code> 的時候持續倒數，若 <code>IsGrounded == true</code> 會將其設定為 N 毫秒。</p>
+<blockquote>
+<p>我認為這真的是一個實作超級簡單，效果又超棒的功能。很多新手專案只要加入這個，平台之間的跳躍體驗就大幅上升。</p>
+</blockquote>
+<h1 id="5-跳躍輸入緩衝-jump-buffering-jump-cache"><a class="markdownIt-Anchor" href="#5-跳躍輸入緩衝-jump-buffering-jump-cache"></a> 5. 跳躍輸入緩衝 （Jump Buffering / Jump Cache）</h1>
+<p>為你的<strong>跳躍輸入按鍵</strong>加入緩衝（buffer），就是<br />
+「輸入按鍵後若<strong>還無法觸發跳躍</strong>的話，會保存並<strong>持續 N 秒</strong>輸入的狀態，只要之後進入可跳躍的狀態時會<strong>自動觸發</strong>」</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif" alt="" /></p>
+<p>因為當玩家<strong>預期要在角色落地的瞬間馬上再跳起來</strong>的話，通常都會<strong>早按</strong>。如果你沒有做這個輸入緩衝的話會導致角色跳不起來，玩家就會怪罪遊戲說「我明明就按了啊」。</p>
+<blockquote>
+<p>輸入緩衝真的超重要，而且不只跳躍輸入要緩衝，任何有這種需要抓準時機按下的按鍵都要有一定的緩衝時間（e.g. 攻擊、迴避、招架），否則玩家會一直怪罪遊戲設計不良。</p>
+</blockquote>
+<h1 id="6-自適應-collider"><a class="markdownIt-Anchor" href="#6-自適應-collider"></a> 6. 自適應 Collider</h1>
+<p>未完</p>
+<h1 id="7-邊緣偵測與落地容許值"><a class="markdownIt-Anchor" href="#7-邊緣偵測與落地容許值"></a> 7. 邊緣偵測與落地容許值</h1>
+<p>未完</p>
+<hr />
+<h1 id="補充資料"><a class="markdownIt-Anchor" href="#補充資料"></a> 補充資料</h1>
+<p>補上一些我覺得很有幫助的資料，可以直接看他們不用看我這篇。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bu-RbmjvltU">使玩家感覺良好 – 《Dead Cells》開發回顧</a></li>
+<li>Celeste 系列
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/NoelFB/Celeste">Source Code</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=yorTG9at90g">Why Does Celeste Feel So Good to Play?</a></li>
+<li><a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HCnZhs-92j0">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a></li>
+<li><a target="_blank" rel="noopener" href="https://forums.tigsource.com/index.php?topic=46289.1040">Leilani’s Island Devlog</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/posts/51246/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2023-07-22 17:54:57
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Unity/" title="Unity">
+                        <b>#</b> Unity
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Gamedev/" title="Gamedev">
+                        <b>#</b> Gamedev
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Physics/" title="Physics">
+                        <b>#</b> Physics
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Bionic-Bay/" title="Bionic Bay">
+                        <b>#</b> Bionic Bay
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AA%E6%98%AF%E5%80%8B-2d-%E9%81%8A%E6%88%B2%E7%9A%84%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 只是個 2D 遊戲的角色控制是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8B%95%E8%88%87%E8%B7%B3%E8%BA%8D%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 移動與跳躍？是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B0%B4%E5%B9%B3%E7%A7%BB%E5%8B%95%E7%9A%84%E9%80%9F%E5%BA%A6%E5%8F%83%E6%95%B8"><span class="toc-text"> 1. 水平移動的速度參數</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#castlevania"><span class="toc-text"> Castlevania</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%89%E5%90%91%E5%8A%A0%E9%80%9F%E5%BA%A6turn-acceleration"><span class="toc-text"> 轉向加速度（Turn Acceleration）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%BA%8D%E9%80%9F%E5%BA%A6-%E9%AB%98%E5%BA%A6%E8%88%87%E9%87%8D%E5%8A%9Bgravity"><span class="toc-text"> 2. 跳躍速度、高度與重力（Gravity）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8-2"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy-2"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro-2"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo-2"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC-2"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%AF%E6%8E%A7%E5%88%B6%E7%9A%84%E8%B7%B3%E8%BA%8D%E9%AB%98%E5%BA%A6"><span class="toc-text"> 3. 可控制的跳躍高度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E4%B8%8A%E5%8D%87%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E6%AD%B8%E9%9B%B6"><span class="toc-text"> 放開時，上升速度直接歸零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8F%E6%99%82%E6%8C%81%E7%BA%8C%E7%B5%A6%E4%BA%88%E5%90%91%E4%B8%8A%E7%9A%84%E5%8A%9B"><span class="toc-text"> 按住時，持續給予向上的力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E7%B5%A6%E4%BA%88%E4%B8%80%E5%80%8B%E5%90%91%E4%B8%8B%E7%9A%84%E5%8A%9Bdown-gravity"><span class="toc-text"> 放開時，給予一個向下的力（Down Gravity）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-coyote-time-edge-jump-%E7%9F%AD%E6%99%82%E9%96%93%E5%AE%B9%E8%A8%B1%E9%9B%A2%E5%9C%B0%E5%BE%8C%E8%B7%B3%E8%BA%8D"><span class="toc-text"> 4. Coyote Time &#x2F; Edge Jump （短時間容許離地後跳躍）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%B7%B3%E8%BA%8D%E8%BC%B8%E5%85%A5%E7%B7%A9%E8%A1%9D-jump-buffering-jump-cache"><span class="toc-text"> 5. 跳躍輸入緩衝 （Jump Buffering &#x2F; Jump Cache）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E9%81%A9%E6%87%89-collider"><span class="toc-text"> 6. 自適應 Collider</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%82%8A%E7%B7%A3%E5%81%B5%E6%B8%AC%E8%88%87%E8%90%BD%E5%9C%B0%E5%AE%B9%E8%A8%B1%E5%80%BC"><span class="toc-text"> 7. 邊緣偵測與落地容許值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A3%9C%E5%85%85%E8%B3%87%E6%96%99"><span class="toc-text"> 補充資料</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://pedevmakesgame.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+  
+
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2023 PeDev</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Character%20Controller%20for%202D%20Platformer%20(1%2Fn) + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F61013%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/posts/61013/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
