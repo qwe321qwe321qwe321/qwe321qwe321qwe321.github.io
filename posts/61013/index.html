@@ -27,6 +27,7 @@
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_var_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004744.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004033.png">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011340.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011614.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T012508.png">
@@ -38,6 +39,16 @@
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T022237.png">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T120748.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T120844.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_1.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_2.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_3.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_4.gif">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*g5DWQoaPgADy2YJSadME9Q.gif">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*wd8jSIbd7BCaltCWhOIxcw.gif">
+<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*cCX7zCuPXb7KFSpZXIy7VA.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_5.gif">
 <meta property="article:published_time" content="2023-07-22T09:54:57.898Z">
 <meta property="article:modified_time" content="2023-07-22T09:54:57.898Z">
 <meta property="article:author" content="PeDev">
@@ -423,7 +434,8 @@ Limbo 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更�
 <p>而這部分也沒什麼其他參數了，Toolkit 裡面是多附贈了一個 <strong>Down Gravity</strong> 參數，是讓你墜落時所受到的重力加速度比上升中還要大，使得落地時間減少。<br />
 <img src="/images/bb-001-character-controller/2023-07-23T004033.png" alt="2023-07-23T004033" /><br />
 我自己沒有很喜歡這種重力感就沒實作在 Bionic Bay 上。<br />
-例如 <a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste 就有用這招</a>，不過他的本意是反過來 – 「讓起跳上升期間的重力減半」，而且效果很輕微，因為它本身的 Terminal Velocity 很低（很快就進入等速墜落）所以它用這個的代價也很低。</p>
+例如 <a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste 就有用這招</a>，不過他的本意是反過來 – 「讓起跳上升期間的重力減半」，而且效果很輕微，因為它本身的 Terminal Velocity 很低（很快就進入等速墜落）所以它用這個的代價也很低。<br />
+<img src="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif" alt="" /></p>
 <blockquote>
 <p>雖然直接使用 Down Gravity 的效果我不喜歡，但 Down Gravity 的概念在「可控制的跳躍高度」被發揚光大。</p>
 </blockquote>
@@ -485,7 +497,8 @@ Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也�
 <p>這個專有名詞眾說紛紜，也有被稱為 <a target="_blank" rel="noopener" href="http://kpulv.com/123/Platforming_Ledge_Forgiveness/">Platforming Ledge Forgiveness</a>。<br />
 因為 Celeste 做太好了所以我就一律用他們使用的名詞 Coyote Time 來稱呼了。<br />
 這個「輔助功能」直接看 Celeste 的 GIF 圖就能懂了：<br />
-<img src="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif" alt="" /></p>
+<img src="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif" alt="" /><br />
+<em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
 <p>硬要說明的話就是「當角色離地後 N 毫秒內仍可以進行跳躍動作」。<br />
 實作很單純，把<strong>可跳躍判定</strong>從 <code>IsGrounded</code> 換成 <code>CoyoteTime &gt; 0</code> 就好。<br />
 而 <code>CoyoteTime</code> 會在 <code>IsGrounded == false</code> 的時候持續倒數，若 <code>IsGrounded == true</code> 會將其設定為 N 毫秒。</p>
@@ -495,17 +508,61 @@ Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也�
 <h1 id="5-跳躍輸入緩衝-jump-buffering-jump-cache"><a class="markdownIt-Anchor" href="#5-跳躍輸入緩衝-jump-buffering-jump-cache"></a> 5. 跳躍輸入緩衝 （Jump Buffering / Jump Cache）</h1>
 <p>為你的<strong>跳躍輸入按鍵</strong>加入緩衝（buffer），就是<br />
 「輸入按鍵後若<strong>還無法觸發跳躍</strong>的話，會保存並<strong>持續 N 秒</strong>輸入的狀態，只要之後進入可跳躍的狀態時會<strong>自動觸發</strong>」</p>
-<p><img src="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif" alt="" /></p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif" alt="" /><br />
+<em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
 <p>因為當玩家<strong>預期要在角色落地的瞬間馬上再跳起來</strong>的話，通常都會<strong>早按</strong>。如果你沒有做這個輸入緩衝的話會導致角色跳不起來，玩家就會怪罪遊戲說「我明明就按了啊」。</p>
 <blockquote>
 <p>輸入緩衝真的超重要，而且不只跳躍輸入要緩衝，任何有這種需要抓準時機按下的按鍵都要有一定的緩衝時間（e.g. 攻擊、迴避、招架），否則玩家會一直怪罪遊戲設計不良。</p>
 </blockquote>
-<h1 id="6-自適應-collider"><a class="markdownIt-Anchor" href="#6-自適應-collider"></a> 6. 自適應 Collider</h1>
-<p>未完</p>
+<h1 id="6-自適應-collider-hitbox-pinching-階梯處理"><a class="markdownIt-Anchor" href="#6-自適應-collider-hitbox-pinching-階梯處理"></a> 6. 自適應 Collider / Hitbox Pinching （階梯處理）</h1>
+<p>這裡引用 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/792710/Levelhead_Platformer_Maker/">LevelHead</a> 開發者在 GDC 2020 分享的 <a target="_blank" rel="noopener" href="https://youtu.be/HCnZhs-92j0?t=1108">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a> 來介紹這個輔助功能。</p>
+<p>要解決的情境如下圖：<br />
+<img src="/images/bb-001-character-controller/2023-07-23T120748.png" alt="2023-07-23T120748" /><br />
+角色的前方有一個小突起物（階梯）擋住你的移動路徑，什麼都沒處理的話往前移動會被它卡住。</p>
+<p>而這個功能就是「當你移動的時候縮小碰撞範圍（Hitbox）」，如下圖把碰撞範圍縮小至黃色區域。<br />
+<img src="/images/bb-001-character-controller/2023-07-23T120844.png" alt="2023-07-23T120844" /></p>
+<p>但是這並不是單純讓角色的 Collider 變矮然後就往下墜落，重點是「角色的碰撞範圍縮小後，依然保持與地面相同的距離」。<br />
+所以當角色成功站上突起物之後，也要讓它與新的地面高度保持原本的距離，也就是往上升。<br />
+可以直接看這個三步驟 GIF 示意圖：<br />
+<img src="/images/bb-001-character-controller/hitbox_pinch_1.gif" alt="" /></p>
+<h2 id="應用案例"><a class="markdownIt-Anchor" href="#應用案例"></a> 應用案例</h2>
+<p>一樣先用 LevelHead 提供的例子</p>
+<table>
+<thead>
+<tr>
+<th>沒有使用 Hitbox Pinching</th>
+<th>使用 Hitbox Pinching</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/images/bb-001-character-controller/hitbox_pinch_2.gif" alt="" /></td>
+<td><img src="/images/bb-001-character-controller/hitbox_pinch_3.gif" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<p>再來其實<strong>並不是只有水平移動可以用這招，垂直跳躍也能用</strong>。<br />
+<img src="/images/bb-001-character-controller/hitbox_pinch_4.gif" alt="" /><br />
+<em>只縮小 Hitbox 的方向從縮高度變成縮寬度，可以減少撞到頭的情況</em></p>
+<p>而 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/504230/Celeste/">Celeste</a> 也有大量使用這招：<br />
+<img src="https://miro.medium.com/v2/resize:fit:640/1*g5DWQoaPgADy2YJSadME9Q.gif" alt="" /><br />
+<img src="https://miro.medium.com/v2/resize:fit:640/1*wd8jSIbd7BCaltCWhOIxcw.gif" alt="" /><br />
+<img src="https://miro.medium.com/v2/resize:fit:640/1*cCX7zCuPXb7KFSpZXIy7VA.gif" alt="" /><br />
+<em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
+<p>最後是在 Bionic Bay 的應用：<br />
+<img src="/images/bb-001-character-controller/hitbox_pinch_5.gif" alt="" /><br />
+<em>實際上關卡中不會刻意設計這種階梯，但這個功能可以大幅度地降低角色被場景各種縫隙、突起給卡住的情況</em></p>
+<blockquote>
+<p>這個功能的實作依據角色移動的具體方法和地圖設計的不同而有不同的實作形式。</p>
+<ul>
+<li>比較傳統 Retro 類型的平台跳躍因為通常是 Tile-based 的地圖設計和更精準的角色控制方法（移動方式是基於程式碼直接對 position 進行控制），會比較好寫。</li>
+<li>Bionic Bay 因為是物理驅動（移動方式是設定 velocity 之後再交由物理引擎去跑）加上地形非常混亂不規則，採取的實作方式更接近通用 3D Character Controller 的形式，毛很多，實作有參考這兩個 Unity Assets：<a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/physics/kinematic-character-controller-99131">Kinematic Character Controller</a>、<a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/physics/character-controller-pro-159150">Character Controller Pro</a>，之後的文章會再補上具體是怎麼做的。</li>
+</ul>
+</blockquote>
 <h1 id="7-邊緣偵測與落地容許值"><a class="markdownIt-Anchor" href="#7-邊緣偵測與落地容許值"></a> 7. 邊緣偵測與落地容許值</h1>
 <p>未完</p>
 <hr />
-<h1 id="補充資料"><a class="markdownIt-Anchor" href="#補充資料"></a> 補充資料</h1>
+<h1 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h1>
 <p>補上一些我覺得很有幫助的資料，可以直接看他們不用看我這篇。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a></li>
@@ -581,7 +638,7 @@ Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也�
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AA%E6%98%AF%E5%80%8B-2d-%E9%81%8A%E6%88%B2%E7%9A%84%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 只是個 2D 遊戲的角色控制是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8B%95%E8%88%87%E8%B7%B3%E8%BA%8D%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 移動與跳躍？是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B0%B4%E5%B9%B3%E7%A7%BB%E5%8B%95%E7%9A%84%E9%80%9F%E5%BA%A6%E5%8F%83%E6%95%B8"><span class="toc-text"> 1. 水平移動的速度參數</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#castlevania"><span class="toc-text"> Castlevania</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%89%E5%90%91%E5%8A%A0%E9%80%9F%E5%BA%A6turn-acceleration"><span class="toc-text"> 轉向加速度（Turn Acceleration）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%BA%8D%E9%80%9F%E5%BA%A6-%E9%AB%98%E5%BA%A6%E8%88%87%E9%87%8D%E5%8A%9Bgravity"><span class="toc-text"> 2. 跳躍速度、高度與重力（Gravity）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8-2"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy-2"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro-2"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo-2"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC-2"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%AF%E6%8E%A7%E5%88%B6%E7%9A%84%E8%B7%B3%E8%BA%8D%E9%AB%98%E5%BA%A6variable-height"><span class="toc-text"> 3. 可控制的跳躍高度（Variable Height）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E4%B8%8A%E5%8D%87%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E6%AD%B8%E9%9B%B6"><span class="toc-text"> 放開時，上升速度直接歸零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8F%E6%99%82%E6%8C%81%E7%BA%8C%E7%B5%A6%E4%BA%88%E5%90%91%E4%B8%8A%E7%9A%84%E5%8A%9B"><span class="toc-text"> 按住時，持續給予向上的力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E7%B5%A6%E4%BA%88%E4%B8%80%E5%80%8B%E5%90%91%E4%B8%8B%E7%9A%84%E5%8A%9Bdown-gravity"><span class="toc-text"> 放開時，給予一個向下的力（Down Gravity）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-coyote-time-edge-jump-%E7%9F%AD%E6%99%82%E9%96%93%E5%AE%B9%E8%A8%B1%E9%9B%A2%E5%9C%B0%E5%BE%8C%E8%B7%B3%E8%BA%8D"><span class="toc-text"> 4. Coyote Time &#x2F; Edge Jump （短時間容許離地後跳躍）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%B7%B3%E8%BA%8D%E8%BC%B8%E5%85%A5%E7%B7%A9%E8%A1%9D-jump-buffering-jump-cache"><span class="toc-text"> 5. 跳躍輸入緩衝 （Jump Buffering &#x2F; Jump Cache）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E9%81%A9%E6%87%89-collider"><span class="toc-text"> 6. 自適應 Collider</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%82%8A%E7%B7%A3%E5%81%B5%E6%B8%AC%E8%88%87%E8%90%BD%E5%9C%B0%E5%AE%B9%E8%A8%B1%E5%80%BC"><span class="toc-text"> 7. 邊緣偵測與落地容許值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A3%9C%E5%85%85%E8%B3%87%E6%96%99"><span class="toc-text"> 補充資料</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AA%E6%98%AF%E5%80%8B-2d-%E9%81%8A%E6%88%B2%E7%9A%84%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 只是個 2D 遊戲的角色控制是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8B%95%E8%88%87%E8%B7%B3%E8%BA%8D%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 移動與跳躍？是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B0%B4%E5%B9%B3%E7%A7%BB%E5%8B%95%E7%9A%84%E9%80%9F%E5%BA%A6%E5%8F%83%E6%95%B8"><span class="toc-text"> 1. 水平移動的速度參數</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#castlevania"><span class="toc-text"> Castlevania</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%89%E5%90%91%E5%8A%A0%E9%80%9F%E5%BA%A6turn-acceleration"><span class="toc-text"> 轉向加速度（Turn Acceleration）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%BA%8D%E9%80%9F%E5%BA%A6-%E9%AB%98%E5%BA%A6%E8%88%87%E9%87%8D%E5%8A%9Bgravity"><span class="toc-text"> 2. 跳躍速度、高度與重力（Gravity）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8-2"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy-2"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro-2"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo-2"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC-2"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%AF%E6%8E%A7%E5%88%B6%E7%9A%84%E8%B7%B3%E8%BA%8D%E9%AB%98%E5%BA%A6variable-height"><span class="toc-text"> 3. 可控制的跳躍高度（Variable Height）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E4%B8%8A%E5%8D%87%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E6%AD%B8%E9%9B%B6"><span class="toc-text"> 放開時，上升速度直接歸零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8F%E6%99%82%E6%8C%81%E7%BA%8C%E7%B5%A6%E4%BA%88%E5%90%91%E4%B8%8A%E7%9A%84%E5%8A%9B"><span class="toc-text"> 按住時，持續給予向上的力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E7%B5%A6%E4%BA%88%E4%B8%80%E5%80%8B%E5%90%91%E4%B8%8B%E7%9A%84%E5%8A%9Bdown-gravity"><span class="toc-text"> 放開時，給予一個向下的力（Down Gravity）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-coyote-time-edge-jump-%E7%9F%AD%E6%99%82%E9%96%93%E5%AE%B9%E8%A8%B1%E9%9B%A2%E5%9C%B0%E5%BE%8C%E8%B7%B3%E8%BA%8D"><span class="toc-text"> 4. Coyote Time &#x2F; Edge Jump （短時間容許離地後跳躍）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%B7%B3%E8%BA%8D%E8%BC%B8%E5%85%A5%E7%B7%A9%E8%A1%9D-jump-buffering-jump-cache"><span class="toc-text"> 5. 跳躍輸入緩衝 （Jump Buffering &#x2F; Jump Cache）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E9%81%A9%E6%87%89-collider-hitbox-pinching-%E9%9A%8E%E6%A2%AF%E8%99%95%E7%90%86"><span class="toc-text"> 6. 自適應 Collider &#x2F; Hitbox Pinching （階梯處理）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%89%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text"> 應用案例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%82%8A%E7%B7%A3%E5%81%B5%E6%B8%AC%E8%88%87%E8%90%BD%E5%9C%B0%E5%AE%B9%E8%A8%B1%E5%80%BC"><span class="toc-text"> 7. 邊緣偵測與落地容許值</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-text"> 參考資料</span></a></li></ol>
     </div>
   </div>
 
