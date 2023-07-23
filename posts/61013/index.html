@@ -34,11 +34,14 @@
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T012835.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T013515.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T015404.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/variable_jump_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T020231.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T021324.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T022237.png">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_buffering_1.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_buffering_2.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T120748.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T120844.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/hitbox_pinch_1.gif">
@@ -473,7 +476,9 @@ Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也�
 <p><img src="/images/bb-001-character-controller/2023-07-23T015404.png" alt="2023-07-23T015404" /></p>
 <h1 id="3-可控制的跳躍高度variable-height"><a class="markdownIt-Anchor" href="#3-可控制的跳躍高度variable-height"></a> 3. 可控制的跳躍高度（Variable Height）</h1>
 <p>又可以稱「動態跳躍高度」的功能，概念是「按住跳躍輸入越久跳越高，按住時間越短跳越低」。<br />
-但是光這個單一概念就可以有好幾種實作方法，這邊會列出來各個做法。</p>
+<img src="/images/bb-001-character-controller/variable_jump_1.gif" alt="" /><br />
+<em>（按住越久跳得越高，快速放開按鍵就只會小跳）</em></p>
+<p>但是光這個單一概念就可以有好幾種實作方法，這邊會列出三種做法。</p>
 <h2 id="放開時上升速度直接歸零"><a class="markdownIt-Anchor" href="#放開時上升速度直接歸零"></a> 放開時，上升速度直接歸零</h2>
 <p>讓按住跳躍鍵的結果等同於原始跳躍高度，但是一放開按鍵就會讓上升速度歸零。<br />
 這應該是很常見的做法，因為實作非常簡單，而做出來的效果會非常有立即性（因為放開的瞬間即跳躍的最高點）。<br />
@@ -520,6 +525,22 @@ Limbo 也承襲了瑪莉歐的助跑跳高設計，不過 Limbo 加速過程也�
 <blockquote>
 <p>輸入緩衝真的超重要，而且不只跳躍輸入要緩衝，任何有這種需要抓準時機按下的按鍵都要有一定的緩衝時間（e.g. 攻擊、迴避、招架），否則玩家會一直怪罪遊戲設計不良。</p>
 </blockquote>
+<p>在 Bionic Bay 的效果：</p>
+<table>
+<thead>
+<tr>
+<th>開啟輸入緩衝</th>
+<th>關閉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/images/bb-001-character-controller/jump_buffering_1.gif" alt="" /></td>
+<td><img src="/images/bb-001-character-controller/jump_buffering_2.gif" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<p><em>我從來沒想過為了遊戲教學寫的 Replay 系統可以在寫文章用上</em></p>
 <h1 id="6-自適應-collider-hitbox-pinching-階梯處理"><a class="markdownIt-Anchor" href="#6-自適應-collider-hitbox-pinching-階梯處理"></a> 6. 自適應 Collider / Hitbox Pinching （階梯處理）</h1>
 <p>這裡引用 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/792710/Levelhead_Platformer_Maker/">LevelHead</a> 開發者在 GDC 2020 分享的 <a target="_blank" rel="noopener" href="https://youtu.be/HCnZhs-92j0?t=1108">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a> 來介紹這個輔助功能。</p>
 <p>要解決的情境如下圖：<br />
