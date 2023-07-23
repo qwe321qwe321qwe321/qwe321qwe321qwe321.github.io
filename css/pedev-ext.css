@@ -22,3 +22,11 @@
     margin: 0;
     padding: 0;
 }
+
+div.img-alt {
+    outline: 0;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none
+}

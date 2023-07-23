@@ -18,7 +18,17 @@ let fancyTimer = setInterval(function(){
       } else {
         $(element).attr("href", $(this).attr("src"));
       }
+      
+      // Add img caption by PeDev.
+      let altText = $(this).attr("alt");
+      $(element).attr("data-caption", altText);
+      
+      let altCaption = document.createElement("div");
+      $(altCaption).attr("class", "img-alt");
+      $(altCaption).text(altText);
+      
       $(this).wrap(element);
+      $(this).after(altCaption);
     });
 
     clearInterval(fancyTimer);
