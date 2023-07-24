@@ -39,7 +39,6 @@
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T021324.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T022237.png">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif">
-<meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_buffering_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_buffering_2.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T120748.png">
@@ -472,7 +471,8 @@ LIMBO 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更�
 <img src="/images/bb-001-character-controller/2023-07-23T004033.png" alt="在 Platformer Toolkit 中你可以拉動 Down Gravity 拉桿使得角色墜落更快" /><br />
 我自己沒有很喜歡這種重力感就沒實作在 Bionic Bay 上。<br />
 例如 <a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste 就有用這招</a>，不過他的本意是反過來 – 「讓起跳上升期間的重力減半」，而且效果很輕微，因為它本身的 Terminal Velocity 很低（很快就進入等速墜落）所以它用這個的代價也很低。<br />
-<img src="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif" alt="" /></p>
+<img src="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif" alt="" /><br />
+<em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
 <blockquote>
 <p>雖然直接使用 Down Gravity 的效果我不喜歡，但 Down Gravity 的概念在「可控制的跳躍高度」被發揚光大。</p>
 </blockquote>
@@ -543,14 +543,9 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 </blockquote>
 <h1 id="5-跳躍輸入緩衝-jump-buffering-jump-cache"><a class="markdownIt-Anchor" href="#5-跳躍輸入緩衝-jump-buffering-jump-cache"></a> 5. 跳躍輸入緩衝 （Jump Buffering / Jump Cache）</h1>
 <p>為你的<strong>跳躍輸入按鍵</strong>加入緩衝（buffer），就是<br />
-「輸入按鍵後若<strong>還無法觸發跳躍</strong>的話，會保存並<strong>持續 N 秒</strong>輸入的狀態，只要之後進入可跳躍的狀態時會<strong>自動觸發</strong>」</p>
-<p><img src="https://miro.medium.com/v2/resize:fit:640/1*Gc2b4UXo-2AbndPTzELm9A.gif" alt="人物快落地的時候再次按下跳躍鍵" /><br />
-<em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
-<p>因為當玩家<strong>預期要在角色落地的瞬間馬上再跳起來</strong>的話，通常都會<strong>早按</strong>。如果你沒有做這個輸入緩衝的話會導致角色跳不起來，玩家就會怪罪遊戲說「我明明就按了啊」。</p>
-<blockquote>
-<p>輸入緩衝真的超重要，而且不只跳躍輸入要緩衝，任何有這種需要抓準時機按下的按鍵都要有一定的緩衝時間（e.g. 攻擊、迴避、招架），否則玩家會一直怪罪遊戲設計不良。</p>
-</blockquote>
-<p>在 Bionic Bay 的效果：</p>
+「輸入跳躍按鍵的當下若還無法觸發跳躍，在之後的 N 秒內只要有進入可跳躍的狀態，仍會自動觸發跳躍」<br />
+整句很繞口，看下面 GIF 圖比較好理解。<br />
+這是在 Bionic Bay 實作的效果，情境是在角色快落地的時候再次按下跳躍鍵（圖中的 SPACE 亮起代表按下）。</p>
 <table>
 <thead>
 <tr>
@@ -560,12 +555,16 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 </thead>
 <tbody>
 <tr>
-<td><img src="/images/bb-001-character-controller/jump_buffering_1.gif" alt="" /></td>
-<td><img src="/images/bb-001-character-controller/jump_buffering_2.gif" alt="" /></td>
+<td><img src="/images/bb-001-character-controller/jump_buffering_1.gif" alt="能夠成功跳起來" /></td>
+<td><img src="/images/bb-001-character-controller/jump_buffering_2.gif" alt="跳不起來" /></td>
 </tr>
 </tbody>
 </table>
 <p><em>我從來沒想過為了遊戲教學寫的 Replay 系統可以在寫文章用上</em></p>
+<p>因為當玩家<strong>預期要在角色落地的瞬間馬上再跳起來</strong>的話，通常都會<strong>早按</strong>。如果你沒有做這個輸入緩衝的話會導致角色跳不起來，玩家就會怪罪遊戲說「我明明就按了啊」。</p>
+<blockquote>
+<p>輸入緩衝真的超重要，而且不只跳躍輸入要緩衝，任何有這種需要抓準時機按下的按鍵都要有一定的緩衝時間（e.g. 攻擊、迴避、招架），否則玩家會一直怪罪遊戲設計不良。</p>
+</blockquote>
 <h1 id="6-自適應-collider-hitbox-pinching-階梯處理"><a class="markdownIt-Anchor" href="#6-自適應-collider-hitbox-pinching-階梯處理"></a> 6. 自適應 Collider / Hitbox Pinching / 階梯處理</h1>
 <p><em>從這裡開始 GMTK Platformer Toolkit 就沒有實作了。</em></p>
 <p>這裡引用 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/792710/Levelhead_Platformer_Maker/">LevelHead</a> 開發者在 GDC 2020 分享的 <a target="_blank" rel="noopener" href="https://youtu.be/HCnZhs-92j0?t=1108">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a> 來介紹這個輔助功能。</p>
