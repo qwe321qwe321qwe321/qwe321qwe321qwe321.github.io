@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="前言 這是第一篇有關《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的角色控制開始介紹好了。 不過第一篇我還是想先介紹一下優秀 2D 橫向卷軸遊戲的角色控制（Character Controller）會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。  這篇文章純討論角色控制、角色物理，不會包含「角色動畫」、「攝影機」、「Game">
+  <meta name="description" content="介紹一下優秀 2D 平台跳躍遊戲的角色控制會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Character Controller for 2D Platformer">
+<meta property="og:title" content="做好 2D 平台跳躍遊戲，從角色控制開始 _BB001">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/61013/">
 <meta property="og:site_name" content="PE工具箱">
-<meta property="og:description" content="前言 這是第一篇有關《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的角色控制開始介紹好了。 不過第一篇我還是想先介紹一下優秀 2D 橫向卷軸遊戲的角色控制（Character Controller）會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。  這篇文章純討論角色控制、角色物理，不會包含「角色動畫」、「攝影機」、「Game">
+<meta property="og:description" content="介紹一下優秀 2D 平台跳躍遊戲的角色控制會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/01.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_1.png">
@@ -61,17 +61,18 @@
 <meta property="article:published_time" content="2023-07-22T09:54:57.898Z">
 <meta property="article:modified_time" content="2023-07-22T09:54:57.898Z">
 <meta property="article:author" content="PeDev">
-<meta property="article:tag" content="Unity">
-<meta property="article:tag" content="Gamedev">
-<meta property="article:tag" content="Physics">
 <meta property="article:tag" content="Bionic Bay">
+<meta property="article:tag" content="Gamedev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Physics">
+<meta property="article:tag" content="BB-devlog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/01.png">
 <meta name="twitter:site" content="@qwe321qwe321qwe321">
 
   
   
-  <title>Character Controller for 2D Platformer | PE工具箱</title>
+  <title>做好 2D 平台跳躍遊戲，從角色控制開始 _BB001 | PE工具箱</title><meta name="robots" content="noindex">
 
   
     <link rel="apple-touch-icon" href="/melody-favicon.ico">
@@ -102,6 +103,16 @@
 <script src="/js/fancybox.js"></script>
 
 
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JEC82CJEXT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JEC82CJEXT');
+    </script>
   
 
   <script>
@@ -194,7 +205,7 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Character Controller for 2D Platformer</div>
+      <div class="post-title"><i>(Hidden Post)</i> 做好 2D 平台跳躍遊戲，從角色控制開始 _BB001 </div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
@@ -205,8 +216,8 @@ MathJax = {
                 <i class="iconfont icon-tags" title="Tags"></i>
                 
                 <span class="span--tag">
-                  <a href="/tags/Unity/" title="Unity">
-                    <b>#</b> Unity
+                  <a href="/tags/Bionic-Bay/" title="Bionic Bay">
+                    <b>#</b> Bionic Bay
                   </a>
                 </span>
                 
@@ -217,14 +228,20 @@ MathJax = {
                 </span>
                 
                 <span class="span--tag">
+                  <a href="/tags/Unity/" title="Unity">
+                    <b>#</b> Unity
+                  </a>
+                </span>
+                
+                <span class="span--tag">
                   <a href="/tags/Physics/" title="Physics">
                     <b>#</b> Physics
                   </a>
                 </span>
                 
                 <span class="span--tag">
-                  <a href="/tags/Bionic-Bay/" title="Bionic Bay">
-                    <b>#</b> Bionic Bay
+                  <a href="/tags/BB-devlog/" title="BB-devlog">
+                    <b>#</b> BB-devlog
                   </a>
                 </span>
                 
@@ -233,8 +250,8 @@ MathJax = {
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>這是第一篇有關《Bionic Bay: 換影循跡》的開發日誌，想了一下還是從最基本的<strong>角色控制</strong>開始介紹好了。</p>
-<p>不過第一篇我還是想先介紹一下優秀 2D 橫向卷軸遊戲的角色控制（Character Controller）會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。</p>
+<p>這是第一篇有關《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1928690/Bionic_Bay/">Bionic Bay: 換影循跡</a>》的開發日誌，想了一下還是從最基本的<strong>角色控制</strong>（Character Controller）開始介紹好了。</p>
+<p>不過第一篇我還是想先介紹一下優秀 2D 平台跳躍遊戲的角色控制會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。</p>
 <blockquote>
 <p>這篇文章純討論角色控制、角色物理，<strong>不會包含</strong>「角色動畫」、「攝影機」、「Game Feel」等等其他功能。</p>
 </blockquote>
@@ -244,7 +261,7 @@ MathJax = {
 <p>在這個測試場景中只有角色有掛 scripts ，其他所有動態物件都只是 Rigidbody2D 和 Joint2D 的組合。<br />
 換句話說，這個角色控制器（Character Controller）並不仰賴場景 Context ，隨時放進去任意場景都至少會有以下功能：</p>
 <ul>
-<li>能夠正確地通過凹凸不平的地形。</li>
+<li>能夠順利通過凹凸不平的地形。</li>
 <li>都能夠站穩在任何物體上，無論是否會移動（只要速度不要太快）。</li>
 <li>只要角度正確就能攀附邊角（Ledge Grab）、牆壁滑行（Wall Slide）、蹬牆跳躍（Wall Jump）。</li>
 <li>站在（或是掛在）物體之上時能夠正確地對該物體施力。</li>
@@ -368,7 +385,7 @@ MathJax = {
 <p>這些模組、角色物理控制也是從開案初期直到最近幾個月都還有持續調整的一個系統，非常有可能在我介紹完以後又有功能大幅修改。</p>
 </blockquote>
 <h1 id="移動與跳躍是能有多複雜"><a class="markdownIt-Anchor" href="#移動與跳躍是能有多複雜"></a> 移動與跳躍？是能有多複雜？</h1>
-<p>橫向卷軸遊戲是一個非常容易入門的類型，但非常可惜的是有太多案例是連最基本的這兩件事情都沒做好，不太確定到底是線上的教學參差不齊還是有什麼問題。因為要做好這件事情基本上也不會涉及什麼很難懂的概念或實作，都單純是「如果你沒有做，那只是因為你不知道可以這樣做」的知識而已。</p>
+<p>2D 橫向卷軸 / 平台跳躍遊戲是一個非常容易入門的類型，但非常可惜的是有太多案例是連最基本的這兩件事情都沒做好，不太確定到底是線上的教學參差不齊還是有什麼問題。因為要做好這件事情基本上也不會涉及什麼很難懂的概念或實作，都單純是「如果你沒有做，那只是因為你不知道可以這樣做」的知識而已。</p>
 <p>以前一些 know-how 的資源比較分散，不過自從 GMTK 做了這個 <a target="_blank" rel="noopener" href="https://gmtk.itch.io/platformer-toolkit">Platformer Toolkit</a> 之後我都直接推他。</p>
 <div class="video-container"><iframe src="https://www.youtube.com/embed/zWi0jgghGcI" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
 <p><a target="_blank" rel="noopener" href="https://gmtk.itch.io/platformer-toolkit">https://gmtk.itch.io/platformer-toolkit</a><br />
@@ -630,11 +647,16 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <img src="/images/bb-001-character-controller/ledge_tolerance_3.gif" alt="" /></p>
 <p>慢動作看：<br />
 <img src="/images/bb-001-character-controller/ledge_tolerance_4.gif" alt="綠色框框是抓取判定範圍，注意看人原本看起來已經掉下去了，但判定夠大可以抓回去" /></p>
-<h1 id="最後"><a class="markdownIt-Anchor" href="#最後"></a> 最後</h1>
-<p>我個人認為比較泛用的「移動」和「跳躍」的知識點都寫在這了。<br />
-實務上還會依據個別遊戲的不同去強化輔助不同的功能，不過核心理念都一樣，就是<br />
+<h1 id="結語"><a class="markdownIt-Anchor" href="#結語"></a> 結語</h1>
+<p>我個人認為比較泛用的「移動」和「跳躍」的知識點都寫在這了。</p>
+<p>實務上還會依據個別遊戲的不同去強化輔助不同的功能，不過核心理念都一樣，就是<br />
 「不要讓玩家被非刻意設計的小瑕疵卡住，讓玩家把時間花在開發者刻意設計的挑戰才是最重要的事」。</p>
-<h1 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h1>
+<blockquote>
+<p>但也不是說把以上知識全部做到就能讓所有玩家滿意，實際上也是有玩家覺得 Bionic Bay 的操作很滑很爛，這裡就直接引用我朋友說的：<br />
+「往好處想就是沒寫這堆功能就更爛」。<br />
+舉例來說光<strong>速度參數</strong>和<strong>跳躍曲線</strong>的選擇就一定會分好幾派了，你不可能滿足所有人。<s>除非你做一個可以自由調整參數的遊戲</s></p>
+</blockquote>
+<h1 id="參考資料和補充"><a class="markdownIt-Anchor" href="#參考資料和補充"></a> 參考資料和補充</h1>
 <p>礙於篇幅，我只整理了我覺得重要的知識點，有空的話可以直接看參考資料本身，他們都講得非常詳盡，一定對開發有幫助。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a></li>
@@ -649,16 +671,11 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HCnZhs-92j0">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a></li>
 <li><a target="_blank" rel="noopener" href="https://forums.tigsource.com/index.php?topic=46289.1040">Leilani’s Island Devlog</a></li>
 </ul>
-
+<!-- flag of hidden posts -->
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
-            
-              <a href="/posts/51246/" target="_self">
-                <i class="iconfont icon-chevronleft"></i>
-                <span>Prev</span>
-              </a>
             
           </div>
           <div class="post-attach">
@@ -671,8 +688,8 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
                     <i class="iconfont icon-tags" title="Tags"></i>
                     
                     <span class="span--tag">
-                      <a href="/tags/Unity/" title="Unity">
-                        <b>#</b> Unity
+                      <a href="/tags/Bionic-Bay/" title="Bionic Bay">
+                        <b>#</b> Bionic Bay
                       </a>
                     </span>
                     
@@ -683,14 +700,20 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
                     </span>
                     
                     <span class="span--tag">
+                      <a href="/tags/Unity/" title="Unity">
+                        <b>#</b> Unity
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
                       <a href="/tags/Physics/" title="Physics">
                         <b>#</b> Physics
                       </a>
                     </span>
                     
                     <span class="span--tag">
-                      <a href="/tags/Bionic-Bay/" title="Bionic Bay">
-                        <b>#</b> Bionic Bay
+                      <a href="/tags/BB-devlog/" title="BB-devlog">
+                        <b>#</b> BB-devlog
                       </a>
                     </span>
                     
@@ -710,7 +733,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AA%E6%98%AF%E5%80%8B-2d-%E9%81%8A%E6%88%B2%E7%9A%84%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E6%98%AF%E8%83%BD%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 只是個 2D 遊戲的角色控制是能多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8B%95%E8%88%87%E8%B7%B3%E8%BA%8D%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 移動與跳躍？是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B0%B4%E5%B9%B3%E7%A7%BB%E5%8B%95%E7%9A%84%E9%80%9F%E5%BA%A6%E5%8F%83%E6%95%B8"><span class="toc-text"> 1. 水平移動的速度參數</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#castlevania-%E6%83%A1%E9%AD%94%E5%9F%8E"><span class="toc-text"> Castlevania 惡魔城</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bros-%E8%B6%85%E7%B4%9A%E7%91%AA%E5%88%A9%E6%AD%90%E5%85%84%E5%BC%9F"><span class="toc-text"> Super Mario Bros 超級瑪利歐兄弟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo"><span class="toc-text"> LIMBO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%89%E5%90%91%E5%8A%A0%E9%80%9F%E5%BA%A6turn-acceleration"><span class="toc-text"> 轉向加速度（Turn Acceleration）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%BA%8D%E9%80%9F%E5%BA%A6-%E9%AB%98%E5%BA%A6%E8%88%87%E9%87%8D%E5%8A%9Bgravity"><span class="toc-text"> 2. 跳躍速度、高度與重力（Gravity）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8-2"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy-2"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo-2"><span class="toc-text"> LIMBO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC-2"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%AF%E6%8E%A7%E5%88%B6%E7%9A%84%E8%B7%B3%E8%BA%8D%E9%AB%98%E5%BA%A6variable-height"><span class="toc-text"> 3. 可控制的跳躍高度（Variable Height）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E4%B8%8A%E5%8D%87%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E6%AD%B8%E9%9B%B6"><span class="toc-text"> 放開時，上升速度直接歸零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8F%E6%99%82%E6%8C%81%E7%BA%8C%E7%B5%A6%E4%BA%88%E5%90%91%E4%B8%8A%E7%9A%84%E5%8A%9B"><span class="toc-text"> 按住時，持續給予向上的力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E7%B5%A6%E4%BA%88%E4%B8%80%E5%80%8B%E5%90%91%E4%B8%8B%E7%9A%84%E5%8A%9Bdown-gravity"><span class="toc-text"> 放開時，給予一個向下的力（Down Gravity）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-coyote-time-edge-jump-%E7%9F%AD%E6%99%82%E9%96%93%E5%AE%B9%E8%A8%B1%E9%9B%A2%E5%9C%B0%E5%BE%8C%E8%B7%B3%E8%BA%8D"><span class="toc-text"> 4. Coyote Time &#x2F; Edge Jump （短時間容許離地後跳躍）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%B7%B3%E8%BA%8D%E8%BC%B8%E5%85%A5%E7%B7%A9%E8%A1%9D-jump-buffering-jump-cache"><span class="toc-text"> 5. 跳躍輸入緩衝 （Jump Buffering &#x2F; Jump Cache）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E9%81%A9%E6%87%89-collider-hitbox-pinching-%E9%9A%8E%E6%A2%AF%E8%99%95%E7%90%86"><span class="toc-text"> 6. 自適應 Collider &#x2F; Hitbox Pinching &#x2F; 階梯處理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%89%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text"> 應用案例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%82%8A%E7%B7%A3%E5%81%B5%E6%B8%AC%E8%88%87%E8%90%BD%E5%9C%B0%E6%A0%A1%E6%AD%A3"><span class="toc-text"> 7. 邊緣偵測與落地校正</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%BE%8C"><span class="toc-text"> 最後</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-text"> 參考資料</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%AA%E6%98%AF%E5%80%8B-2d-%E9%81%8A%E6%88%B2%E7%9A%84%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E6%98%AF%E8%83%BD%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 只是個 2D 遊戲的角色控制是能多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8B%95%E8%88%87%E8%B7%B3%E8%BA%8D%E6%98%AF%E8%83%BD%E6%9C%89%E5%A4%9A%E8%A4%87%E9%9B%9C"><span class="toc-text"> 移動與跳躍？是能有多複雜？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B0%B4%E5%B9%B3%E7%A7%BB%E5%8B%95%E7%9A%84%E9%80%9F%E5%BA%A6%E5%8F%83%E6%95%B8"><span class="toc-text"> 1. 水平移動的速度參數</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#castlevania-%E6%83%A1%E9%AD%94%E5%9F%8E"><span class="toc-text"> Castlevania 惡魔城</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bros-%E8%B6%85%E7%B4%9A%E7%91%AA%E5%88%A9%E6%AD%90%E5%85%84%E5%BC%9F"><span class="toc-text"> Super Mario Bros 超級瑪利歐兄弟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo"><span class="toc-text"> LIMBO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%89%E5%90%91%E5%8A%A0%E9%80%9F%E5%BA%A6turn-acceleration"><span class="toc-text"> 轉向加速度（Turn Acceleration）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%B7%B3%E8%BA%8D%E9%80%9F%E5%BA%A6-%E9%AB%98%E5%BA%A6%E8%88%87%E9%87%8D%E5%8A%9Bgravity"><span class="toc-text"> 2. 跳躍速度、高度與重力（Gravity）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%BE%E6%AC%BE%E7%B6%93%E5%85%B8%E6%A9%AB%E5%90%91%E9%81%8A%E6%88%B2%E7%9A%84%E5%8F%83%E6%95%B8-2"><span class="toc-text"> 幾款經典橫向遊戲的參數</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#super-meat-boy-2"><span class="toc-text"> Super Meat Boy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super-mario-bro"><span class="toc-text"> Super Mario Bro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limbo-2"><span class="toc-text"> LIMBO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B8%E5%80%BC%E8%A1%A8%E6%A0%BC-2"><span class="toc-text"> 數值表格</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%AF%E6%8E%A7%E5%88%B6%E7%9A%84%E8%B7%B3%E8%BA%8D%E9%AB%98%E5%BA%A6variable-height"><span class="toc-text"> 3. 可控制的跳躍高度（Variable Height）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E4%B8%8A%E5%8D%87%E9%80%9F%E5%BA%A6%E7%9B%B4%E6%8E%A5%E6%AD%B8%E9%9B%B6"><span class="toc-text"> 放開時，上升速度直接歸零</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8F%E6%99%82%E6%8C%81%E7%BA%8C%E7%B5%A6%E4%BA%88%E5%90%91%E4%B8%8A%E7%9A%84%E5%8A%9B"><span class="toc-text"> 按住時，持續給予向上的力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BE%E9%96%8B%E6%99%82%E7%B5%A6%E4%BA%88%E4%B8%80%E5%80%8B%E5%90%91%E4%B8%8B%E7%9A%84%E5%8A%9Bdown-gravity"><span class="toc-text"> 放開時，給予一個向下的力（Down Gravity）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-coyote-time-edge-jump-%E7%9F%AD%E6%99%82%E9%96%93%E5%AE%B9%E8%A8%B1%E9%9B%A2%E5%9C%B0%E5%BE%8C%E8%B7%B3%E8%BA%8D"><span class="toc-text"> 4. Coyote Time &#x2F; Edge Jump （短時間容許離地後跳躍）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E8%B7%B3%E8%BA%8D%E8%BC%B8%E5%85%A5%E7%B7%A9%E8%A1%9D-jump-buffering-jump-cache"><span class="toc-text"> 5. 跳躍輸入緩衝 （Jump Buffering &#x2F; Jump Cache）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E8%87%AA%E9%81%A9%E6%87%89-collider-hitbox-pinching-%E9%9A%8E%E6%A2%AF%E8%99%95%E7%90%86"><span class="toc-text"> 6. 自適應 Collider &#x2F; Hitbox Pinching &#x2F; 階梯處理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%87%89%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text"> 應用案例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%82%8A%E7%B7%A3%E5%81%B5%E6%B8%AC%E8%88%87%E8%90%BD%E5%9C%B0%E6%A0%A1%E6%AD%A3"><span class="toc-text"> 7. 邊緣偵測與落地校正</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B5%90%E8%AA%9E"><span class="toc-text"> 結語</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99%E5%92%8C%E8%A3%9C%E5%85%85"><span class="toc-text"> 參考資料和補充</span></a></li></ol>
     </div>
   </div>
 
@@ -1024,7 +1047,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Character%20Controller%20for%202D%20Platformer + '&url=' + https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F61013%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=%E5%81%9A%E5%A5%BD%202D%20%E5%B9%B3%E5%8F%B0%E8%B7%B3%E8%BA%8D%E9%81%8A%E6%88%B2%EF%BC%8C%E5%BE%9E%E8%A7%92%E8%89%B2%E6%8E%A7%E5%88%B6%E9%96%8B%E5%A7%8B%20_BB001&url=https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F61013%2F" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
