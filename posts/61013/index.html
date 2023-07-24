@@ -535,11 +535,41 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 這個「輔助功能」直接看 Celeste 的 GIF 圖就能懂了：<br />
 <img src="https://miro.medium.com/v2/resize:fit:640/1*j8PBeydkE6_vaytVHFcZ6Q.gif" alt="人物已經離開地面了才跳躍" /><br />
 <em>圖片出處：<a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste &amp; Forgiveness</a></em></p>
-<p>硬要說明的話就是「當角色離地後 N 毫秒內仍可以進行跳躍動作」。<br />
-實作很單純，把<strong>可跳躍判定</strong>從 <code>IsGrounded</code> 換成 <code>CoyoteTime &gt; 0</code> 就好。<br />
-而 <code>CoyoteTime</code> 會在 <code>IsGrounded == false</code> 的時候持續倒數，若 <code>IsGrounded == true</code> 會將其設定為 N 毫秒。</p>
+<p>硬要說明的話就是「當角色離地後 N 毫秒內仍可以進行跳躍動作」。</p>
+<p>這個實作非常簡單，以 C# 寫個範例碼，假設這是原本的角色跳躍寫法：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">// 每幀更新呼叫此方法</span>
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+  <span class="token class-name"><span class="token keyword">bool</span></span> isGrounded <span class="token operator">=</span> <span class="token function">CheckGround</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 檢測角色目前是否站在地面上</span>
+  <span class="token class-name"><span class="token keyword">bool</span></span> inputJump <span class="token operator">=</span> <span class="token function">GetInputJump</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 是否按下跳躍鍵</span>
+
+  <span class="token comment">// 如果在地面上並且按下跳躍鍵，即可執行跳躍</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isGrounded <span class="token operator">&amp;&amp;</span> inputJump<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">Jump</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>把<strong>可跳躍判定</strong>從 <code>isGrounded</code> 換成 <code>coyoteTime &gt; 0</code> 就好，如下：</p>
+<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">const</span> <span class="token class-name"><span class="token keyword">float</span></span> TOLERANCE <span class="token operator">=</span> <span class="token number">0.05f</span><span class="token punctuation">;</span> <span class="token comment">// 離地後有 0.05 秒的時間容許跳躍</span>
+<span class="token class-name"><span class="token keyword">float</span></span> m_CoyoteTime<span class="token punctuation">;</span> <span class="token comment">// coyote time 的剩餘時間</span>
+
+<span class="token comment">// 每幀更新呼叫此方法</span>
+<span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Update</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+  <span class="token class-name"><span class="token keyword">bool</span></span> isGrounded <span class="token operator">=</span> <span class="token function">CheckGround</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 檢測角色目前是否站在地面上</span>
+  <span class="token class-name"><span class="token keyword">bool</span></span> inputJump <span class="token operator">=</span> <span class="token function">GetInputJump</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 是否按下跳躍鍵</span>
+  
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isGrounded<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    m_CoyoteTime <span class="token operator">=</span> TOLERANCE<span class="token punctuation">;</span> <span class="token comment">// 站在地面上就設定 coyote time</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    m_CoyoteTime <span class="token operator">-=</span> Time<span class="token punctuation">.</span>deltaTime<span class="token punctuation">;</span> <span class="token comment">// 如果沒有站在地面上就開始倒數</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token comment">// 如果 coyote time 還沒倒數至 0 並且按下跳躍鍵，即可執行跳躍</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>m_CoyoteTime <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> inputJump<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">Jump</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
-<p>我認為這真的是一個實作超級簡單，效果又超棒的功能。很多新手專案只要加入這個，平台之間的跳躍體驗就大幅上升。</p>
+<p>我認為這真的是一個實作超級簡單，效果又超棒的功能。很多遊戲只要加入這個，平台之間的跳躍體驗就大幅上升。<br />
+<s>對我就是在說 Metroid Dread</s></p>
 </blockquote>
 <h1 id="5-跳躍輸入緩衝-jump-buffering-jump-cache"><a class="markdownIt-Anchor" href="#5-跳躍輸入緩衝-jump-buffering-jump-cache"></a> 5. 跳躍輸入緩衝 （Jump Buffering / Jump Cache）</h1>
 <p>為你的<strong>跳躍輸入按鍵</strong>加入緩衝（buffer），就是<br />
@@ -659,7 +689,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <p>礙於篇幅，我只整理了我覺得重要的知識點，有空的話可以直接看參考資料本身，他們都講得非常詳盡，一定對開發有幫助。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bu-RbmjvltU">使玩家感覺良好 – 《Dead Cells》開發回顧</a></li>
+<li><a target="_blank" rel="noopener" href="https://gmtk.itch.io/platformer-toolkit">GMTK Platformer Toolkit</a></li>
 <li>Celeste 系列
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/NoelFB/Celeste">Source Code</a></li>
@@ -668,7 +698,14 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 </ul>
 </li>
 <li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HCnZhs-92j0">Forgiveness Mechanics: Reading Minds for Responsive Gameplay</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bu-RbmjvltU">使玩家感覺良好 – 《Dead Cells》開發回顧</a></li>
+<li><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/physics/kinematic-character-controller-99131">Kinematic Character Controller (Asset Store)</a></li>
+</ul>
+<p>雖然文章內沒有引用，但我覺得還是值得一看的資料：</p>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://forums.tigsource.com/index.php?topic=46289.1040">Leilani’s Island Devlog</a></li>
+<li><a target="_blank" rel="noopener" href="https://home.gamer.com.tw/artwork.php?sn=5125027">遊戲開發日誌 #8 系統移轉、Coyote Time、轉角補正 etc.</a> &lt;— 寫這一篇的時候翻到一個有為青年的獨立開發日誌，幫推</li>
+<li><a target="_blank" rel="noopener" href="http://higherorderfun.com/blog/2012/05/20/the-guide-to-implementing-2d-platformers/">The guide to implementing 2D platformers</a></li>
 </ul>
 <!-- flag of hidden posts -->
       </div>
