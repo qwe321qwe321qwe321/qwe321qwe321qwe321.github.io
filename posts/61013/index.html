@@ -14,19 +14,23 @@
 <meta property="og:description" content="介紹一下優秀 2D 平台跳躍遊戲的角色控制會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/01.png">
-<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/platformer_toolkit_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_2.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000611.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_castle.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000715.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_smb.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000735.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_mario.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T000803.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/horizontal_movement_limbo.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T002243.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/super_meat_boy_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/super_meat_boy_2.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T002341.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/jump_var_1.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004744.png">
-<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T004033.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/down_gravity_1.gif">
 <meta property="og:image" content="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011340.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/bb-001-character-controller/2023-07-23T011614.png">
@@ -246,13 +250,18 @@ MathJax = {
                 
               </span>
           
+        <div>
+        <span class="post-wordcount">6.1k words / 21-minute read</span>
+        </div>
       </div>
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p><em>文長注意，電腦版網頁右側有目錄，手機版在右上角有目錄按鈕。</em></p>
 <p>這是第一篇有關《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1928690/Bionic_Bay/">Bionic Bay: 換影循跡</a>》的開發日誌，想了一下還是從最基本的<strong>角色控制</strong>（Character Controller）開始介紹好了。</p>
 <p>不過第一篇我還是想先介紹一下優秀 2D 平台跳躍遊戲的角色控制會用到的一些通用知識，主要都是整理自網路上的學習資源和我實際在 Bionic Bay 上的應用。</p>
 <blockquote>
-<p>這篇文章純討論角色控制、角色物理，<strong>不會包含</strong>「角色動畫」、「攝影機」、「Game Feel」等等其他功能。</p>
+<p>這篇文章純討論角色控制、角色物理，<strong>不會包含</strong>「角色動畫」、「攝影機」、「Game Feel」等等其他功能。<br />
+另外雖然這篇要講的是 2D 橫向遊戲，實際上這些知識在 3D 角色控制也通用（我實作上也是從 3D 角色控制那邊偷了不少）。</p>
 </blockquote>
 <h1 id="只是個-2d-遊戲的角色控制是能多複雜"><a class="markdownIt-Anchor" href="#只是個-2d-遊戲的角色控制是能多複雜"></a> 只是個 2D 遊戲的角色控制是能多複雜？</h1>
 <p>這邊先放一段 Bionic Bay 角色控制的測試影片：</p>
@@ -381,7 +390,7 @@ MathJax = {
 <p>我相信有戰鬥系統的動作遊戲會更複雜，Bionic Bay 側重的點只有跑酷體驗所以只針對它強化。<br />
 不打算把所有功能都展開來聊，這第一篇文章會先以一個（我認為）最基本的橫向卷軸跳躍遊戲應該要處理好的系統開始介紹 – 也就是「移動」和「跳躍」。</p>
 <blockquote>
-<p>這些模組、角色物理控制也是從開案初期直到最近幾個月都還有持續調整的一個系統，非常有可能在我介紹完以後又有功能大幅修改。</p>
+<p>這些模組、角色物理控制也是從開案初期（2019）直到最近幾個月都還有持續調整的一個系統，非常有可能在我介紹完以後又有功能大幅修改。</p>
 </blockquote>
 <h1 id="移動與跳躍是能有多複雜"><a class="markdownIt-Anchor" href="#移動與跳躍是能有多複雜"></a> 移動與跳躍？是能有多複雜？</h1>
 <p>2D 橫向卷軸 / 平台跳躍遊戲是一個非常容易入門的類型，但非常可惜的是有太多案例是連最基本的這兩件事情都沒做好，不太確定到底是線上的教學參差不齊還是有什麼問題。因為要做好這件事情基本上也不會涉及什麼很難懂的概念或實作，都單純是「如果你沒有做，那只是因為你不知道可以這樣做」的知識而已。</p>
@@ -393,13 +402,13 @@ MathJax = {
 <p>另外推薦一個很少看過有人分享的參考資料：<a target="_blank" rel="noopener" href="http://martinf.dk/jump/">You Say Jump, I Say How High?</a>，是一篇 2015 年發表專門研究 2D 平台跳躍遊戲的跳躍和移動參數的論文，他本身就提及很多 know-how 了，然後嚴謹程度是從「定義參數」、「測量參數的方法」到「測量得出幾款經典遊戲的移動、跳躍參數」，都超爆幹詳細的那種，很值得讀。</p>
 <p>接下來我就借用一下這個 Toolkit 和那篇論文來介紹幾個重要知識點。</p>
 <h1 id="1-水平移動的速度參數"><a class="markdownIt-Anchor" href="#1-水平移動的速度參數"></a> 1. 水平移動的速度參數</h1>
-<p><img src="/images/bb-001-character-controller/horizontal_movement_1.png" alt="Platformer Toolkit 的速度設定畫面" /><br />
+<p><img src="/images/bb-001-character-controller/platformer_toolkit_1.gif" alt="Platformer Toolkit 的速度設定畫面" /><br />
 最基本的東西，讓你的角色左右移動的時候會有比較順滑自然的感受，幾乎每一個橫向卷軸遊戲都會有自己一套參數組。</p>
 <p>我常用的參數跟 GMTK 一致，分別有：</p>
 <ul>
 <li>最高速度（Max Speed）：就可控制的上限速度。</li>
-<li>加速度（acceleration）： 在速度 0 到最高速度之間，方向鍵持續按住的情況下的加速度（每秒提升多少速度）。</li>
-<li>減速度（deceleration）： 在速度 0 到最高速度之間，放開方向鍵時的減速度（每秒降低多少速度）。</li>
+<li>加速度（Acceleration）： 在速度 0 到最高速度之間，方向鍵持續按住的情況下的加速度（每秒提升多少速度）。</li>
+<li>減速度（Deceleration）： 在速度 0 到最高速度之間，放開方向鍵時的減速度（每秒降低多少速度）。</li>
 <li>轉向加速度（Turn Acceleration 或 Turn Speed）：當目前角色移動方向與輸入方向不同的時候的加速度。</li>
 </ul>
 <p>然後 GMTK 這裡在空中移動時的水平移動參數是用另一組，分別是 Air Acceleration 、 Air Control 、Air Brake。<br />
@@ -418,17 +427,21 @@ MathJax = {
 <p>這裡引用論文數據，圖中橘線表示按鍵按下去的時間點，綠線代表放開的時間點。</p>
 <h3 id="castlevania-惡魔城"><a class="markdownIt-Anchor" href="#castlevania-惡魔城"></a> Castlevania 惡魔城</h3>
 <p><img src="/images/bb-001-character-controller/2023-07-23T000611.png" alt="" /><br />
+<img src="/images/bb-001-character-controller/horizontal_movement_castle.gif" alt="用 Platformer Toolkit 模擬 Castlevania 效果" /><br />
 典型的只有全速和零速度的設計，相當於加速度、減速度都無限大。<br />
 早年重戰鬥的動作遊戲都這樣（沒記錯的話洛克人也是），好處是反應速度快，可控性高。</p>
 <h3 id="super-meat-boy"><a class="markdownIt-Anchor" href="#super-meat-boy"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/40800/Super_Meat_Boy/">Super Meat Boy</a></h3>
 <p><img src="/images/bb-001-character-controller/2023-07-23T000715.png" alt="" /><br />
+<img src="/images/bb-001-character-controller/horizontal_movement_smb.gif" alt="用 Platformer Toolkit 模擬 Super Meat Boy 效果" /><br />
 Super Meat Boy 採用低加速度的設計，讓玩家有一個累積速度的過程。<br />
 特別的是他的減速度無限大，代表你手一放開就停止了，這個設計怪怪的比較像 bug ，晚點會提。</p>
 <h3 id="super-mario-bros-超級瑪利歐兄弟"><a class="markdownIt-Anchor" href="#super-mario-bros-超級瑪利歐兄弟"></a> Super Mario Bros 超級瑪利歐兄弟</h3>
 <p><img src="/images/bb-001-character-controller/2023-07-23T000735.png" alt="" /><br />
+<img src="/images/bb-001-character-controller/horizontal_movement_mario.gif" alt="用 Platformer Toolkit 模擬 Mario 效果" /><br />
 瑪利歐就是典型的低加速低減速的超高慣性運動，會讓人有很滑很飄的控制感。</p>
 <h3 id="limbo"><a class="markdownIt-Anchor" href="#limbo"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/48000/LIMBO/">LIMBO</a></h3>
 <p><img src="/images/bb-001-character-controller/2023-07-23T000803.png" alt="" /><br />
+<img src="/images/bb-001-character-controller/horizontal_movement_limbo.gif" alt="用 Platformer Toolkit 模擬 LIMBO 效果" /><br />
 LIMBO 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更可控一點。<br />
 但它的數據比較特別的是最大速度和加速度都會受到輸入的值影響，而且不是線性成長。</p>
 <h3 id="轉向加速度turn-acceleration"><a class="markdownIt-Anchor" href="#轉向加速度turn-acceleration"></a> 轉向加速度（Turn Acceleration）</h3>
@@ -468,7 +481,7 @@ LIMBO 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更�
 <img src="/images/bb-001-character-controller/2023-07-23T004744.png" alt="Mario 和 Braid 就明顯有 Terminal Velocity 存在。" /></p>
 <p><em>（Platformer Toolkit 把 Terminal Velocity 參數放在 Assists 類別）</em></p>
 <p>而這部分也沒什麼其他參數了，Toolkit 裡面是多附贈了一個 <strong>Down Gravity</strong> 參數，是讓你墜落時所受到的重力加速度比上升中還要大，使得落地時間減少。<br />
-<img src="/images/bb-001-character-controller/2023-07-23T004033.png" alt="在 Platformer Toolkit 中你可以拉動 Down Gravity 拉桿使得角色墜落更快" /><br />
+<img src="/images/bb-001-character-controller/down_gravity_1.gif" alt="在 Platformer Toolkit 中你可以拉動 Down Gravity 拉桿使得角色墜落更快" /><br />
 我自己沒有很喜歡這種重力感就沒實作在 Bionic Bay 上。<br />
 例如 <a target="_blank" rel="noopener" href="https://maddythorson.medium.com/celeste-forgiveness-31e4a40399f1">Celeste 就有用這招</a>，不過他的本意是反過來 – 「讓起跳上升期間的重力減半」，而且效果很輕微，因為它本身的 Terminal Velocity 很低（很快就進入等速墜落）所以它用這個的代價也很低。<br />
 <img src="https://miro.medium.com/v2/resize:fit:640/1*70K9UUcWBHmvfHFpaY4v1w.gif" alt="" /><br />
@@ -677,11 +690,11 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <p>慢動作看：<br />
 <img src="/images/bb-001-character-controller/ledge_tolerance_4.gif" alt="綠色框框是抓取判定範圍，注意看人原本看起來已經掉下去了，但判定夠大可以抓回去" /></p>
 <h1 id="結語"><a class="markdownIt-Anchor" href="#結語"></a> 結語</h1>
-<p>我個人認為比較泛用的「移動」和「跳躍」的知識點都寫在這了。</p>
+<p>我個人認為比較<strong>通用</strong>的「移動」和「跳躍」的知識點都寫在這了。</p>
 <p>實務上還會依據個別遊戲的不同去強化輔助不同的功能，不過核心理念都一樣，就是<br />
 「不要讓玩家被非刻意設計的小瑕疵卡住，讓玩家把時間花在開發者刻意設計的挑戰才是最重要的事」。</p>
 <blockquote>
-<p>但也不是說把以上知識全部做到就能讓所有玩家滿意，實際上也是有玩家覺得 Bionic Bay 的操作很滑很爛，這裡就直接引用我朋友說的：<br />
+<p>但也不是說把以上知識全部做到就能讓所有玩家滿意，實際上也是有玩家覺得 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1928690/Bionic_Bay/">《Bionic Bay: 換影循跡》</a> 的操作很滑很爛，這裡就直接引用我朋友說的：<br />
 「往好處想就是沒寫這堆功能就更爛」。<br />
 舉例來說光<strong>速度參數</strong>和<strong>跳躍曲線</strong>的選擇就一定會分好幾派了，你不可能滿足所有人。<s>除非你做一個可以自由調整參數的遊戲</s></p>
 </blockquote>
@@ -704,9 +717,12 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <p>雖然文章內沒有引用，但我覺得還是值得一看的資料：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://forums.tigsource.com/index.php?topic=46289.1040">Leilani’s Island Devlog</a></li>
-<li><a target="_blank" rel="noopener" href="https://home.gamer.com.tw/artwork.php?sn=5125027">遊戲開發日誌 #8 系統移轉、Coyote Time、轉角補正 etc.</a> &lt;— 寫這一篇的時候翻到一個有為青年的獨立開發日誌，幫推</li>
+<li><a target="_blank" rel="noopener" href="https://home.gamer.com.tw/artwork.php?sn=5125027">遊戲開發日誌 #8 系統移轉、Coyote Time、轉角補正 etc.</a> &lt;— 寫這篇的時候翻到一個有為青年的獨立開發日誌，幫推</li>
 <li><a target="_blank" rel="noopener" href="http://higherorderfun.com/blog/2012/05/20/the-guide-to-implementing-2d-platformers/">The guide to implementing 2D platformers</a></li>
+<li><a target="_blank" rel="noopener" href="https://catlikecoding.com/unity/tutorials/movement/">Unity Movement Tutorials - Catlike Coding</a></li>
 </ul>
+<hr />
+<p>下一篇開發日誌預計會寫更特定主題、特定遊戲才適用的功能實作。</p>
 <!-- flag of hidden posts -->
       </div>
       
