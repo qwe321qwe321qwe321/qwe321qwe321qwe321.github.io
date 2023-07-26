@@ -13,9 +13,14 @@
 }
 
 .post-toc li {
-    list-style-type: square;
+    list-style-type: circle;
     margin: 0;
     padding: 0;
+}
+
+div.post-toc-body.markdown-body {
+    margin: 10px;
+    font-size: 1.4rem;
 }
 
 .post-toc a {
@@ -28,5 +33,10 @@ div.img-alt {
     display: inline-block;
     width: 100%;
     text-align: center;
-    text-decoration: none
+    text-decoration: none;
+    color: var(--color-text-a);
+}
+
+.post-wordcount {
+    font-weight: 400;
 }
