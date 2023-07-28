@@ -32,9 +32,6 @@
   <title>CI in Unity using Github Actions 使用 Github Actions 自動化測試建置 Unity 專案 | PE工具箱</title>
 
   
-    <link rel="apple-touch-icon" href="/melody-favicon.ico">
-    <link rel="icon" href="/melody-favicon.ico">
-  
 
   <!-- Raleway-Font -->
   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
@@ -101,7 +98,7 @@
     <ul>
       
         <li class="nav-item" data-path="/">
-          <a href="/">Home</a>
+          <a href="/">home</a>
         </li>
       
         <li class="nav-item" data-path="/archives/">
@@ -113,7 +110,7 @@
         </li>
       
         <li class="nav-item" data-path="/portfolio/">
-          <a href="/portfolio/">Portfolio</a>
+          <a href="/portfolio/">portfolio</a>
         </li>
       
         <li class="nav-item" data-path="/about/">
@@ -199,7 +196,7 @@ MathJax = {
       
 <div class="post-toc-body markdown-body">
     <details>
-        <summary>目錄</summary>
+        <summary>Contents</summary>
         <div class="post-toc">
         <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text"> 前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#the-issues-of-ci-in-unity"><span class="post-toc-text"> The issues of CI in Unity</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8E%88%E6%AC%8A-activation-license"><span class="post-toc-text"> 授權 Activation License</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#github-action"><span class="post-toc-text"> Github Action</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#usage"><span class="post-toc-text"> Usage</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#trigger-methods"><span class="post-toc-text"> Trigger Methods</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-%E5%AE%89%E8%A3%9Drequest-activation-file%E4%B8%A6%E6%89%8B%E5%8B%95%E6%8E%88%E6%AC%8A"><span class="post-toc-text"> 1. 安裝Request-Activation-File並手動授權</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-%E5%AE%89%E8%A3%9Dtest-runner"><span class="post-toc-text"> 2. 安裝Test-Runner</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-%E5%AE%89%E8%A3%9Dbuilder"><span class="post-toc-text"> 3. 安裝Builder</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4%E6%8A%8Arequest-activation-file%E6%94%B9%E6%88%90%E6%89%8B%E5%8B%95%E8%A7%B8%E7%99%BC"><span class="post-toc-text"> 4.把Request-Activation-File改成手動觸發</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%88%90%E6%9E%9C%E7%95%AB%E9%9D%A2"><span class="post-toc-text"> 成果畫面</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#unit-test"><span class="post-toc-text"> Unit Test</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#build-executable"><span class="post-toc-text"> Build Executable</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#pull-request"><span class="post-toc-text"> Pull Request</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#badge"><span class="post-toc-text"> Badge</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B0%88%E6%A1%88%E7%B6%B2%E5%9D%80"><span class="post-toc-text"> 專案網址</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%BE%8C%E8%A8%98"><span class="post-toc-text"> 後記</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%83%E8%80%83%E7%B6%B2%E7%AB%99"><span class="post-toc-text"> 參考網站</span></a></li></ol>
         </div>   

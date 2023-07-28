@@ -33,9 +33,6 @@
   <title>Solve the problem of the redundant artifacts in Github Actions 清除 Github Actions 中多餘的 Artifacts | PE工具箱</title>
 
   
-    <link rel="apple-touch-icon" href="/melody-favicon.ico">
-    <link rel="icon" href="/melody-favicon.ico">
-  
 
   <!-- Raleway-Font -->
   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
@@ -102,7 +99,7 @@
     <ul>
       
         <li class="nav-item" data-path="/">
-          <a href="/">Home</a>
+          <a href="/">home</a>
         </li>
       
         <li class="nav-item" data-path="/archives/">
@@ -114,7 +111,7 @@
         </li>
       
         <li class="nav-item" data-path="/portfolio/">
-          <a href="/portfolio/">Portfolio</a>
+          <a href="/portfolio/">portfolio</a>
         </li>
       
         <li class="nav-item" data-path="/about/">
@@ -200,7 +197,7 @@ MathJax = {
       
 <div class="post-toc-body markdown-body">
     <details>
-        <summary>目錄</summary>
+        <summary>Contents</summary>
         <div class="post-toc">
         <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text"> 前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%9B%AE%E6%A8%99"><span class="post-toc-text"> 目標</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9Cartifacts%E7%9A%84api"><span class="post-toc-text"> 操作Artifacts的API</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%B8%85%E9%99%A4%E8%85%B3%E6%9C%AC"><span class="post-toc-text"> 清除腳本</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%B4%E5%90%88github-actions"><span class="post-toc-text"> 整合Github Actions</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%87token%E5%8A%A0%E5%85%A5secrets"><span class="post-toc-text"> 將Token加入Secrets</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#shell-script"><span class="post-toc-text"> Shell Script</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#action-configyaml"><span class="post-toc-text"> Action Config(YAML)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%88%E7%9C%8B%E7%9C%8B%E6%88%90%E6%9E%9C"><span class="post-toc-text"> 先看看成果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%BB%E5%8A%A0purging-action"><span class="post-toc-text"> 添加Purging Action</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%88%90%E6%9E%9C"><span class="post-toc-text"> 成果</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%B0%88%E6%A1%88%E7%B6%B2%E5%9D%80"><span class="post-toc-text"> 專案網址</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%8F%83%E8%80%83%E7%B6%B2%E7%AB%99"><span class="post-toc-text"> 參考網站</span></a></li></ol>
         </div>   
