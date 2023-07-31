@@ -248,7 +248,7 @@ MathJax = {
               </span>
           
         <div style="margin-top: 10px">
-        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 6.7k words / 23-minute read</span>
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 6.8k words / 24-minute read</span>
         </div>
       </div>
       
@@ -484,8 +484,8 @@ LIMBO 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更�
 <p><strong>起跳速度</strong>（Takeoff Velocity）和<strong>跳躍高度</strong>算是同一個參數的兩個不同表示形式，因為你已知重力加速度（g）多少就能將兩者直接轉換。<br />
 <img src="/images/bb-001-character-controller/jump_var_1.gif" alt="" /><br />
 一般建議直接以「跳躍高度」作為參數來設定會比較好，因為它比較直觀，而且也與關卡設計息息相關。</p>
-<p>而重力本身更單純，通常就只是個固定 g 值（現實是 9.81 m/s），一直持續施加在角色的垂直速度上。<br />
-稍微值得提的是有些遊戲會有所謂 <strong>Terminal Velocity</strong> ，代表<strong>最高的下墜速度</strong>，角色下墜不會比這個速度更快。<br />
+<p>而重力本身更單純，通常就只是個固定 g 值（現實是 9.81 m/s，遊戲內要看你的單位比例和你想達到的效果來設計），一直持續施加在角色的垂直速度上。<br />
+稍微值得提的是有些遊戲會有所謂 <strong>Terminal Velocity</strong> ，代表<strong>最高的下墜速度</strong>，就是說角色下墜速度絕對不會比這個速度更快。<br />
 <img src="/images/bb-001-character-controller/2023-07-23T004744.png" alt="Mario 和 Braid 就明顯有 Terminal Velocity 存在。" /></p>
 <p><em>（Platformer Toolkit 把 Terminal Velocity 參數放在 Assists 類別）</em></p>
 <p>而這部分也沒什麼其他參數了，Toolkit 裡面是多附贈了一個 <strong>Down Gravity</strong> 參數，是讓你墜落時所受到的重力加速度比上升中還要大，使得落地時間減少。<br />
@@ -505,7 +505,7 @@ LIMBO 跟瑪利歐設計一樣是加減速一致，但強度比較高所以更�
 <p><img src="/images/bb-001-character-controller/2023-07-23T011614.png" alt="瑪利歐的起跳速度與當前水平速度掛勾" /><br />
 瑪利歐有個很妙的設計 – 你水平移動速度越快就能跳得越高，就是在鼓勵你全速移動、助跑跳高。</p>
 <blockquote>
-<p>至於你可能會發現瑪利歐的曲線是<strong>非對稱</strong>的，這代表它也有 Down Gravity 嗎？（在 Platformer Toolkit 的瑪利歐 preset 中是把它當成是有 Down Gravity 的設計）<br />
+<p>至於你可能會發現瑪利歐的曲線是<strong>非對稱</strong>的（最高點稍微往右偏），這代表它也有 Down Gravity 嗎？（在 Platformer Toolkit 的瑪利歐 preset 中是把它當成是有 Down Gravity 的設計）<br />
 先說結論，它<strong>並沒有 Down Gravity</strong>。真正的原因是下面會提到的「可控制跳躍高度」設計。</p>
 </blockquote>
 <h3 id="limbo-2"><a class="markdownIt-Anchor" href="#limbo-2"></a> LIMBO</h3>
@@ -518,7 +518,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <img src="/images/bb-001-character-controller/2023-07-23T013515.png" alt="藍線是假設不包含向前速度的跳躍曲線，紅色是實際加上了向前速度的跳躍曲線" /><br />
 雖然幅度不大，但它可以讓你在前跳的時候獲得一定量向前的速度。</p>
 <blockquote>
-<p>你可能又會發現 LIMBO 的跳躍曲線也是<strong>非對稱</strong>的，這是因為它有空氣摩擦力（Air Friction）設計導致水平移動的速度會被抑制。</p>
+<p>你可能又會發現 LIMBO 的跳躍曲線也是<strong>非對稱</strong>的，這是因為它有空氣摩擦力（Air Friction）設計，它會讓角色在空中的水平移動的速度持續衰減。</p>
 </blockquote>
 <h3 id="數值表格-2"><a class="markdownIt-Anchor" href="#數值表格-2"></a> 數值表格</h3>
 <p><img src="/images/bb-001-character-controller/2023-07-23T015404.png" alt="各個經典 2D Platformer 的起跳速度與重力參數表格" /></p>
@@ -590,7 +590,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>我認為這真的是一個實作超級簡單，效果又超棒的功能。很多遊戲只要加入這個，平台之間的跳躍體驗就大幅上升。<br />
-不過雖然知識和實作都超簡單，也還是有大 IP 作品沒實作這件事情（<s>對我就是在說 Metroid Dread</s>），所以你有做至少就大概 PR60 以上了。</p>
+不過雖然知識和實作都超簡單，也還是有大 IP 作品沒實作這件事情（<s>對我就是在說 Metroid Dread</s>），所以你有做至少就大概 PR70 以上了。</p>
 </blockquote>
 <h1 id="5-跳躍輸入緩衝-jump-buffering-jump-cache"><a class="markdownIt-Anchor" href="#5-跳躍輸入緩衝-jump-buffering-jump-cache"></a> 5. 跳躍輸入緩衝 （Jump Buffering / Jump Cache）</h1>
 <p>為你的<strong>跳躍輸入按鍵</strong>加入緩衝（buffer），就是<br />
@@ -622,7 +622,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <p>要解決的情境如下圖：<br />
 <img src="/images/bb-001-character-controller/2023-07-23T120748.png" alt="人物是橘色方塊要往右走，但前方有突起物" /><br />
 角色的前方有一個小突起物（階梯）擋住你的移動路徑，什麼都沒處理的話往前移動會被它卡住。</p>
-<p>有一個 Naive 解是 – 「把你的角色 Collider 換成圓角形狀（Round）」，比如說 Circle Collider 或 Capsule Collider ，這樣一來即便你直接撞上去也 <em>有機會</em> 讓物理引擎幫你解決。但這個方法的效果不夠穩定實用，而且弄不好甚至有機會在撞上去的瞬間讓你的人直接起飛。</p>
+<p>有一個 Naive 解是 – 「把你的角色 Collider 換成圓角形狀（Rounded Corners）」，比如說 Circle Collider 或 Capsule Collider ，這樣一來即便你直接撞上去也 <em>有機會</em> 讓物理引擎幫你解決。但這個方法的效果不夠穩定實用，而且弄不好甚至有機會在撞上去的瞬間讓你的人直接起飛。</p>
 <p>而這篇要介紹的穩定實用方法是「當你移動的時候縮小碰撞範圍（Hitbox）」。<br />
 如下圖把碰撞範圍縮小至黃色區域：<br />
 <img src="/images/bb-001-character-controller/2023-07-23T120844.png" alt="縮小人物碰撞範圍（高度）藉以通過突起物" /></p>
@@ -747,7 +747,7 @@ LIMBO 也承襲了瑪利歐的助跑跳高設計，不過 LIMBO 加速過程也�
 <em>如果真有下一篇的話。</em><br />
 .<br />
 光這篇就耗費了整個週末邊聽 <a target="_blank" rel="noopener" href="https://2023.tgdf.tw/">TGDF</a> 邊寫，之後一個禮拜還持續在更改內容、補圖片 etc。深深感覺到自己寫爽的紀錄文和希望分享給別人看的文章差太多了，因為怕誤導讀者所以需要各種勘誤、檢視文字用法是一件超級花時間的事，真的敬佩所有願意寫文章、演講分享的人。<br />
-所以預防針一下如果真有下一篇那也只會是記錄用的自爽文。</p>
+所以預防針一下如果真有下一篇那也只會是記錄用的自爽文，應該不會刻意在 SNS 分享。</p>
 <p>另外這一篇之後還得花時間寫成英文版，<s>希望能洗點國外開發者的好感度。</s></p>
 
       </div>
