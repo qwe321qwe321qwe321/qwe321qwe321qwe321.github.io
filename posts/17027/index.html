@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="​The purpose of this post is to show the latest case studies based on Scroll Back: The Theory and Practice of Cameras in Side-Scrollers in GDC2015. Here is the article: English 本文目的是延續一個在GDC2015的議程Scr">
+  <meta name="description" content="本篇是 2019 年撰寫的舊文紀錄，暫時還沒有計畫更新案例。  The purpose of this post is to present more case studies derived from the Scroll Back: The Theory and Practice of Cameras in Side-Scrollers presentation at GDC 2015. Y">
 <meta property="og:type" content="article">
-<meta property="og:title" content="More Examples for Practice of Cameras in Side-Scrollers (2D Platformer)">
+<meta property="og:title" content="More Examples for Practice of Cameras in Side-Scrollers (2D Platformers)">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/17027/">
 <meta property="og:site_name" content="PE工具箱">
-<meta property="og:description" content="​The purpose of this post is to show the latest case studies based on Scroll Back: The Theory and Practice of Cameras in Side-Scrollers in GDC2015. Here is the article: English 本文目的是延續一個在GDC2015的議程Scr">
+<meta property="og:description" content="本篇是 2019 年撰寫的舊文紀錄，暫時還沒有計畫更新案例。  The purpose of this post is to present more case studies derived from the Scroll Back: The Theory and Practice of Cameras in Side-Scrollers presentation at GDC 2015. Y">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/4pzimXm.gif">
 <meta property="og:image" content="https://imgur.com/h4soFCD.gif">
@@ -37,7 +37,7 @@
 
   
   
-  <title>More Examples for Practice of Cameras in Side-Scrollers (2D Platformer) | PE工具箱</title>
+  <title>More Examples for Practice of Cameras in Side-Scrollers (2D Platformers) | PE工具箱</title>
 
   
 
@@ -177,7 +177,7 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title"> More Examples for Practice of Cameras in Side-Scrollers (2D Platformer) </div>
+      <div class="post-title"> More Examples for Practice of Cameras in Side-Scrollers (2D Platformers) </div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
@@ -196,7 +196,7 @@ MathJax = {
               </span>
           
         <div style="margin-top: 10px">
-        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 355 words / 1-minute read</span>
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 414 words / 1-minute read</span>
         </div>
       </div>
       
@@ -204,29 +204,32 @@ MathJax = {
     <details>
         <summary>目錄 Table of contents</summary>
         <div class="post-toc">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#sampling-method"><span class="post-toc-text"> Sampling Method</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#case-studies-in-recent-years"><span class="post-toc-text"> Case Studies in recent years</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#celeste"><span class="post-toc-text"> Celeste</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dead-cells"><span class="post-toc-text"> Dead Cells</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#deaths-gambit"><span class="post-toc-text"> Death’s Gambit</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dungeon-muchines"><span class="post-toc-text"> Dungeon Muchines</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#hollow-knight"><span class="post-toc-text"> Hollow Knight</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#limbo"><span class="post-toc-text"> Limbo</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#momodora"><span class="post-toc-text"> Momodora</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ori-and-the-blind-foreset"><span class="post-toc-text"> Ori and the Blind Foreset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sundered"><span class="post-toc-text"> Sundered</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#tonhou-luna-night"><span class="post-toc-text"> Tonhou Luna Night</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rabi-ribi"><span class="post-toc-text"> Rabi-Ribi</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#broforce"><span class="post-toc-text"> Broforce</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#terraria"><span class="post-toc-text"> Terraria</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#starbound"><span class="post-toc-text"> Starbound</span></a></li></ol></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#recording"><span class="post-toc-text"> Recording</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#case-studies-in-recent-years"><span class="post-toc-text"> Case Studies in recent years</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#celeste"><span class="post-toc-text"> Celeste</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dead-cells"><span class="post-toc-text"> Dead Cells</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#deaths-gambit"><span class="post-toc-text"> Death’s Gambit</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dungeon-muchines"><span class="post-toc-text"> Dungeon Muchines</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#hollow-knight"><span class="post-toc-text"> Hollow Knight</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#limbo"><span class="post-toc-text"> Limbo</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#momodora"><span class="post-toc-text"> Momodora</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ori-and-the-blind-foreset"><span class="post-toc-text"> Ori and the Blind Foreset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sundered"><span class="post-toc-text"> Sundered</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#tonhou-luna-night"><span class="post-toc-text"> Tonhou Luna Night</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#rabi-ribi"><span class="post-toc-text"> Rabi-Ribi</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#broforce"><span class="post-toc-text"> Broforce</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#terraria"><span class="post-toc-text"> Terraria</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#starbound"><span class="post-toc-text"> Starbound</span></a></li></ol></li></ol>
         </div>   
     </details>
 </div>
 
 
       <div class="markdown-body">
-        <p>​The purpose of this post is to show the latest case studies based on <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a> in GDC2015.<br />
-Here is the article: <a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1iNSQIyNpVGHeak6isbP6AHdHD50gs8MNXF1GCf08efg/pub?embedded=true#h.kskmkvkk89rz">English</a></p>
-<p>本文目的是延續一個在GDC2015的議程<a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a>的個案研究，以近幾年的橫板平台遊戲的攝影機行為為例。<br />
-這裡有Johnson大的翻譯文章可以參考: <a target="_blank" rel="noopener" href="https://igdshare.org/content/gdc2015-2d-scrolling-itay-keren">中文</a></p>
-<p><em>Warning: High Data Usage by GIFs</em><br />
-<em>高流量警告: 下文有大量GIF圖</em></p>
+        <blockquote>
+<p>本篇是 2019 年撰寫的舊文紀錄，暫時還沒有計畫更新案例。</p>
+</blockquote>
+<p>The purpose of this post is to present more case studies derived from the <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a> presentation at GDC 2015.<br />
+You can read the article here: <a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1iNSQIyNpVGHeak6isbP6AHdHD50gs8MNXF1GCf08efg/pub?embedded=true#h.kskmkvkk89rz">English</a></p>
+<p>本文目的是延續 GDC 2015 的議程 <a target="_blank" rel="noopener" href="https://www.gdcvault.com/play/1022243/Scroll-Back-The-Theory-and">Scroll Back: The Theory and Practice of Cameras in Side-Scrollers</a> 的個案研究，以近幾年的橫板平台遊戲的攝影機行為為例。<br />
+這裡有 Johnson 大的翻譯文章可以參考: <a target="_blank" rel="noopener" href="https://igdshare.org/content/gdc2015-2d-scrolling-itay-keren">中文</a></p>
+<p><em>Warning: High data usage due to GIFs</em><br />
+<em>高流量警告: 下文有大量 GIF 圖</em></p>
 <span id="more"></span>
-<h1 id="sampling-method"><a class="markdownIt-Anchor" href="#sampling-method"></a> Sampling Method</h1>
-<p>The tool for recording and drawing: <a target="_blank" rel="noopener" href="https://github.com/NickeManarin/ScreenToGif/releases">ScreenToGif</a> - an open-source and lightweight software.</p>
-<p>我們並沒有精準地測量準確的位置與範圍，因為目的僅分析相機的行為模式，不研究實際數值上的變化。<br />
-We only care about the behavior of the camera instead of the changed value of the camera position. Therefore, we didn’t measure precisely, the lines and ranges are just sketched by intuition instead.</p>
+<h1 id="recording"><a class="markdownIt-Anchor" href="#recording"></a> Recording</h1>
+<p>The recording and drawing tool: <a target="_blank" rel="noopener" href="https://github.com/NickeManarin/ScreenToGif/releases">ScreenToGif</a> - an open-source and lightweight software.</p>
+<p>我們使用 <a target="_blank" rel="noopener" href="https://github.com/NickeManarin/ScreenToGif/releases">ScreenToGif</a> 這個開源的輕量錄製工具進行錄製與畫線</p>
+<p>We focused solely on the behavior of the camera rather than the numerical changes in the camera position. Therefore, we did not precisely measure; the lines and ranges were sketched based on intuition.</p>
+<p>我們並沒有精準地測量準確的位置與範圍，因為目的僅分析相機的行為模式，不研究實際數值上的變化。</p>
 <h1 id="case-studies-in-recent-years"><a class="markdownIt-Anchor" href="#case-studies-in-recent-years"></a> Case Studies in recent years</h1>
-<p>目前只考慮<strong>一般左右移動</strong>的攝影機行為，<strong>不考慮</strong>特定焦點、鎖敵、多重目標情形下的攝影機行為。<br />
-因此，有鼠標、游標、瞄準方向等會影響攝影機行為的遊戲也先<strong>不考慮</strong>。<br />
-For now, we <strong>only care</strong> about <strong>the horizontal movement</strong> of cameras and <strong>don’t care</strong> about the special camera behavior, such as focusing on the enemy, multiple targets, or a special target.<br />
-Therefore, there is <strong>no game</strong> which has a cursor, aiming arrow or aiming symbol that may affect their camera</p>
+<p>Currently, we are <strong>ONLY concerned</strong> with <strong>the horizontal movement</strong> of cameras and <strong>DO NOT consider</strong> specific camera behaviors such as focusing on an enemy, multiple targets, or a special target. As a result, games with a cursor, aiming arrow, or aiming icon that may influence camera behavior are <strong>excluded</strong> from our studies.</p>
+<p>目前只考慮<strong>一般水平移動</strong>的攝影機跟隨行為，<strong>不考慮</strong>特定焦點、鎖敵、多重跟隨目標情形下的攝影機行為。<br />
+因此有鼠標、游標、瞄準方向等會影響攝影機行為的遊戲也<strong>不會出現</strong>在本文案例之中。</p>
 <h2 id="celeste"><a class="markdownIt-Anchor" href="#celeste"></a> Celeste</h2>
 <p><img src="https://i.imgur.com/4pzimXm.gif" alt="" /></p>
 <h2 id="dead-cells"><a class="markdownIt-Anchor" href="#dead-cells"></a> Dead Cells</h2>
@@ -298,7 +301,7 @@ Therefore, there is <strong>no game</strong> which has a cursor, aiming arrow or
   <div class="post-catalog hidden" id="catalog">
     <div class="title">目錄 Table of contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sampling-method"><span class="toc-text"> Sampling Method</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#case-studies-in-recent-years"><span class="toc-text"> Case Studies in recent years</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#celeste"><span class="toc-text"> Celeste</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dead-cells"><span class="toc-text"> Dead Cells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deaths-gambit"><span class="toc-text"> Death’s Gambit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dungeon-muchines"><span class="toc-text"> Dungeon Muchines</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hollow-knight"><span class="toc-text"> Hollow Knight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#momodora"><span class="toc-text"> Momodora</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ori-and-the-blind-foreset"><span class="toc-text"> Ori and the Blind Foreset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sundered"><span class="toc-text"> Sundered</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tonhou-luna-night"><span class="toc-text"> Tonhou Luna Night</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rabi-ribi"><span class="toc-text"> Rabi-Ribi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#broforce"><span class="toc-text"> Broforce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#terraria"><span class="toc-text"> Terraria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#starbound"><span class="toc-text"> Starbound</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#recording"><span class="toc-text"> Recording</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#case-studies-in-recent-years"><span class="toc-text"> Case Studies in recent years</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#celeste"><span class="toc-text"> Celeste</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dead-cells"><span class="toc-text"> Dead Cells</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deaths-gambit"><span class="toc-text"> Death’s Gambit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dungeon-muchines"><span class="toc-text"> Dungeon Muchines</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hollow-knight"><span class="toc-text"> Hollow Knight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#limbo"><span class="toc-text"> Limbo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#momodora"><span class="toc-text"> Momodora</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ori-and-the-blind-foreset"><span class="toc-text"> Ori and the Blind Foreset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sundered"><span class="toc-text"> Sundered</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tonhou-luna-night"><span class="toc-text"> Tonhou Luna Night</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rabi-ribi"><span class="toc-text"> Rabi-Ribi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#broforce"><span class="toc-text"> Broforce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#terraria"><span class="toc-text"> Terraria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#starbound"><span class="toc-text"> Starbound</span></a></li></ol></li></ol>
     </div>
   </div>
 
@@ -369,7 +372,7 @@ Therefore, there is <strong>no game</strong> which has a cursor, aiming arrow or
     
     <div class="footer-more">
       
-        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2023 PeDev</a>
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2024 PeDev</a>
         
     </div>
   
@@ -612,7 +615,7 @@ Therefore, there is <strong>no game</strong> which has a cursor, aiming arrow or
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=More%20Examples%20for%20Practice%20of%20Cameras%20in%20Side-Scrollers%20(2D%20Platformer)&url=https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F17027%2F" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=More%20Examples%20for%20Practice%20of%20Cameras%20in%20Side-Scrollers%20(2D%20Platformers)&url=https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F17027%2F" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
