@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-tw" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="Game,Unity,Programming" />
+  <meta name="author" content="PeDev" />
+  <meta name="description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。  [以下內容還不確定能不能寫] 兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。 主要就是有一區「內部測">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Discord Webhook 來實現遊戲內 Bug 回報系統">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/13673/">
+<meta property="og:site_name" content="PE工具箱">
+<meta property="og:description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。  [以下內容還不確定能不能寫] 兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。 主要就是有一區「內部測">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/ns-dc.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/bb-ui.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/bb-dc.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/ns-ui-1.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/ns-ui-2.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/ns-dc.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-ui-1.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-ui-2.jpg">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc.jpg">
+<meta property="article:published_time" content="2024-08-02T08:14:24.000Z">
+<meta property="article:modified_time" content="2024-08-02T08:14:24.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Gamedev">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc.jpg">
+<meta name="twitter:site" content="@qwe321qwe321qwe321">
+
+  
+  
+  <title>使用 Discord Webhook 來實現遊戲內 Bug 回報系統 | PE工具箱</title><meta name="robots" content="noindex">
+
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/pedev-ext.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="/js/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JEC82CJEXT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JEC82CJEXT');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/profile/avatar.gif" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">PeDev</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首頁 Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">文章 Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">標籤 Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/portfolio/">
+          <a href="/portfolio/">作品 Portfolio</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">關於我 About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script> -->
+
+<!-- Katex CSS/JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title"><i>(Hidden Post)</i> 使用 Discord Webhook 來實現遊戲內 Bug 回報系統 </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2024-08-02 16:14:24
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="標籤 Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Unity/" title="Unity">
+                    <b>#</b> Unity
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Gamedev/" title="Gamedev">
+                    <b>#</b> Gamedev
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/C/" title="C#">
+                    <b>#</b> C#
+                  </a>
+                </span>
+                
+              </span>
+          
+        <div style="margin-top: 10px">
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 3.1k words / 11-minute read</span>
+        </div>
+      </div>
+      
+<div class="post-toc-body markdown-body">
+    <details>
+        <summary>目錄 Table of contents</summary>
+        <div class="post-toc">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-text"> 前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81-in-game-bug-reporter%E9%81%8A%E6%88%B2%E5%85%A7-bug-%E5%9B%9E%E5%A0%B1%E7%B3%BB%E7%B5%B1"><span class="post-toc-text"> 為什麼需要 In-Game Bug Reporter（遊戲內 Bug 回報系統）？</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bug-%E5%9B%9E%E5%A0%B1%E7%B3%BB%E7%B5%B1%E7%9A%84%E9%9C%80%E6%B1%82"><span class="post-toc-text"> Bug 回報系統的需求</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%90%84%E6%AD%A5%E9%A9%9F%E7%9A%84%E5%AF%A6%E7%8F%BE"><span class="post-toc-text"> 各步驟的實現</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#user-interface"><span class="post-toc-text"> User Interface</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%99%BC%E9%80%81%E6%96%B9%E5%BC%8Fdiscord-webhook"><span class="post-toc-text"> 發送方式：Discord Webhook</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%B9%E4%BE%BF%E4%BD%BF%E7%94%A8"><span class="post-toc-text"> 方便使用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%83%A1%E6%84%8F%E6%94%BB%E6%93%8A"><span class="post-toc-text"> 安全性，防止被惡意攻擊</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%84%B2%E5%AD%98%E6%96%B9%E5%BC%8Fdiscord-forum-channels"><span class="post-toc-text"> 儲存方式：Discord Forum &amp; Channels</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9A%B1%E7%A7%81%E8%88%87%E8%B3%87%E6%96%99%E5%AE%89%E5%85%A8"><span class="post-toc-text"> 隱私與資料安全</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8F%AF%E8%BF%BD%E8%B9%A4%E6%80%A7-%E5%8C%BF%E5%90%8D%E6%80%A7"><span class="post-toc-text"> 可追蹤性 &#x2F; 匿名性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%B3%87%E6%96%99%E6%AA%A2%E7%B4%A2-%E5%BE%8C%E7%BA%8C%E6%95%B4%E5%90%88"><span class="post-toc-text"> 資料檢索、後續整合</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#showcasing"><span class="post-toc-text"> Showcasing</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#bionic-bay-%E6%8F%9B%E5%BD%B1%E5%BE%AA%E8%B7%A1"><span class="post-toc-text"> Bionic Bay 換影循跡</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B9%9D%E6%97%A5-nine-sols"><span class="post-toc-text"> 九日 Nine Sols</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B2%89%E6%B2%92%E6%84%8F%E5%BF%97-minds-beneath-us"><span class="post-toc-text"> 沉沒意志 Minds Beneath Us</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%B8%BD%E4%B9%8B%E5%B0%B1%E6%98%AF"><span class="post-toc-text"> 總之就是</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%8A%98%E8%AC%9D-acknowledgement"><span class="post-toc-text"> 銘謝 Acknowledgement</span></a></li></ol>
+        </div>   
+    </details>
+</div>
+
+
+      <div class="markdown-body">
+        <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>先前有幸參與了《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。</p>
+<hr />
+<p>[以下內容還不確定能不能寫]</p>
+<p>兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。</p>
+<p>主要就是有一區「內部測試專區」…<br />
+（解釋 DC 伺服器配置、引導玩家回報、tag 怎麼設定等等，講這個會等同公開雙方的 discord 內測群組的配置，嚴格來說會觸犯內測者 NDA ？）</p>
+<p>[以上內容還不確定能不能寫]</p>
+<hr />
+<h1 id="為什麼需要-in-game-bug-reporter遊戲內-bug-回報系統"><a class="markdownIt-Anchor" href="#為什麼需要-in-game-bug-reporter遊戲內-bug-回報系統"></a> 為什麼需要 In-Game Bug Reporter（遊戲內 Bug 回報系統）？</h1>
+<blockquote>
+<p>我開個 Google 表單讓有意願回報的玩家直接回報不就好了，搞這麼麻煩做什麼？</p>
+</blockquote>
+<p>因為有幾個重點是手動外部回報很難做到的事情：</p>
+<ol>
+<li>傳送發生問題的截圖、影片</li>
+<li>傳送發生問題當下的 Log 檔、存檔、硬體資訊等等你在除錯的時候會希望可以調查的任何資料</li>
+</ol>
+<p>當然你也可以在表單<strong>要求</strong>玩家填寫、附上資料，只是這通常就兩種結果：</p>
+<ol>
+<li>太麻煩了不回報了</li>
+<li>附了，但還是不夠精確，成為無法重現或甚至不明白在描述什麼的 bug</li>
+</ol>
+<p>但這樣的結果也不能說是玩家/測試者的錯，這樣歸因也沒有意義。身為開發者也只能盡可能降低回報的阻力以及提升回報的價值，讓有意願回報的玩家能夠順利的回報，開發者也能順利的從回報資料中找到發生 bug 的原因。</p>
+<h1 id="bug-回報系統的需求"><a class="markdownIt-Anchor" href="#bug-回報系統的需求"></a> Bug 回報系統的需求</h1>
+<p>回報流程的需求列出來大致上有：</p>
+<ol>
+<li>User Interface
+<ol>
+<li>照遊戲專案需求來設計</li>
+</ol>
+</li>
+<li>發送/接收 bug report 的 API
+<ol>
+<li>方便使用</li>
+<li>安全性，防止被惡意攻擊</li>
+</ol>
+</li>
+<li>儲存方式
+<ol>
+<li>價格</li>
+<li>方便檢索、後續整合</li>
+<li>隱私與資料安全</li>
+</ol>
+</li>
+</ol>
+<p>綜合以上幾點，九日開發團隊的<a href="">易衡</a>提出了「何不直接使用 Discord 本身來達成這件事情？」</p>
+<p>實際嘗試了之後確定這件事情感覺超級可行的，以 Discord 來達成根據上面需求的話大致是這樣：</p>
+<ol>
+<li>User Interface
+<ol>
+<li>照遊戲專案需求來設計 -&gt; 無關</li>
+</ol>
+</li>
+<li>發送/接收 bug report 的 API -&gt; <a target="_blank" rel="noopener" href="https://discord.com/developers/docs/resources/webhook">Discord Webhook</a>
+<ol>
+<li>方便使用 -&gt; 需要一個 for Unity/C# 的 Discord webhook library ，所以我寫了一套開源 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">Unity-DiscordWebhook</a></li>
+<li>安全性，防止被惡意攻擊 -&gt; 危，這點稍後補充</li>
+</ol>
+</li>
+<li>儲存方式 -&gt; Discord Channels
+<ol>
+<li>價格 -&gt; 完全免費</li>
+<li>方便檢索、後續整合 -&gt; Discord Forum 本身的介面就已經很 user-friendly （有標籤、有搜尋功能）了，後續整合可以透過 <a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/212889058-Discord%E5%AE%98%E6%96%B9API">Discord API</a> 去爬資料</li>
+<li>隱私與資料安全 -&gt; Discord 本身可以限制各頻道權限，敏感資訊可以送到私密頻道；資安的部分是 Discord 要負責也不關我的事</li>
+</ol>
+</li>
+</ol>
+<p>總之這套流程實驗下來非常可行，因此才有這篇文章想要推廣這套方法給更多開發者，接下來細項解釋<strong>就我所知</strong>各步驟的實現方式。</p>
+<h1 id="各步驟的實現"><a class="markdownIt-Anchor" href="#各步驟的實現"></a> 各步驟的實現</h1>
+<h2 id="user-interface"><a class="markdownIt-Anchor" href="#user-interface"></a> User Interface</h2>
+<p>很看專案自己的實作方式，想參考的話建議直接去看最後的 <a href="#Showcasing">Showcasing</a>。</p>
+<h2 id="發送方式discord-webhook"><a class="markdownIt-Anchor" href="#發送方式discord-webhook"></a> 發送方式：Discord Webhook</h2>
+<p><a target="_blank" rel="noopener" href="https://discord.com/developers/docs/resources/webhook">Webhook Resource</a></p>
+<p>簡單說這個東西就是你可以在 Discord 頻道設定內加入 Webhook ，之後可以透過 Webhook API 來發送訊息至該頻道。</p>
+<h3 id="方便使用"><a class="markdownIt-Anchor" href="#方便使用"></a> 方便使用</h3>
+<p>為了在 Unity 上方便使用，我寫了一套 Unity 版本的 Library – <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">Unity-DiscordWebhook</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook</a></p>
+<p>用起來還蠻方便的（自己說），除了我們自己的 Bionic Bay 之外《九日 Nine Sols》與《沉沒意志 Minds Beneath us》也都是使用這套來實作自己的 in-game bug reporter，拿來幫我背書：）</p>
+<p><strong>題外話</strong></p>
+<p>我在寫了差不多 6 成的時候才想到應該先查一下 Asset Store 上有沒有，而也真的已經有一套 <a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/integration/webhooks-for-discord-246019">Webhooks for Discord</a>，而且它寫法和我 87% 像都是 builder pattern，但實際上我並沒有買過那套插件只能從商店截圖來猜它的功能性。</p>
+<p>帶猜測性的比較：</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Unity-DiscordWebhook</th>
+<th>Webhooks for Discord</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Embeds</td>
+<td>還未支援（看情況未來更新）</td>
+<td>Yes ✅</td>
+</tr>
+<tr>
+<td>Awaitable</td>
+<td>Yes ✅</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Upload Files</td>
+<td>支援檔案路徑、Byte Array、Texture 為參數 ✅</td>
+<td>僅支援檔案路徑為參數</td>
+</tr>
+<tr>
+<td>Helper</td>
+<td>自帶一鍵 screenshot, zip 功能 ✅</td>
+<td>我不知道</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>Free ✅✅✅✅✅✅✅✅✅✅</td>
+<td>4.99 USD</td>
+</tr>
+<tr>
+<td>Long-Term Support</td>
+<td>問作者</td>
+<td>問作者（付費插件應該比較在乎）</td>
+</tr>
+</tbody>
+</table>
+<p>功能面上身為一個 Web Request API 卻沒有 Awaitable method 我就不採納了，其他功能都是實作過程中有需要才補上的。</p>
+<h3 id="安全性防止被惡意攻擊"><a class="markdownIt-Anchor" href="#安全性防止被惡意攻擊"></a> 安全性，防止被惡意攻擊</h3>
+<p>針對這個 webhook 能想到的惡意攻擊主要就瘋狂洗版來癱瘓有效資訊的取得，而想要不被惡意攻擊我能想到就兩個方向：</p>
+<ol>
+<li>擋住惡意攻擊本身，讓接收端要去偵測並封鎖惡意攻擊。
+<ol>
+<li>這一點我沒有很熟，但我知道你管不到 Discord 怎麼接收訊息，所以你能做的是<strong>避免直接暴露 Webhook 連結</strong>，你會需要一個中間層去接收來自 client 的訊息、經過處理、篩選後再轉送至 Webhook 連結。</li>
+<li>現在網路上有很多 Serverless Function 的服務可以做到這件事，如 <a target="_blank" rel="noopener" href="https://vercel.com/docs/rest-api">Vercel REST API</a>，但我沒有研究這塊，有興趣的請找<a href="">易衡</a>。</li>
+</ol>
+</li>
+<li>擋住惡意使用者，一開始就把使用者限縮到可信任的圈圈內
+<ol>
+<li>即內部團隊人員、可信任的測試者等等，說白話就是什麼都不管、兩手一攤、我相信人性本善之術。</li>
+</ol>
+</li>
+</ol>
+<p>我們大部分都只會把系統開放給內部測試玩家，所以基本上都是基於 2. 的方向什麼都沒處理也很省事。即便、就算、萬一、哪怕還是出現了惡意攻擊，你身為管理員也可以立刻從 Discord 頻道設定中把該 Webhook 給註銷掉及時停損，我覺得應該是可以接受的風險。</p>
+<h2 id="儲存方式discord-forum-channels"><a class="markdownIt-Anchor" href="#儲存方式discord-forum-channels"></a> 儲存方式：Discord Forum &amp; Channels</h2>
+<p>這部分其實也看專案想要怎麼處理這些資訊。</p>
+<p>拿沉沒意志的案例來說，發一個 bug report 會自動在名叫「內部bug回報-bug-report」的 forum 當中開一篇文章，且會自動附上版本號、當下截圖、流程位置、硬體配備、存檔、Player.log 這些重要的 debug 資訊。<br />
+<img src="/images/discord-as-bug-reporter/mbu-dc.jpg" alt="MBU 內測回報系統" /></p>
+<p>後面 <a href="#Showcasing">Showcasing</a> 有完整流程截圖。</p>
+<h3 id="隱私與資料安全"><a class="markdownIt-Anchor" href="#隱私與資料安全"></a> 隱私與資料安全</h3>
+<p>沉沒意志這邊的 BUG 回報文章的權限是公開給所有內測者看的，任何內測者或管理員都可以查看。</p>
+<p>認真說這樣的做法<em>有一點不好</em>，或許有些玩家不希望暴露自己的硬體配備以及不希望自己的存檔被公開給非開發者的人存取，這樣會增加回報的阻力。</p>
+<p>想解決這個隱私問題的話可以先比較私密的資料送到開發者的私密頻道、然後 Forum 文章內容再去連結那則訊息，這樣沒有權限的人就只會看到「無存取權限」，例如：<br />
+<img src="/images/discord-as-bug-reporter/ns-dc.jpg" alt="九日公開給玩家使用的回報系統就採用這種形式" /></p>
+<h3 id="可追蹤性-匿名性"><a class="markdownIt-Anchor" href="#可追蹤性-匿名性"></a> 可追蹤性 / 匿名性</h3>
+<p>目前這套流程比較麻煩的點是透過 webhook 發出的回報<strong>並不會直接連結到使用者帳號</strong>，所以後續如果希望和該回報者確認錯誤的細節的話會比較難聯繫上。</p>
+<p>但…這也是優點！</p>
+<p>第一，非常有可能玩家是<strong>沒有 discord 帳號的</strong>，你不能要求玩家想回報問題都得辦個帳號；此外，就是有人想要<strong>匿名回報</strong>，如果強行要求帳號制回報的話也會成為那些人回報的阻力。</p>
+<p>所以現在我們認為可接受的方式還是讓使用者自己填 Username 或是期待他們主動在回報討論串留言補充資訊（例如影片）。</p>
+<h3 id="資料檢索-後續整合"><a class="markdownIt-Anchor" href="#資料檢索-後續整合"></a> 資料檢索、後續整合</h3>
+<p>首先 Discord 本身介面就有蠻強大的搜尋以及標籤功能了，如果沒有整合需求的話我覺得挺堪用的。</p>
+<p>若想要把這裡回報的 bug 資料整合至團隊內部使用的其他服務，可以透過 <a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/212889058-Discord%E5%AE%98%E6%96%B9API">Discord API</a> 來爬這些資訊，我沒有做這件事就不展開來談了（去問<a href="">易衡</a>）。</p>
+<h1 id="showcasing"><a class="markdownIt-Anchor" href="#showcasing"></a> Showcasing</h1>
+<h2 id="bionic-bay-換影循跡"><a class="markdownIt-Anchor" href="#bionic-bay-換影循跡"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1928690/Bionic_Bay/">Bionic Bay 換影循跡</a></h2>
+<p>按下 F8 會截圖然後彈出回報視窗，這實作比較簡陋只需要填 username （透過 PlayerPrefs 儲存所以一台電腦只要填一次）然後選擇送出至哪個頻道。</p>
+<table>
+<thead>
+<tr>
+<th>In-game UI</th>
+<th>Discord</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/images/discord-as-bug-reporter/bb-ui.jpg" alt="關卡編輯器內 F8 叫出來" /></td>
+<td><img src="/images/discord-as-bug-reporter/bb-dc.jpg" alt="Discord 查看回報內容" /></td>
+</tr>
+</tbody>
+</table>
+<p>實際上會送出的資料如下圖：</p>
+<ul>
+<li>回報者 Username</li>
+<li>版本號</li>
+<li>回報的地點（關卡、角色座標、相機位置），複製 code 可以在遊戲中快速傳送到指定地點</li>
+<li>回報當下的截圖</li>
+<li>附件內有 Player.log 、硬體資訊</li>
+</ul>
+<p>這我們自己專案的給團隊成員使用的實作，所以比較有辦法講比較細。沒有特別在遊戲內加入 text field 是因為使用者就是我們團隊本身，要我在遊戲內打字我還不如直接去 discord 頻道回覆補充說明就好。</p>
+<p>這個系統也常常被我們拿來當快速截圖、傳送 Player.log 的方式，我是真心很喜歡這個流程，省下以前一大堆的資訊傳遞缺失的麻煩。</p>
+<h2 id="九日-nine-sols"><a class="markdownIt-Anchor" href="#九日-nine-sols"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a></h2>
+<table>
+<thead>
+<tr>
+<th>In-game UI</th>
+<th>Discord</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/images/discord-as-bug-reporter/ns-ui-1.jpg" alt="遊戲內 F8 叫出來" /> <img src="/images/discord-as-bug-reporter/ns-ui-2.jpg" alt="送出後" /></td>
+<td><img src="/images/discord-as-bug-reporter/ns-dc.jpg" alt="在官方 Discord 中查看回報內容" /></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>紀錄了版本號、截圖、發生地點、BUG 描述、硬體資訊、遊戲存檔。</li>
+</ul>
+<h2 id="沉沒意志-minds-beneath-us"><a class="markdownIt-Anchor" href="#沉沒意志-minds-beneath-us"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath Us</a></h2>
+<table>
+<thead>
+<tr>
+<th>In-game UI</th>
+<th>Discord</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/images/discord-as-bug-reporter/mbu-ui-1.jpg" alt="遊戲內 Ctrl+F6 叫出來" /> <img src="/images/discord-as-bug-reporter/mbu-ui-2.jpg" alt="送出後" /></td>
+<td><img src="/images/discord-as-bug-reporter/mbu-dc.jpg" alt="在官方 Discord 中查看回報內容" /></td>
+</tr>
+</tbody>
+</table>
+<p>（感謝 Ta Da 提供圖片）</p>
+<ul>
+<li>精美的 UI</li>
+<li>記錄了版本號、當下截圖、目前流程位置、硬體配備、存檔、Player.log 這些重要的 debug 資訊</li>
+</ul>
+<h1 id="總之就是"><a class="markdownIt-Anchor" href="#總之就是"></a> 總之就是</h1>
+<p>我覺得這整套流程蠻值得學(抄)習(來)使用的，尤其小團隊沒有太多時間去研究整套流程和一些 know-hows，之後若有更多開發者進來使用後若能碰撞出更好的解決方案那更好。</p>
+<p>雖然這篇文章本身並沒有針對「怎麼實作」這件事著墨太多，有興趣的看看 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">Unity-DiscordWebhook</a> 的 README（雖然我還沒寫中文版，真有需要的話我再補）。</p>
+<h1 id="銘謝-acknowledgement"><a class="markdownIt-Anchor" href="#銘謝-acknowledgement"></a> 銘謝 Acknowledgement</h1>
+<ul>
+<li>jerryee / 易衡 – 流程發想者 &lt;---- （暫放）要叫啥比較適合跟我講一下，順便給我社群連結</li>
+<li>FunctionOverflu / 俞達 / Ta David Yu / Ta Da &lt;----（暫放）要叫啥比較適合跟我講一下，順便給我社群連結</li>
+<li>Yorube / Chris Chiu &lt;---- （暫放）要叫啥比較適合跟我講一下，順便給我社群連結</li>
+<li><a target="_blank" rel="noopener" href="https://x.com/randomdevdk">DK Liao</a> &lt;------ （暫放）我還在等你的 showcase</li>
+<li>《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》 團隊授權公開他們的 Bug Reporter 與 Discord 截圖</li>
+</ul>
+<hr />
+<p>其實我是要假借這篇文宣傳<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志</a>，他們在經歷了六年的開發期後終於在 7 月 31 日的時候上線了。</p>
+<iframe src="https://store.steampowered.com/widget/1610440/" width="100%" height="190" frameborder="0" loading="lazy" allowfullscreen></iframe>
+<p>Steam 連結: <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">https://store.steampowered.com/app/1610440/Minds_Beneath_Us/</a></p>
+<p>他們是學生團隊畢業開公司繼續製作當初的畢製，年紀比我大一屆，經歷了如此漫長的開發期後終於上市了。<br />
+說實話我也才跟他們的開發者認識不到一年，甚至比較常聊也是近 3 個月左右才開始的，還是很為他們感到高興。我自認蠻清楚這種長時間開發下對自己專案的鈍感與不安會讓腦子不太正常，不管最後成績如何，成功上市就已經算某種程度的大解脫了。</p>
+<p>今年真的是國產精品獨立遊戲大爆發的一年，雖然幾乎都是 N 年磨一劍這種超不健康的開發週期下所磨出來的作品，不過只要成果出來足夠優秀就肯定會給整個產業帶來一點什麼<br />
+– 我希望如此。</p>
+<p>也不禁感嘆旁邊幾個紛紛畢業了，自己怎麼還在這個泥淖。</p>
+<!-- flag of hidden posts -->
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2024-08-02 16:14:24
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="標籤 Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Unity/" title="Unity">
+                        <b>#</b> Unity
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Gamedev/" title="Gamedev">
+                        <b>#</b> Gamedev
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/C/" title="C#">
+                        <b>#</b> C#
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目錄 Table of contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text"> 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81-in-game-bug-reporter%E9%81%8A%E6%88%B2%E5%85%A7-bug-%E5%9B%9E%E5%A0%B1%E7%B3%BB%E7%B5%B1"><span class="toc-text"> 為什麼需要 In-Game Bug Reporter（遊戲內 Bug 回報系統）？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bug-%E5%9B%9E%E5%A0%B1%E7%B3%BB%E7%B5%B1%E7%9A%84%E9%9C%80%E6%B1%82"><span class="toc-text"> Bug 回報系統的需求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%84%E6%AD%A5%E9%A9%9F%E7%9A%84%E5%AF%A6%E7%8F%BE"><span class="toc-text"> 各步驟的實現</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#user-interface"><span class="toc-text"> User Interface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BC%E9%80%81%E6%96%B9%E5%BC%8Fdiscord-webhook"><span class="toc-text"> 發送方式：Discord Webhook</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E4%BE%BF%E4%BD%BF%E7%94%A8"><span class="toc-text"> 方便使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E9%98%B2%E6%AD%A2%E8%A2%AB%E6%83%A1%E6%84%8F%E6%94%BB%E6%93%8A"><span class="toc-text"> 安全性，防止被惡意攻擊</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%84%B2%E5%AD%98%E6%96%B9%E5%BC%8Fdiscord-forum-channels"><span class="toc-text"> 儲存方式：Discord Forum &amp; Channels</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%B1%E7%A7%81%E8%88%87%E8%B3%87%E6%96%99%E5%AE%89%E5%85%A8"><span class="toc-text"> 隱私與資料安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BF%BD%E8%B9%A4%E6%80%A7-%E5%8C%BF%E5%90%8D%E6%80%A7"><span class="toc-text"> 可追蹤性 &#x2F; 匿名性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B3%87%E6%96%99%E6%AA%A2%E7%B4%A2-%E5%BE%8C%E7%BA%8C%E6%95%B4%E5%90%88"><span class="toc-text"> 資料檢索、後續整合</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#showcasing"><span class="toc-text"> Showcasing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bionic-bay-%E6%8F%9B%E5%BD%B1%E5%BE%AA%E8%B7%A1"><span class="toc-text"> Bionic Bay 換影循跡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E6%97%A5-nine-sols"><span class="toc-text"> 九日 Nine Sols</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%89%E6%B2%92%E6%84%8F%E5%BF%97-minds-beneath-us"><span class="toc-text"> 沉沒意志 Minds Beneath Us</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B8%BD%E4%B9%8B%E5%B0%B1%E6%98%AF"><span class="toc-text"> 總之就是</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%8A%98%E8%AC%9D-acknowledgement"><span class="toc-text"> 銘謝 Acknowledgement</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://pedevmakesgame.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+  
+<!-- This part is only generated if the post have glsl=true property. -->
+<link type="text/css" rel="stylesheet" href="/glsl/glslEditor.css">
+<script type="application/javascript" src="/glsl/glslEditor.js"></script>
+<script type="text/javascript">
+    // parse EDITORS
+	var ccList = document.querySelectorAll(".glslEditorCanvas");
+	for(var i = 0; i < ccList.length; i++){
+        let codeblock = ccList[i].querySelector("textarea");
+        if (codeblock) {
+            let code = codeblock.value;
+            //console.log(code);
+            ccList[i].removeChild(codeblock);
+            var editor = new GlslEditor(ccList[i], {
+                canvas_size: 250,
+                canvas_follow: true,
+                canvas_float: 'right',
+                theme: 'monokai',
+                tooltips: true,
+                exportIcon: true,
+            });
+            editor.setContent(code);
+        }
+    }
+</script>
+
+
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2024 PeDev</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=%E4%BD%BF%E7%94%A8%20Discord%20Webhook%20%E4%BE%86%E5%AF%A6%E7%8F%BE%E9%81%8A%E6%88%B2%E5%85%A7%20Bug%20%E5%9B%9E%E5%A0%B1%E7%B3%BB%E7%B5%B1&url=https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F13673%2F" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/posts/13673/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
