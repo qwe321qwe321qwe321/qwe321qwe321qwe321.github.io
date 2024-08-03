@@ -10,7 +10,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/44801/">
-<meta property="og:site_name" content="PE工具箱">
+<meta property="og:site_name" content="PE 工具箱">
 <meta property="og:description" content="本篇文章撰寫於2019&#x2F;11&#x2F;17，版本為 Unity2018.4  原由 最近卡在一個問題: 「Physics2D.autoSyncTransforms &#x3D; false 的情況下，Unity內部到底何時會進行 Sync？」 根據官方工程師的講法，如果關閉時應該是只會在FixedUpdate 以前 Sync 一次，其他時間點不會同步。 但經過測試，疑似在 Update 期間也會 Sync 啊？ 偏">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://i.imgur.com/Hif4O3o.png">
@@ -28,7 +28,7 @@
 
   
   
-  <title>用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機 | PE工具箱</title>
+  <title>用 PlayerLoopSystem 理解 Unity 主迴圈，並解釋 SyncTransforms 的執行時機 | PE 工具箱</title>
 
   
 
@@ -77,7 +77,7 @@
   </script>
   <!-- prism.css -->
   <link rel="stylesheet" href="/js/prism/prism.css">
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE工具箱" type="application/atom+xml">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE 工具箱" type="application/atom+xml">
 </head>
 
 
