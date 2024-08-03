@@ -363,6 +363,9 @@ MathJax = {
 </tbody>
 </table>
 <p>功能面上身為一個 Web Request API 卻沒有 Awaitable method 我就不採納了，其他功能都是實作過程中有需要才補上的。</p>
+<blockquote>
+<p>查到其他 github 上的開源專案還有 <a target="_blank" rel="noopener" href="https://github.com/lumpn/unity-discord">lumpn/unity-discord</a>、<a target="_blank" rel="noopener" href="https://github.com/T3R1X/UnityDiscordMsgSender">T3R1X/UnityDiscordMsgSender</a>、<a target="_blank" rel="noopener" href="https://github.com/MorganSkilly/Unity-Discord-Webhook-System">MorganSkilly/Unity-Discord-Webhook-System</a>，它們基本上都缺少關鍵功能（例如上傳檔案）或是壞了，而且我就想寫成 builder pattern 比較爽。</p>
+</blockquote>
 <h3 id="安全性防止被惡意攻擊"><a class="markdownIt-Anchor" href="#安全性防止被惡意攻擊"></a> 安全性，防止被惡意攻擊</h3>
 <p>針對這個 webhook 能想到的惡意攻擊主要就瘋狂洗版來癱瘓有效資訊的取得，而想要不被惡意攻擊我能想到就兩個方向：</p>
 <ol>
