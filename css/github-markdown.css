@@ -220,21 +220,20 @@
 }
 
 .markdown-body a {
-  color: var(--color-text-a);
+  color: var(--color-text-md-a);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-text-a);
+  /* border-bottom: 1px solid var(--color-text-a); */
   font-size: 1em;
   transition: color 0.3s;
 }
 
 .markdown-body a:hover {
   text-decoration: none;
-  color: var(--color-text-a-hover);
-  border-bottom: 1px solid var(--color-text-a-hover);
+  border-bottom: 1px solid var(--color-text-md-a);
 }
 
 .markdown-body strong {
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body hr {
@@ -279,32 +278,32 @@
 
 .markdown-body h1 {
   font-size: 32px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body h2 {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body h3 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body h4 {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body h5 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body h6 {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body p {
@@ -478,7 +477,7 @@
 .markdown-body h6 {
   margin-top: 24px;
   margin-bottom: 16px;
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.25;
 }
 
@@ -608,7 +607,7 @@
   margin-top: 16px;
   font-size: 1em;
   font-style: italic;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body dl dd {
@@ -623,7 +622,7 @@
 }
 
 .markdown-body table th {
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .markdown-body table th,
@@ -661,7 +660,7 @@
   padding: 3px 5px;
   margin: 0 2px;
   font-size: 85%;
-  font-weight: 600;
+  font-weight: bold;
   border-radius: 3px;
   background-color: var(--bg-text-md-code);
   color: var(--color-text-md-code);

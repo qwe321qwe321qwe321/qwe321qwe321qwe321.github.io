@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。">
+  <meta name="description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Discord Webhook 來實現遊戲內 Bug 回報系統">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/13673/">
 <meta property="og:site_name" content="PE工具箱">
-<meta property="og:description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。">
+<meta property="og:description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc-2.jpg">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/hades2-ui.jpg">
@@ -223,7 +223,8 @@ MathJax = {
 
 
       <div class="markdown-body">
-        <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+        <p><em>不知道有沒有人發現網站右下角可以關燈</em></p>
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
 <p>先前有幸參與了《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。</p>
 <p>不過這篇主要要講的只有 bug 回報的流程。</p>
 <p>在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。</p>
@@ -309,11 +310,13 @@ MathJax = {
 </li>
 </ul>
 <h2 id="發送方式discord-webhook"><a class="markdownIt-Anchor" href="#發送方式discord-webhook"></a> 發送方式：Discord Webhook</h2>
-<p><a target="_blank" rel="noopener" href="https://discord.com/developers/docs/resources/webhook">Webhook Resource</a></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://discord.com/developers/docs/resources/webhook">Webhook Resource</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks">如何在你的 Discord 伺服器加入 Webhook</a></li>
+</ul>
 <p>簡單說這個東西就是：你可以在 Discord 頻道設定內加入 Webhook ，之後可以透過 Webhook API 來發送訊息至該頻道。</p>
 <h3 id="方便使用"><a class="markdownIt-Anchor" href="#方便使用"></a> 方便使用</h3>
 <p>為了在 Unity 上方便使用，我寫了一套 Unity 版本的 Library – <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">Unity-DiscordWebhook</a>。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook</a></p>
 <p>用起來還蠻方便的（自己說），除了我們自己的 Bionic Bay 之外《九日 Nine Sols》與《沉沒意志 Minds Beneath us》也都是使用這套來實作自己的 in-game bug reporter，拿來幫我背書：）</p>
 <p><strong>題外話</strong></p>
 <p>我在寫了差不多 6 成的時候才想到應該先查一下 Asset Store 上有沒有，而也真的已經有一套 <a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/integration/webhooks-for-discord-246019">Webhooks for Discord</a>，而且它寫法和我 87% 像都是 builder pattern，但實際上我並沒有買過那套插件只能從商店截圖來猜它的功能性。</p>
@@ -388,8 +391,8 @@ MathJax = {
 <img src="/images/discord-as-bug-reporter/ns-dc.jpg" alt="九日公開給玩家使用的回報系統就採用這種形式" /></p>
 <h3 id="可追蹤性-匿名性"><a class="markdownIt-Anchor" href="#可追蹤性-匿名性"></a> 可追蹤性 / 匿名性</h3>
 <p>目前這套流程比較麻煩的點是透過 webhook 發出的回報<strong>並不會直接連結到使用者帳號</strong>，所以後續如果希望和該回報者確認錯誤的細節的話會比較難聯繫上。</p>
-<p>但…這也是優點！</p>
-<p>第一，非常有可能玩家是<strong>沒有 discord 帳號的</strong>，你不能要求玩家想回報問題都得辦個帳號；此外，就是有人想要<strong>匿名回報</strong>，如果強行要求帳號制回報的話也會成為那些人回報的阻力。</p>
+<p><strong>但…這也是優點！</strong></p>
+<p>第一，非常有可能玩家是<strong>沒有 discord 帳號的</strong>，你不會希望要求所有玩家想回報問題都得辦個 Discord 帳號；此外，就是有人想要<strong>匿名回報</strong>，如果強行要求帳號制回報的話也會成為那些人回報的阻力。</p>
 <p>所以現在我們認為可接受的方式還是讓使用者自己填 Username 或是期待他們主動在回報討論串留言補充資訊（例如影片）。</p>
 <blockquote>
 <p>當你要把這個服務推到全世界玩家使用的情況，匿名性尤其重要。<br />
