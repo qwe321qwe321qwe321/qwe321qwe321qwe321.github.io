@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug">
+  <meta name="description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 In-game Bug Reporter 以前，主要仰賴使用者手動在 Discord 的 B">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Discord Webhook 來實現遊戲內 Bug 回報系統">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/13673/">
 <meta property="og:site_name" content="PE工具箱">
-<meta property="og:description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug">
+<meta property="og:description" content="不知道有沒有人發現網站右下角可以關燈  前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 In-game Bug Reporter 以前，主要仰賴使用者手動在 Discord 的 B">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc-2.jpg">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/hades2-ui.jpg">
@@ -208,7 +208,7 @@ MathJax = {
               </span>
           
         <div style="margin-top: 10px">
-        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 3.4k words / 12-minute read</span>
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 3.5k words / 12-minute read</span>
         </div>
       </div>
       
@@ -227,7 +227,7 @@ MathJax = {
 <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
 <p>先前有幸參與了《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。</p>
 <p>不過這篇主要要講的只有 bug 回報的流程。</p>
-<p>在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。</p>
+<p>在他們實作 In-game Bug Reporter 以前，主要仰賴使用者手動在 <a target="_blank" rel="noopener" href="https://discord.com/">Discord</a> 的 Bug Report Forum 當中回報。</p>
 <p><img src="/images/discord-as-bug-reporter/mbu-dc-2.jpg" alt="從 Forum Channel 中填寫標題、內容、截圖、選擇標籤後建立文章" /></p>
 <blockquote>
 <p>關於如何在 Discord Server 中建立 Forum Channel，請看<a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/6208479917079-%E8%AB%96%E5%A3%87%E9%A0%BB%E9%81%93">官方教學</a></p>
@@ -269,7 +269,7 @@ MathJax = {
 </ol>
 </li>
 </ol>
-<p>綜合以上幾點，九日開發團隊的<a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">易衡</a>提出了「既然手動回報都在 Discord 了，那乾脆直接拿 Discord 來做這件事情吧」<br />
+<p>綜合以上幾點，九日開發團隊的<a href="#%E9%8A%98%E8%AC%9D-acknowledgement">易衡</a>提出了「既然手動回報都在 Discord 了，那乾脆直接拿 Discord 來做這件事情吧」<br />
 （主要參考 <a target="_blank" rel="noopener" href="https://hades.fandom.com/wiki/Support">Hades</a> 的回報流程，他們盡可能將其他的回報管道統一引導至同個地方，來降低整理資料的麻煩）</p>
 <p>實際嘗試了之後確定這件事情感覺超級可行的，以 Discord 來達成根據上面需求的話大致是這樣：</p>
 <ol>
@@ -369,7 +369,7 @@ MathJax = {
 <li>擋住惡意攻擊本身，讓接收端要去偵測並封鎖惡意攻擊。
 <ol>
 <li>這一點我沒有很熟，但我知道你管不到 Discord 怎麼接收訊息，所以你能做的是<strong>避免直接暴露 Webhook 連結</strong>，你會需要一個中間層去接收來自 client 的訊息、經過處理、篩選後再轉送至 Webhook 連結。</li>
-<li>現在網路上有很多 Serverless Function 的服務可以做到這件事，如 <a target="_blank" rel="noopener" href="https://vercel.com/docs/rest-api">Vercel REST API</a>，但我沒有研究這塊，有興趣的請找<a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">易衡</a>。</li>
+<li>現在網路上有很多 Serverless Function 的服務可以做到這件事，如 <a target="_blank" rel="noopener" href="https://vercel.com/docs/rest-api">Vercel REST API</a>，但我沒有研究這塊，有興趣的請找<a href="#%E9%8A%98%E8%AC%9D-acknowledgement">易衡</a>。</li>
 </ol>
 </li>
 <li>擋住惡意使用者，一開始就把使用者限縮到可信任的圈圈內
@@ -383,10 +383,10 @@ MathJax = {
 <p>這部分其實也看專案想要怎麼處理這些資訊。</p>
 <p>拿沉沒意志的案例來說，發一個 bug report 會自動在名叫「內部bug回報-bug-report」的 forum 當中開一篇文章，且會自動附上版本號、當下截圖、流程位置、硬體配備、存檔、Player.log 這些重要的 debug 資訊。<br />
 <img src="/images/discord-as-bug-reporter/mbu-dc.jpg" alt="MBU 內測回報系統" /></p>
-<p>後面 <a href="#showcasing">Showcasing</a> 有完整流程截圖。</p>
+<p>後面 <a href="#%E6%B2%89%E6%B2%92%E6%84%8F%E5%BF%97-minds-beneath-us">Showcasing</a> 有完整流程截圖。</p>
 <h3 id="隱私與資料安全"><a class="markdownIt-Anchor" href="#隱私與資料安全"></a> 隱私與資料安全</h3>
 <p>沉沒意志這邊的 BUG 回報文章的權限是公開給所有內測者看的，任何內測者或管理員都可以查看。</p>
-<p>認真說這樣的做法<em>有一點不好</em>，或許有些玩家不希望暴露自己的硬體配備以及不希望自己的存檔被公開給非開發者的人存取，這樣會增加回報的阻力。</p>
+<p>認真說這樣的做法<em>有一點不好</em>，或許有些玩家不希望暴露自己的硬體規格以及不希望自己的存檔被公開給非開發者的人存取，這樣會增加回報的阻力。</p>
 <p>想解決這個隱私問題的話可以先比較私密的資料送到開發者的私密頻道、然後 Forum 文章內容再去連結那則訊息，這樣沒有權限的人就只會看到「無存取權限」，例如：<br />
 <img src="/images/discord-as-bug-reporter/ns-dc.jpg" alt="九日公開給玩家使用的回報系統就採用這種形式" /></p>
 <h3 id="可追蹤性-匿名性"><a class="markdownIt-Anchor" href="#可追蹤性-匿名性"></a> 可追蹤性 / 匿名性</h3>
@@ -402,7 +402,7 @@ MathJax = {
 </blockquote>
 <h3 id="資料檢索-後續整合"><a class="markdownIt-Anchor" href="#資料檢索-後續整合"></a> 資料檢索、後續整合</h3>
 <p>首先 Discord 本身介面就有蠻強大的搜尋以及標籤功能了，如果沒有整合需求的話我覺得挺堪用的。</p>
-<p>若想要把這裡回報的 bug 資料整合至團隊內部使用的其他服務，可以透過 <a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/212889058-Discord%E5%AE%98%E6%96%B9API">Discord API</a> 來爬這些資訊，我沒有做這件事就不展開來談了（去問<a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">易衡</a>）。</p>
+<p>若想要把這裡回報的 bug 資料整合至團隊內部使用的其他服務，可以透過 <a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/212889058-Discord%E5%AE%98%E6%96%B9API">Discord API</a> 來爬這些資訊，我沒有做這件事就不展開來談了（去問<a href="#%E9%8A%98%E8%AC%9D-acknowledgement">易衡</a>）。</p>
 <h1 id="showcasing"><a class="markdownIt-Anchor" href="#showcasing"></a> Showcasing</h1>
 <h2 id="bionic-bay-換影循跡"><a class="markdownIt-Anchor" href="#bionic-bay-換影循跡"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1928690/Bionic_Bay/">Bionic Bay 換影循跡</a></h2>
 <p>按下 F8 會截圖然後彈出回報視窗，這實作比較簡陋只需要填 username （透過 PlayerPrefs 儲存所以一台電腦只要填一次）然後選擇送出至哪個頻道。</p>
@@ -426,7 +426,7 @@ MathJax = {
 <li>版本號</li>
 <li>回報的地點（關卡、角色座標、相機位置），複製 code 可以在遊戲中快速傳送到指定地點</li>
 <li>回報當下的截圖</li>
-<li>附件內有 Player.log 、硬體資訊</li>
+<li>附件內有 Player.log 、硬體規格（CPU、GPU、RAM、VRAM、OS、Resolution、Refresh Rate）</li>
 </ul>
 <p>這我們自己專案的給團隊成員使用的實作，所以比較有辦法講比較細。沒有特別在遊戲內加入 text field 是因為使用者就是我們團隊本身，要我在遊戲內打字我還不如直接去 discord 頻道回覆補充說明就好。</p>
 <p>這個系統也常常被我們拿來當快速截圖、傳送 Player.log 的方式，我是真心很喜歡這個流程，省下以前一大堆的資訊傳遞缺失的麻煩。</p>
@@ -446,7 +446,7 @@ MathJax = {
 </tbody>
 </table>
 <ul>
-<li>紀錄了版本號、截圖、BUG 描述、硬體資訊、遊戲存檔。</li>
+<li>紀錄了版本號、截圖、BUG 描述、硬體規格、遊戲存檔。</li>
 </ul>
 <h2 id="沉沒意志-minds-beneath-us"><a class="markdownIt-Anchor" href="#沉沒意志-minds-beneath-us"></a> <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath Us</a></h2>
 <table>
@@ -463,20 +463,21 @@ MathJax = {
 </tr>
 </tbody>
 </table>
-<p>（感謝 Ta Da 提供圖片）</p>
+<p>（感謝 <a href="#%E9%8A%98%E8%AC%9D-acknowledgement">Ta Da</a> 提供圖片、<a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook?tab=readme-ov-file#minds-beneath-us">影片</a>）</p>
 <ul>
 <li>精美的 UI</li>
-<li>記錄了版本號、當下截圖、目前流程位置、硬體配備、存檔、Player.log 這些重要的 debug 資訊</li>
+<li>記錄了版本號、當下截圖、目前流程位置、硬體規格、存檔、Player.log 這些重要的 debug 資訊</li>
 </ul>
+<p>之後若還有其他可展示的案例一律會放在 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook?tab=readme-ov-file#whos-using-unity-discordwebhook">github repository</a> 上更新</p>
 <h1 id="總之就是"><a class="markdownIt-Anchor" href="#總之就是"></a> 總之就是</h1>
-<p>我覺得這整套流程蠻值得學(抄)習(來)使用的，尤其小團隊沒有太多時間去研究整套流程和一些 know-hows，之後若有更多開發者進來使用後若能碰撞出更好的解決方案那更好。</p>
+<p>我覺得這整套流程蠻值得學(抄)習(來)使用的，尤其小團隊沒有太多時間去研究整套流程和一些 know-hows，之後若有更多開發者進來使用後能碰撞出更優秀的解決方案那就好了。</p>
 <p>雖然這篇文章本身並沒有針對「怎麼實作」這件事著墨太多，有興趣的看看 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/Unity-DiscordWebhook">Unity-DiscordWebhook</a> 的 README（雖然我還沒寫中文版，真有需要的話我再補）。</p>
 <h1 id="銘謝-acknowledgement"><a class="markdownIt-Anchor" href="#銘謝-acknowledgement"></a> 銘謝 Acknowledgement</h1>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">jerryee 易衡</a> – 流程發想者</li>
-<li>FunctionOverflu / 俞達 / Ta David Yu / Ta Da &lt;----（暫放）要叫啥比較適合跟我講一下，順便給我社群連結</li>
-<li>Yorube</li>
-<li><a target="_blank" rel="noopener" href="https://x.com/randomdevdk">DK Liao</a> &lt;------ （暫放）我還在等你的 showcase</li>
+<li><a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">jerryee 易衡</a> – 流程發想者，有額外問題都去問他</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ta-david-yu">Ta David Yu</a> – 實際應用、協助測試功能與提供相關截圖影片</li>
+<li><a target="_blank" rel="noopener" href="https://x.com/randomdevdk">DK Liao</a> – 實際應用與協助測試功能</li>
+<li>Yorube 校閱</li>
 <li>《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》 團隊授權公開他們的 Bug Reporter 與 Discord 截圖</li>
 </ul>
 <hr />
@@ -487,7 +488,7 @@ MathJax = {
 說實話我也才跟他們的開發者認識不到一年，甚至比較常聊也是近三個月左右才開始的，還是很為他們感到高興。我自認蠻清楚這種長時間開發下對自己專案的鈍感與不安會讓腦子不太正常，不管最後成績如何，成功上市就已經算某種程度的大解脫了。</p>
 <p>今年真的是國產精品獨立遊戲大爆發的一年，雖然幾乎都是 N 年磨一劍這種超不健康的開發週期下所磨出來的作品 – 開發週期長是個選擇，但朝著一個過去沒有做過的方向直接全職耗費 N 年的時間真的是一件很可怕的事。不過結果論來說還是很高興能看到這些作品的出現能為整個產業帶來一點什麼<br />
 – 我希望如此。</p>
-<p>也不禁感嘆旁邊幾個紛紛畢業了，自己怎麼還在這個泥淖。</p>
+<p>也不禁感嘆旁邊幾個紛紛畢業了，自己怎麼還在這。</p>
 <!-- flag of hidden posts -->
       </div>
       
