@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。  [以下內容還不確定能不能寫] 兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。 主要就是有一區「內部測">
+  <meta name="description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 Discord Webhook 來實現遊戲內 Bug 回報系統">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/13673/">
 <meta property="og:site_name" content="PE工具箱">
-<meta property="og:description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。  [以下內容還不確定能不能寫] 兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。 主要就是有一區「內部測">
+<meta property="og:description" content="前言 先前有幸參與了《九日 Nine Sols》與《沉沒意志 Minds Beneath us》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。 不過這篇主要要講的只有 bug 回報的流程。 在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc-2.jpg">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/hades2-ui.jpg">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc.jpg">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/ns-dc.jpg">
@@ -31,7 +32,7 @@
 <meta property="article:tag" content="Gamedev">
 <meta property="article:tag" content="C#">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/hades2-ui.jpg">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/discord-as-bug-reporter/mbu-dc-2.jpg">
 <meta name="twitter:site" content="@qwe321qwe321qwe321">
 
   
@@ -207,7 +208,7 @@ MathJax = {
               </span>
           
         <div style="margin-top: 10px">
-        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 3.5k words / 12-minute read</span>
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 3.4k words / 12-minute read</span>
         </div>
       </div>
       
@@ -224,13 +225,12 @@ MathJax = {
       <div class="markdown-body">
         <h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
 <p>先前有幸參與了《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1809540/_/">九日 Nine Sols</a>》與《<a target="_blank" rel="noopener" href="https://store.steampowered.com/app/1610440/Minds_Beneath_Us/">沉沒意志 Minds Beneath us</a>》這兩款今年指標性的國產遊戲的發售前測試，跟著頂尖團隊跑完這樣測試的流程真的蠻有幫助的，有很多值得學習的處理方式。</p>
-<hr />
-<p>[以下內容還不確定能不能寫]</p>
-<p>兩者的測試方式其實大同小異，都是在 Discord 伺服器內實施，需要稍微了解 Discord 的管理模式，主要就身分組權限之類的。</p>
-<p>主要就是有一區「內部測試專區」…<br />
-（解釋 DC 伺服器配置、引導玩家回報、tag 怎麼設定等等，講這個會等同公開雙方的 discord 內測群組的配置，嚴格來說會觸犯內測者 NDA ？）</p>
-<p>[以上內容還不確定能不能寫]</p>
-<hr />
+<p>不過這篇主要要講的只有 bug 回報的流程。</p>
+<p>在他們實作 in-game bug reporter 以前仰賴使用者手動在 Discord 的 Bug Report Forum 當中回報。</p>
+<p><img src="/images/discord-as-bug-reporter/mbu-dc-2.jpg" alt="從 Forum Channel 中填寫標題、內容、截圖、選擇標籤後建立文章" /></p>
+<blockquote>
+<p>關於如何在 Discord Server 中建立 Forum Channel，請看<a target="_blank" rel="noopener" href="https://support.discord.com/hc/zh-tw/articles/6208479917079-%E8%AB%96%E5%A3%87%E9%A0%BB%E9%81%93">官方教學</a></p>
+</blockquote>
 <h1 id="為什麼需要-in-game-bug-reporter遊戲內-bug-回報系統"><a class="markdownIt-Anchor" href="#為什麼需要-in-game-bug-reporter遊戲內-bug-回報系統"></a> 為什麼需要 In-Game Bug Reporter（遊戲內 Bug 回報系統）？</h1>
 <blockquote>
 <p>我開個 Google 表單讓有意願回報的玩家直接回報不就好了，搞這麼麻煩做什麼？</p>
@@ -268,8 +268,8 @@ MathJax = {
 </ol>
 </li>
 </ol>
-<p>綜合以上幾點，九日開發團隊的<a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">易衡</a>提出了「何不直接使用 Discord 本身來達成這件事情？」<br />
-（實際上是參考 <a target="_blank" rel="noopener" href="https://hades.fandom.com/wiki/Support">Hades</a> 的回報，他們盡可能將其他的回報管道統一引導至這裡，來降低整理資料的麻煩）</p>
+<p>綜合以上幾點，九日開發團隊的<a target="_blank" rel="noopener" href="https://www.facebook.com/jerry.chan.90834">易衡</a>提出了「既然手動回報都在 Discord 了，那乾脆直接拿 Discord 來做這件事情吧」<br />
+（主要參考 <a target="_blank" rel="noopener" href="https://hades.fandom.com/wiki/Support">Hades</a> 的回報流程，他們盡可能將其他的回報管道統一引導至同個地方，來降低整理資料的麻煩）</p>
 <p>實際嘗試了之後確定這件事情感覺超級可行的，以 Discord 來達成根據上面需求的話大致是這樣：</p>
 <ol>
 <li>User Interface
@@ -308,7 +308,6 @@ MathJax = {
 </ul>
 </li>
 </ul>
-<p>想參考可看最後的 <a href="#showcasing">Showcasing</a>。</p>
 <h2 id="發送方式discord-webhook"><a class="markdownIt-Anchor" href="#發送方式discord-webhook"></a> 發送方式：Discord Webhook</h2>
 <p><a target="_blank" rel="noopener" href="https://discord.com/developers/docs/resources/webhook">Webhook Resource</a></p>
 <p>簡單說這個東西就是：你可以在 Discord 頻道設定內加入 Webhook ，之後可以透過 Webhook API 來發送訊息至該頻道。</p>
