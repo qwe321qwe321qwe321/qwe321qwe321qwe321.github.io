@@ -4,7 +4,8 @@
     padding-bottom: 56.25%;
     padding-top: 30px;
     height: 0;
-    overflow: hidden; }
+    overflow: hidden;
+    margin: 3.2rem 0; }
     .video-container iframe, .video-container object, .video-container embed {
     position: absolute;
     top: 0;left: 0;
@@ -39,4 +40,16 @@ div.img-alt {
 
 .post-wordcount {
     font-weight: 400;
+}
+
+/* Code block font size & weight overrides */
+code[class*=language-],
+pre[class*=language-] {
+    font-size: 0.85em;
+    font-weight: normal;
+}
+
+code[class*=language-] .token,
+pre[class*=language-] .token {
+    font-weight: normal !important;
 }

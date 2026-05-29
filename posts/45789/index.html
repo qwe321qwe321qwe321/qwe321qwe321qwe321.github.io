@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-tw" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="Game,Unity,Programming" />
+  <meta name="author" content="PeDev" />
+  <meta name="description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GMTK、舔壽司、BitSummit 的好日子">
+<meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/45789/">
+<meta property="og:site_name" content="PE 工具箱">
+<meta property="og:description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/gamejam_theme_loop.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_2.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_3.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/sushilooplicker_title.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_4.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_5.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_6.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_18.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/unity-replay-integration-discord.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/sticky_pad.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/gacha_machine.gif">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_19.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_7.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_8.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/steam_page_approved.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_9.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/nintendo_museum_1.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_10.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_11.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_12.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_13.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_14.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_20.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_15.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_17.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/unimplemented.png">
+<meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_16.png">
+<meta property="article:published_time" content="2026-05-29T09:40:50.000Z">
+<meta property="article:modified_time" content="2026-05-29T09:40:50.000Z">
+<meta property="article:author" content="PeDev">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Gamedev">
+<meta property="article:tag" content="Game Design">
+<meta property="article:tag" content="Game Jam">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/gamejam_theme_loop.png">
+<meta name="twitter:site" content="@qwe321qwe321qwe321">
+
+  
+  
+  <title>GMTK、舔壽司、BitSummit 的好日子 | PE 工具箱</title><meta name="robots" content="noindex">
+
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/color-scheme.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+<link rel="stylesheet" href="/css/comments.css">
+<link rel="stylesheet" href="/css/pedev-ext.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="/js/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="/css/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="/js/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JEC82CJEXT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JEC82CJEXT');
+    </script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <!-- prism.css -->
+  <link rel="stylesheet" href="/js/prism/prism.css">
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="PE 工具箱" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/profile/avatar.gif" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">PeDev</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">首頁 Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">文章 Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">標籤 Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/portfolio/">
+          <a href="/portfolio/">作品 Portfolio</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">關於我 About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script> -->
+
+<!-- Katex CSS/JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title"><i>(Hidden Post)</i> GMTK、舔壽司、BitSummit 的好日子 </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2026-05-29 17:40:50
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="標籤 Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/Unity/" title="Unity">
+                    <b>#</b> Unity
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Gamedev/" title="Gamedev">
+                    <b>#</b> Gamedev
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Game-Design/" title="Game Design">
+                    <b>#</b> Game Design
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/Game-Jam/" title="Game Jam">
+                    <b>#</b> Game Jam
+                  </a>
+                </span>
+                
+              </span>
+          
+        <div style="margin-top: 10px">
+        <span class="post-wordcount"><i class="iconfont icon-eye"></i> 12.7k words / 43-minute read</span>
+        </div>
+      </div>
+      
+<div class="post-toc-body markdown-body">
+    <details>
+        <summary>目錄 Table of contents</summary>
+        <div class="post-toc">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#1"><span class="post-toc-text"> — 1 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2"><span class="post-toc-text"> — 2 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3"><span class="post-toc-text"> — 3 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#4"><span class="post-toc-text"> — 4 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#5"><span class="post-toc-text"> — 5 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#6"><span class="post-toc-text"> — 6 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#7"><span class="post-toc-text"> — 7 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#8"><span class="post-toc-text"> — 8 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#9"><span class="post-toc-text"> — 9 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#10"><span class="post-toc-text"> — 10 —</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E3%82%93"><span class="post-toc-text"> — ん —</span></a></li></ol>
+        </div>   
+    </details>
+</div>
+
+
+      <div class="markdown-body">
+        <p><em>覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。</em><br />
+<em>謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）</em></p>
+<h1 id="1"><a class="markdownIt-Anchor" href="#1"></a> — 1 —</h1>
+<p>去年 8 月初的時候我與三位朋友們參加了 <a target="_blank" rel="noopener" href="https://itch.io/jam/gmtk-2025">GMTK Game Jam 2025</a>，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免混淆才稱呼為立本人。我們四個人其實都是工程師，雖然覺得這組成很微妙，但還是出於玩玩轉換心情的態度便頂著這樣單一職種、三個時區的成員配置參加了這次活動。</p>
+<p>GMTK Game Jam 是個我過去參加過三次的線上 Game Jam 活動，其中有前兩次是和立本人參加的，上一次則是單人參加（然後做完了沒提交幹）。這次我本來也打算單人參加，不過和朋友們講了這件事之後便順水推舟成了這四人工程師配置。現在有點忘了，但我當時應該是個情緒比較高漲的狀態，稍稍進入了一種「怎樣都無所謂啦感覺好玩就好」的無理由全盤接受模式。</p>
+<p>立本人本來就常和我玩 GMTK Game Jam，平日做移植工作也缺乏這種創作遊戲的契機；德國人或許只是因為工作與遊戲無關，想要找回點做遊戲的感覺；易大師大概只是想嘗鮮湊熱鬧，順帶想畫點東西當當美術而不要碰程式碼；我則是想拿 Game Jam 當藉口做點東西讓自己的身分認同不會崩塌。</p>
+<p>2025 GMTK Game Jam 長達四天 96 小時，從星期四的凌晨一點到週一凌晨一點，然後照慣例最後還會再延一小時給大家提交，所以共 97 小時。</p>
+<p>這次 Game Jam 主題是「LOOP」。<br />
+<img src="/images/sushilick-devlogs/gamejam_theme_loop.png" alt="ＬＯＯＰ" /></p>
+<p>這是個乍聽之下蠻容易發揮的題目，隨便都能想到很多跟 LOOP 有關的有趣機制與優秀的獨立遊戲作品比如 Loop Hero、Patrick’s Parabox、Recursed、Minit、Twelve Minutes 又或者 Any Roguelike Games 基本上都屬於是。但實際思考討論下去，這也是個挺難找出甚麼突破口的題目，你能輕易想到的酷炫機制大概早就上市或曾經在某個 game jam 作品之中看過了。然後我自己對於 game jam 的設計追求又極度想要找出某種特別的角度去發展，只要發現別人做過類似概念的東西就不想幹了（非常不健康的想法，商業製作上千萬別這樣想）。雖然這只是我個人的偏執，或許也有點感染到立本人和德國人，我們的討論常常冒出「可以做成OOO啦，但就有點軟掉」這種直男發言，而易大師的立場大致上都是「先做再說啦哪有這麼複雜，有很多可以調的啦」這樣。接下來的事情可想而知，從星期四凌晨看到題目後睡覺、星期四早上起來後一整天提點子、星期五凌晨投票、投出來的大家又不滿意繼續挖，一度差點要變成每個人自己做一款遊戲然後合併成 LOOP 小遊戲合輯的概念（理論上也辦的到）。</p>
+<p>當初的提案投票清單：</p>
+<pre class="line-numbers language-none"><code class="language-none">A. &quot;LOOP&quot; 小遊戲合輯 (以下隨意組合)
+B. 狗狗蜈蚣轉圈圈，incremental game - 立本人
+C. 多視窗關卡連接構成循環，彈珠爽片：滾動彈珠構成快感循環 、拼圖遊戲：2D 拼成 loop 後變 3D，類似 Monument Valley - 德國人
+D. 商務郵件模擬器：「Looping someone in」解謎誰是誰、誰該被回信， 猜出人物職位與關係：根據信件、會議紀錄、食物偏好、節慶等線索 - 我
+E. 食物鏈進化遊戲：大魚吃小魚，小魚吃蝦米 - 易大師
+F. 繪製圓圈，時間與空間會扭曲，畫越圓得分越高 - 立本人
+G. 太空聲音攻擊塔防：build 防禦裝置對應節奏並產生合聲（deck builder），黑膠唱片對戰：1D 音符相撞，轉盤控制射擊，以唱盤為中心的塔防遊戲：節奏觸發音波擊退隕石，Beat maker 遊戲 gamification，失敗狀態未定 - 易大師
+H. Loop Pool 節奏泳池遊戲，旋轉肢體、物理移動、AI 對戰，IO 類 - 立本人
+H2. 食物鏈進化遊戲：大魚吃小魚，小魚吃蝦米 - 易大師
+I. 物理旋轉武器：Survivor-like，轉速影響攻擊與偵測 - 立本人
+J. 用滑鼠轉動產生漩渦，造成物理影響如推物、破壞等 - 德國人
+K. 行星與衛星系統：按住變大顆放入軌道，自動修正／避免碰撞，圓環交通規劃遊戲：放置衛星、避免撞擊、得分最優化 - 我
+L. Action Sequence + Timeline ，規劃角色行為讓他重複動作 - 我
+M. Cyclic Graph 格子走路遊戲：每格回血，碰敵扣血，回合制與裝備成長 - 德國人<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接著到了星期五晚上，已經過了 40 小時以上，我們依舊還在線上語音中苦惱題目到底要做沙小沒有結論，「你們慢慢討論我先去吃個晚餐」我這樣說完後便離開了電腦前。</p>
+<p>.<br />
+.<br />
+.</p>
+<p>當我回到房間進入語音的時候</p>
+<p>「耶我們決定好了！迴轉壽司！」易大師說。</p>
+<p>「蛤？甚麼東西？ＬＯＯＰ在哪？」我疑惑。</p>
+<p>「迴轉壽司就是ＬＯＯＰ呀！然後舔壽司！<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sushi_terrorism">壽司郎事件</a>！剛剛我同事ＡＡ和ＢＢ經過就湊熱鬧說 LOOP 那不就迴轉壽司！舔醬油罐！」</p>
+<p>「．．．．．．．．」一切來的太突然，心裡只想吐槽貴公司的同事感情也太好了吧還可以路過提供靈感，但當下覺得這切題切的挺爛的，核心玩法是舔壽司的遊戲到底哪裡有 LOOP 了，連潛水鏡倒讚都比較 LOOP。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_1.png" alt="德國人提的" /></p>
+<p><img src="/images/sushilick-devlogs/screenshot_2.png" alt="潛水鏡倒讚 LOOP 示意圖" /></p>
+<p>心裡雖然這樣想，可是我當下可能覺得眼下也來不及再想什麼更好的題目了，加上壽司郎舔壽司事件這題目確實是很白爛，白爛到即便根本不切題我也蠻想做出來看看的。</p>
+<p>「好，就做這個，來討論實作吧」</p>
+<p>接著我們便很快地有了許多共識，舌頭該怎麼吐、被壽司師傅抓到會被做成壽司、高度物理模擬製造混亂感、game loop 等等當天晚上幾乎馬上就想出來。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_3.png" alt="當晚的 Gameplay 提議" /></p>
+<p>最後的禮拜六、日兩天，大家就很隨意地實作各自想做、有能力做的部分：</p>
+<p>易大師負責了幾乎所有 2D 美術和其餘部分演出效果（口水粒子、壽司發臭粒子、死亡動畫、post-prcoessing），以及一邊煩同事一邊學怎麼用 blender 的情況下完成了壽司 3D 建模；德國人做了舌頭的物理判定與控制邏輯、UI 介面、遊戲流程串接，以及最重要的「師傅配音工作」；立本人做了鏡頭控制、轉盤物理、後排顧客的行為邏輯、還有大多數遊戲畫面特效（狀聲詞粒子、 fever mode 的特效演出）；而我主要做了師傅的行為狀態機、舌頭模型、佈置場景、以及一些收尾工作比如關卡難度平衡，修一些會造成體驗不佳的 BUG。</p>
+<p>就這樣，過程還蠻順利地一路做完了並上架 <a target="_blank" rel="noopener" href="http://itch.io">itch.io</a> 網頁版本完賽了，便是你們看到的這版 Sushi Loop Licker：<a target="_blank" rel="noopener" href="https://itch.io/jam/gmtk-2025/rate/3773401">https://itch.io/jam/gmtk-2025/rate/3773401</a></p>
+<p><img src="/images/sushilick-devlogs/sushilooplicker_title.png" alt="名稱中間的 Loop 完全只是為了硬蹭 Game Jam 主題才加上去。" /></p>
+<p>到此為止，這款遊戲對我來說就做完了，當然如此不切題的遊戲是不太可能被選上 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=kG3LWpuiLqg">GMTK 頻道</a>來介紹的，但我還是覺得能和才華洋溢的朋友們做完這個莫名其妙的東西也挺滿足的。</p>
+<h1 id="2"><a class="markdownIt-Anchor" href="#2"></a> — 2 —</h1>
+<p>Game Jam 結束後的兩個禮拜期間，立本人、德國人還有稍微在更新舔壽司的部分功能 (Gryo、觸控、優化之類)，而易大師則是不斷地鼓吹要繼續做成多人連線版本上架 Steam 之類的。然而我身為一個三分鐘熱度雞掰人實在對此已經提不起勁，我覺得這款遊戲做到這版本已經是完成品了，也想不到有什麼能更深入可挖掘的點，這狀態我就已經挺滿意了。所以當時就留下了一句「翻頁了」以及半開玩笑地嘴砲說「 可以借我年底的時候去投明年 BitSummit」便不打算繼續碰這個專案。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_4.png" alt="易大師看起來很想繼續做，我沒興致了" /></p>
+<p>接下來的幾個月內，我依舊在遠離遊戲創作的路上，依舊一副旁觀者的模樣鬆弛地面對其他開發者們，依舊事不關己地暢談遊戲圈的小大事。即便這樣的日子愜意又自在，仍時不時會因為看到身邊的友人們持續前行的模樣而自顧自地繃緊了神經。</p>
+<p>.<br />
+.<br />
+.<br />
+.<br />
+.</p>
+<p>直到接近年底，也就是 BitSummit 的報名期限。</p>
+<p>身邊有些朋友已經繳交了遊戲投稿，2025 年沒參與到 BitSummit 而感到有點落寞的我在那時也覺得明年至少也要投個遊戲上去，才稍微對得起自己身為遊戲開發者的身分認同。但也一如往常地拖延症發作，沒到最後一刻我實在沒啥決心拿這個 prank game 來投稿 BitSummit 這樣的展會。</p>
+<p>.<br />
+.</p>
+<p>就這樣真的拖到了報名的最後一天，我在一個整整四個月一片死寂的頻道中傳了這訊息：「欸靠背我忘記報bitsummit，今天最後一天，有人有空幫處理一下嗎」。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_5.png" alt="隔了 4 個月的訊息" /></p>
+<p>易大師當天便幫我填完報名資料並繳交了，感恩讚嘆易大師。</p>
+<p>（然後才發現官方系統有出包而加開七天報名時間）</p>
+<p>.<br />
+.<br />
+.</p>
+<p>到了 2026 年三月的時候。</p>
+<p>官方寄了封信給易大師，大意是因為報名人數眾多所以入選通知會在下禮拜一才開始寄。</p>
+<p>.</p>
+<p>下禮拜一晚上七點左右。</p>
+<p>「沒消息是不是被淘汰」我說。</p>
+<p>「應該是差不多了XDDD」易大師說完馬上又傳了 TGS Indie 80 的連結示意要改報名這個 ── 但我不想，破例使用了破折號來表達我有多不想。</p>
+<p>「想說我們舔舔遊戲很日本又搞笑很有機會」德國人說。</p>
+<p>就這樣在一片落寞感覺的對話中結束。</p>
+<p>.<br />
+.</p>
+<p>隔天早上 7 點，立本人傳了則訊息說：「過了！」。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_6.png" alt="真突然。" /></p>
+<p>驚喜之餘，我又覺得他收到的這封信的疑點實在太多了。首先在此之前的信都是易大師收到，這次卻寄給立本人；其次這封信的內文完全沒有遊戲名稱（我在 2024 收到的信是有完整的遊戲名稱的），最後是信件中附上的 Official Selection Attendance Confirmation 表單內容寫著展期是 8 月之類的描述（今年的展期提早到 5 月了）。以上種種讓我感覺太奇怪了，隱約覺得就是寄錯出包之類的想害我空歡喜一場。</p>
+<p>於是乎我們便回信 + Discord 聯絡主辦方確認這封信的真偽。</p>
+<p>.</p>
+<p>誰知道這一等就是完全沒回覆。</p>
+<p>眼看確認表單的 deadline 近在咫尺，我還是先把資料填一填交出去了。</p>
+<p>就在 deadline 過了之後，官方 discord 和信件才回復我們這封信是貨真價實的入選通知，搞了半天以上種種奇怪的點就真只是 BitSummit 的辦事就草率成這樣。（抱怨完畢，這段不小心寫了太長。）</p>
+<h1 id="3"><a class="markdownIt-Anchor" href="#3"></a> — 3 —</h1>
+<p>既然決定要去 BitSummit 了，我們對於這款舔壽司遊戲的內容也開始不滿意起來了。至少有幾個當初被提及的點要做一些補完（比如很多人在意舔師傅怎麼沒反應），加上 Agentic Coding 的盛起讓我消除了許多「覺得有辦法做但懶得做」的 Coding 陽痿，一時之間感覺能做到很多事情，對未來充滿希望 ── 不過講是這樣講，大家手邊總是還有其他事務要忙，舔壽司這專案依舊是處於一個「我們都對此有些更新的想法，但沒人開始做就不會開始做」的畫大餅屁話狀態，最多就是 BitSummit 官方要求我們繳交一些資料的時候我和易大師會動起來而已。</p>
+<p>直到五月初，距離我們搭上飛機僅剩兩週左右的時候，立本人在我們的 discord 頻道上丟了個影片並說道：「我在想加這個」。</p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/QCFekCvMeHI" frameborder="0" loading="lazy" allowfullscreen></iframe></div> 
+<p>我看到這個後笑到不行，這拍照功能還真是完美致敬壽司郎事件的起因，一場為求流量譁眾取寵的悲劇。</p>
+<p>接著我又認真想了一下，實在覺得這個「拍照賺流量」機制似乎可以讓整個遊戲往另一個沒挖掘過的方向邁進。（此事與我這一年在Ｓ社打工做拍照遊戲的經歷絕對沒有關係！）</p>
+<p>「這樣可以變成真的有局外循環了！吃完可以回家看手機、看看今日流量、買道具、明天再上門耍噁！」我心想這是典型 Coffee Talk 類遊戲的局外循環。（會想到這個也跟Ｓ社發行的某理髮遊戲也絕對沒有關係。）</p>
+<p>「流量越高、輿論越高、壽司師傅越警覺，難度曲線出來了，好合理！」訊息寫著寫著，自己覺得有戲了起來。</p>
+<p>即便此時還是有很多設計疑慮是需要實測的，例如有局外循環代表舔壽司環節不再是 endless mode，需要有個終點，它可以是限時模式也可以是達成某個目標後結束，但任何結束點沒處理好的話都可能造成一種戛然而止的突兀感，易大師蠻在意這件事。但我還是覺得這方向很可以，它讓整個遊戲的深度廣度都瞬間上升了很多。</p>
+<p>遊戲可以有了進度與成長（可以有局外成長、升級、蒐集 hashtags）、每一天的關卡可以進行難度設計、可以加入更有意義的敘事（主角是誰？動機？壽司店的結局？）、可以有分歧與有意義的選擇（你在關卡中拍了什麼、做了什麼），諸如此類的想法不斷地湧上。</p>
+<p>接著易大師馬上畫了個手機畫面的素材出來，我也馬上著手於開發工作的準備。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_18.png" alt="手機畫面" /></p>
+<p>對於一個興趣專案，總要有個人先開始動工才能感染到其他人一起動手，再次體會到了這樣的感覺。</p>
+<p>.</p>
+<p>考慮到我們是全遠端的合作形式，總而言之我先導入了前陣子 vibe-coded 的 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/unity-replay-integration">unity-replay-integration</a> 工具以方便快速地分享影片給大家同步，避免立本人想分享畫面都得額外 OBS 錄製並上傳 Youtube 的麻煩。<br />
+<img src="/images/sushilick-devlogs/unity-replay-integration-discord.png" alt="把遊戲畫面錄影直接打到 discord 頻道上" /></p>
+<blockquote>
+<p>趁機推廣一下<a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/unity-replay-integration">工具本身</a>，總之是個可以一鍵上傳遊戲畫面前 N 秒的影片剪輯至 Discord 頻道上，透過設定能自動照著 Discord 流量限制進行分段上傳影片的工具，用於快速進行遊戲媒體素材蒐集與遠端溝通用途的插件，目前用於兩個遠端合作的案子上使用蠻順利的，也多虧有這東西我回頭也比較好找到當時開發過程的影片狀態，感謝 DK Liao 大大提出此方案讓我實現。</p>
+</blockquote>
+<p>接下來我們陸續做了師傅被舔的狀態（彩蛋）、對應的配音、黏鼠板陷阱（關卡難度）、串了一下 <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321/unity-steam-itchio-deployer">itch.io build pipeline</a> (DevOps)。</p>
+<p><img src="/images/sushilick-devlogs/sticky_pad.gif" alt="舔師傅與黏鼠板陷阱" /></p>
+<p>緊接著陷入了一個需要討論的設計議題：「局外升級、成長要素有什麼？怎麼呈現？」。</p>
+<p>「現在有什麼可以買？上次聽你講完還是沒什麼概念XDD」易大師訊息。</p>
+<p>「我現在是感覺有餐廳外的要素比較好。餐廳外的商店的話，形式就能有蠻多種的。純 2D 手機介面 (畫面不會有 3D 舌頭）或者真的有個 3D 可舌頭互動的商店，可以舔按鈕來購買」我回。</p>
+<p>「自販機？」易大師如是問。</p>
+<p>「自販機可以舔，好像可以。手機就比較方便全部設定都丟裡面當APP。」立本人補充道：「出店舔外面販賣機滿好笑的。」</p>
+<p>我腦袋中想像著舔自販機的畫面，確實是挺好笑的。</p>
+<p>「好像又兩種用途了，手機買，要用購物網站嗎？」易大師說：「可以發展舌頭系列，舔娃娃機」</p>
+<p>總覺得討論有點發散，德國人便開口道：「各位週五晚上有沒有時間討論？我台灣時間傍晚也可以了。我週末應該有時間做事，如果有需要人力改東西的話。」</p>
+<p>就這樣我們約了個時間好好討論了一下要做什麼。</p>
+<p>當天討論的結果有兩點，第一點是局外成長、蒐集要素是要擺一台【轉蛋機】在店門外，在進入店門之前可以花錢轉轉蛋（用舌頭舔按鈕）獲得道具。第二點是我和立本人依然覺得要有個結局可以展示 credit roll + 玩家拍過的照片(tweet) 來營造一種圓滿與回顧的感覺。</p>
+<p>道具的部分德國人和立本人覺得考慮到關卡設計挺花時間的，還是簡單以造型道具為主、不涉及改變遊戲機制與難易度的部分。我是對此有點不滿意，覺得造型什麼的改變太少了，沒有到很值得重玩。然後造型的部分考慮到主角只是第一人稱的舌頭，改舌頭造型什麼的又挺麻煩的，於是決定乾脆給【壽司師傅】造型好了！反正就是多畫幾張圖做點疊層替換之類的還算蠻輕鬆的。</p>
+<p>「我抱怨一下，師傅的下半身現在是空的沒畫，看起來超怪」我說。</p>
+<p>「但我覺得就是空的看起來很粗糙才很好笑」德國人說。</p>
+<p>「啊有啦！讓他下半身穿內褲！這就是造型！」易大師靈機一動。</p>
+<p>我們聽完都噗哧笑了出來並且全票同意，讓人不禁反思這遊戲到底要往什麼方向前進呢。</p>
+<p>接著馬上易大師就畫了幾條內褲放在師傅下半身上來看看效果。</p>
+<p>「哪有人只穿著內褲在外移動的，還是你畫個褲子破洞的 mask，正面就一直維持正常褲子，背面可以被你舔破然後露出內褲，這樣還可以階段性戰損！」我說道。</p>
+<p>接下來我和易大師大概花了一個晚上在調整師傅的高度、內褲的樣式、外褲戰損有幾個階段等等設計。德國人花了一個晚上把轉蛋機邏輯與演出、存檔系統等等都串好。</p>
+<p><img src="/images/sushilick-devlogs/gacha_machine.gif" alt="轉蛋機" /></p>
+<p>而前面討論到的第二點【要有結局】，那就得有關卡勝利條件，這方面我們想法很單純就是透過拍照上傳 SNS 製造流量產生炎上，炎上值到某種程度下能把所有客人趕跑觸發本日休業結束一局。於是立本人就嘗試加入「炎上條」的 UI 設計使關卡進度能有效呈現在畫面上。（可惜直到最後還是沒找到合適的呈現手段）</p>
+<p>之後陸續補了師傅音效、加了相機 APP 作為第一個會轉蛋轉到的道具（拍照功能解鎖）、做了手機介面當作暫停選單、做了 tweet UI 顯示可用於教學用途 ＋ 回顧玩家目前為止拍的照片(tweet)、修正一些困惑體驗（飢餓度不明顯、飢餓死亡缺演出）、調整師傅的警戒邏輯、判斷和演出、師傅新增一個額外的強烈懷疑狀態來提示玩家等等。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_19.png" alt="大家在平日閒暇之餘加入了各種東西" /></p>
+<h1 id="4"><a class="markdownIt-Anchor" href="#4"></a> — 4 —</h1>
+<p>就這樣距離參展只剩一個禮拜，我們終於要來準備參展的佈置海報以及在那之前要決定好的「遊戲名稱」。</p>
+<p>「回転寿司ペロペロ」易大師起了個頭。</p>
+<p>「太直白」立本人說。</p>
+<p>「壽司pe郎(ro)」我說。</p>
+<p>「有喔，加一些副標題呢？有那個懷舊遊戲的土爆感，炎上！ 什麼的 激鬥 什麼的」立本人說。</p>
+<p>然後我們開始發散了一堆土炮副標題，什麼壽司大騷亂甚麼鬼的之後有點不了了之。</p>
+<p>.</p>
+<p>後續拖到真的不能再拖了的時候才討論決定出日文名為【寿司ぺ郎】，而英文名使用【Sushi Lick】。<br />
+前者考慮到日本的壽司郎實際上只是片假名的【スシロー】而根本沒有漢字「壽司郎」這三個字，這樣我們在日本得罪人的機率應該比較低，而中文圈稍微懂日文的玩家應該能夠秒懂壽司郎和壽司ペロ（ペロ＝舔的擬聲詞）的雙關，算是我們要的效果。至於英文的部分把日文名的 Sushipero 用非常爛的直翻英文就是 Sushi Lick，本身也有點蹭 Coffee Talk 的意念（考慮到想做的局外循環是類似概念），就這樣定下來了。</p>
+<p>海報的部分我就照著前年 Bionic Bay 參展的經驗開了個直條式海報規格（84cm x 30cm）讓易大師發揮，我時不時會介入講一些屁話和開一堆需求和建議（覺得自己挺煩人的），總之就這樣完成了海報的設計，只缺海報上的 QR Code 還在思考要放啥。</p>
+<p>當我們在討論海報上的 QR Code 時，易大師開始提說要為了這遊戲開 Steam 頁面，但我對此極度反彈。<br />
+第一，我覺得此時此刻開 Steam 頁面到審過最快就展覽內壓線過關，如果審不過拖到活動結束那就開辛酸的；第二，就算給你審過好了，我們此時此刻也參加不了 BitSummit 的 Steam Event，也完全沒辦法事前投媒體信新聞稿，那完全沒有辦法取得額外曝光，是一個莫名其妙的決策。第三，我自己知道我整理一個 Steam 商店頁面的資料會花我多少時間，我寧願花時間去更新遊戲。第四，在我的視角看來，這個遊戲在 BitSummit 結束後就會恢復死寂了，它的任務就已經完成了，那這個頁面的存在意義不明。</p>
+<p>不過很顯然易大師對專案的期許與對 Steam 商店頁面的看法與我的想法大相逕庭，他極度堅持要先開 Steam 頁面再說，之後要幹嘛可以再討論反正先開沒損失。我堅持覺得這在浪費時間我不想幹，而他沒有 Steamworks 帳號所以他自己也想幹也幹不了，所以我也想說這件事就這樣吧。</p>
+<p>.</p>
+<p>隔天易大師傳了個訊息 tag 我說：「@我，你說你有很多空的 depot, 那你開權限給我填資料？」，「很堅持做半套耶」一大早醒來看到這個訊息讓我有點火地回，接著他便開始他那一套「反正先開頁面就沒損失阿」的邏輯催促我給他權限開頁面，我一大早實在懶得跟他吵這些就真的給了他權限去做這件事。</p>
+<p>隔了三四個小時後他傳了一張【已在審核佇列中】的圖片上來，想表示他已經填完＋提交了。</p>
+<p>然後我就看了一下他填了什麼，不看還好，看了差點中風。</p>
+<p>「你遊戲敘述全空的 100% 被退件啦幹！」我滿肚子火地打了這串訊息：「Steam 現在頁面標準變高，他要能完全理解你遊戲怎樣玩才給過，尤其是沒預告片的情況更是如此。」</p>
+<p>「QQ 那可以收回嗎？」</p>
+<p>「我沒看到可以收回的地方，直接編輯頁面吧。」我繼續說：「你下次提交之前問一下我啦，我不知道審不過會不會降我開發者帳號的信用點數，主機平台有這個毛，Steam 不知道。」</p>
+<p>「好，拍謝」</p>
+<p>「我是猜現在直接更新內容也可以啦，應該沒嚴謹到只看的到審核當下的頁面」</p>
+<p>傳完這則訊息後我便著手去修商店頁面的敘述、圖片、影片等等內容，修的過程中真的不免一股氣湧上來，覺得這人根本不懂又一直講的一副很簡單的樣子做半套讓人十分火大，又覺得他根本是故意在弄半套然後激起我的某種強迫症或完美主義來去擦屁股的陰謀。</p>
+<p>.</p>
+<p>最後我額外花了大概三個小時在修這些東西，商店頁面才成為我覺得至少 OK 能審過的樣子後才收手不去動它。因為怕 Steam 頁面來不及審過而開了個 Linktree 當入口連結加入 Steam 商店和 <a target="_blank" rel="noopener" href="http://Itch.io">Itch.io</a> 的連結後把 QR Code 放上海報，印刷廠送件後隔天順利收到海報成品。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_7.png" alt="感謝來來友情協助拍攝，但還是幫當事人碼一下。" /></p>
+<h1 id="5"><a class="markdownIt-Anchor" href="#5"></a> — 5 —</h1>
+<p>出國前的最後幾天，立本人新增了顧客在 fever time 過後會被氣走離開餐廳的設定，以及被氣走的客人會自己發一些生氣的 tweet 上 SNS 的設定，但是整套遊戲依然是 endless mode ，並且現在賺取金錢抽轉蛋的方式依舊是個問號。</p>
+<p>基於現有的東西重新思考了一下，便提出了以下流程：「那第一次遊玩的新手體驗應該是這樣，先看手機學怎麼舔壽司，接著開舔、被殺、開舔 loop 直到第一次成功進 fever time， fever time 後結束後客人會跑光，跑光前會 po 抱怨文，抱怨文的流量讓 #SushiLicker 上 trending，因為客人跑光了所以通關進行本日結算，結算時流量換錢取得第一筆 100 元（轉蛋一次的金額），DAY 2 開始透過轉蛋取得 Camera 後你才能主動拍照賺流量錢。」</p>
+<p><img src="/images/sushilick-devlogs/screenshot_8.png" alt="當時還想著要做 trending list" /></p>
+<p>我自己覺得這個方向邏輯上挺合適，想像中的體驗應該也不錯，我腦中的最終版本會有點接近那種 meta game （比如 Inscryption）的兩個階段與流程：</p>
+<ol>
+<li>第一階段只是舔壽司遊戲，直到你熟練到能進入 fever 通關 DAY 1之後，在手機結算畫面上揭露了這遊戲的另一個 core gameplay「拍照發文流量變現」，於是便進入第二階段。</li>
+<li>第二階段會發現遊戲的目標改變了，變成你要去嘗試做一些怪事（比如舔師傅、拆褲子露內褲）來拍照發文以獲得特殊的 hashtag 並賺取更高的流量來變現，而錢本身又可以去轉蛋來取得新造型或一些場景的改變，拍攝新造型或新的環境變化又能取得新的 hashtags，如此反覆的循環直到故事尾聲。</li>
+<li>每當玩家被師父抓包死亡會回到 DAY 1 重新開始，可以透過 DAY 的值來做點關卡設計與難度曲線上升，想辦法活到 DAY N 之後系統基於你這幾天拍的照片或做的事情來決定結局分歧（比如一般結局可能就是壽司店股價重挫而倒閉的結局、一直不斷地去拍師傅內褲可能會觸發師傅LOVE 結局、照片流量高到某種程度就是網紅迷失於流量間的結局之類的）</li>
+</ol>
+<p>當時想到這塊之後覺得整個遊戲的深度與廣度好像起來了，也開始有點藝術性諷刺批判的感覺了，突然有點興奮。</p>
+<p>不過想像很美好，實際上需要做的東西太多了我根本做不完，而立本人最後這幾天平日都得上班而德國人也正在旅遊途中無暇幫忙，何況腦袋有個蠻明確的畫面的人是我，我不自己做出來看看的話難以詮釋我想表達的意思。</p>
+<p>所以接下來直到出國之前，我勉強完成了基本的手機 tweet 結算畫面演出和整套第一階段到第二階段的教學流程等等。然而時間還是不夠，實際上拍照 hashtags 極度貧乏、我們也沒空做甚麼結局自然也沒辦法設些有意義的 flag 設計，就這樣以一個勉強串完系統但缺乏內容的狀態結束了這段時間的更新。</p>
+<h1 id="6"><a class="markdownIt-Anchor" href="#6"></a> — 6 —</h1>
+<p>禮拜三早晨，易大師傳來了一張圖，商店頁面審過了，可以公開了。</p>
+<p><img src="/images/sushilick-devlogs/steam_page_approved.png" alt="雖然之前在填資料的時候很火，但有過了還是鬆一口氣，至少沒讓我做白工" /></p>
+<p>.</p>
+<p>當天下午，我帶著用羽毛球筒裝著的宣傳海報離開了台灣。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_9.png" alt="羽毛球桶的尺寸放這個海報極度完美。" /></p>
+<p>.<br />
+.</p>
+<p>BitSummit 展期在 5/22 - 5/24 經過禮拜五、六、日，共三天。</p>
+<p>舔壽司四人團隊之中除了德國人因為機票實在太貴而沒辦法來京都之外其餘三人都有來，另外還有駐日台人二號「DK」 以商務票身分參加以及我同事「來來」透過台北電玩展提供的展位也來展他獨立開發的遊戲【詭域深行】，另外我正在打工的 S 社也有不少人會來這次的 BitSummit，總之是個熟人還蠻多的一趟旅程。</p>
+<p>照理來說 5/21 週四就該去會場領取通行證以及做做攤位佈置，然而這些年累計下來可能參加超過十次以上的實體展覽，這讓我對參展本身已然沒有過多的驚喜與期待感，所以我們就決定跟著 DK 跑去任天堂博物館玩了半天而沒去領證。</p>
+<p><img src="/images/sushilick-devlogs/nintendo_museum_1.png" alt="DK 玩體感射擊遊戲拿到第一名的英姿" /></p>
+<p>.<br />
+.</p>
+<p>逛完博物館後 DK 和易大師晚上有自己的安排而分離，晚上我與立本人和來來就去吃頓晚餐閒聊，結束後我們一直想要買個派對用的伸縮吹龍放在攤位上玩（因為看起來跟我們遊戲的吐舌表現一樣），於是多逛了一下附近的商店街。</p>
+<p>.</p>
+<p>「等等，雖然我沒找到那個派對道具，但這個你們應該很需要」正當我們找不到吹龍而準備離開時被來來叫住。</p>
+<p>他在 DONKI 找到了壽司的一比一模型，我們見狀都笑了出來，然後定睛一看價格。</p>
+<p>「幹一個 3000 羊，也太盤了吧」</p>
+<p>「買三個就堪比我們剛剛的吃的一頓晚餐錢耶笑死」</p>
+<p>「我只是跟你們說～你們自己決定要不要買～」</p>
+<p>「可能我們三個錢分一分還好啦」</p>
+<p>「等下我們自己決定買下去，回去叫易大師分 3000 羊出來聽起來超靠杯」</p>
+<p>圍繞著不想當盤子又覺得這太有效果了不買對不起自己的心情，我們最後還是買了三個回去。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_10.png" alt="貴到靠北，但效果真的很好" /></p>
+<p>.</p>
+<p>「買了這個壽司後就更需要買到派對吹龍了耶」</p>
+<p>「真的」</p>
+<p>我們在日本時間接近晚上 10 點前在 Google Map 上瘋狂搜尋附近的店家。</p>
+<p>「找到了附近一家 DAISO！ 剩 10 分鐘後休息！」確認位置後我們三個人便朝向 DAISO 狂奔而去。</p>
+<p>.</p>
+<p>衝到店門口之後，沒想到店門口就擺著我們要找的東西。</p>
+<p>但！</p>
+<p>是！</p>
+<p>有點不一樣。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_11.png" alt="三方卷鳥" /></p>
+<p>「靠杯他怎麼有三頭啦！」</p>
+<p>「沒差啦！你就把旁邊剪掉就好啦」</p>
+<p>「剪掉會漏風啦！」</p>
+<p>「黏起來就好啦！」</p>
+<p>「也是齁。」</p>
+<p>.</p>
+<p>今晚意外的收穫是當了個大盤子買了兩件在台灣本來想買又懶得買的東西。</p>
+<p>現在回頭想想為了三個外國人為了一個派對吹龍在京都深夜商店街拼命奔跑還真是一件莫名其妙的事，而當時還以為展覽前一天可以就這樣安穩地睡去。</p>
+<h1 id="7"><a class="markdownIt-Anchor" href="#7"></a> — 7 —</h1>
+<p>回到飯店後洗完澡躺了一下。</p>
+<p>.</p>
+<p>然後我們這群白癡此時此刻才想到遊戲根本沒做 Localization 和日文版，來日本參展不做日文版簡直是瘋了。</p>
+<p>在日本時間晚上快十二點的時候，我才打開筆電開始串 Localization 的東西。</p>
+<p>.<br />
+.<br />
+.</p>
+<p>隔日，週五的早晨，來來的攤位因為只有他一人而必須一大早就出發去了展場做準備，而我知道易大師和立本人都會提早到，於是就待在飯店確認 localization 功能正常、處理 google spreadsheet 表格的對應、除錯、以及建置版本的地獄當中搞得無法自拔。雖說情況似乎挺緊張的但我當下的心情上也還是挺放鬆（隊友可能不這樣想），只是寫到這不禁感嘆，唉我果然還是沒了當初參展會在意有沒有準時出現在攤位上的心情，都知道剛開幕的前一個小時大概也不會有人玩你的遊戲的心理建設下就沒了準時到攤位上的強烈義務感（尤其展會第一天是商務日）。</p>
+<p>就這樣我拖到近乎遲到的時機點確認版本建置完成後才出門，出門後去超商買了點能量棒和飲料，悠悠哉哉地帶著海報、支架、攜帶式螢幕、Steamdeck 等等一大包東西前往展場，剛好壓在早上 10 點出頭到達會場。</p>
+<p>到了現場後很克難地把海報掛上、把攜帶式螢幕也安置在桌面上，以一種歪七扭八的陽春攤位形式開始了展覽。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_12.png" alt="海報架的地基是一瓶水" /></p>
+<h1 id="8"><a class="markdownIt-Anchor" href="#8"></a> — 8 —</h1>
+<p>展覽開始後一個小時內才陸陸續續有零星兩三個試玩者，在有玩家真的試玩之前我們都還在一直修一些漏掉沒 localized 的文字然後一直打版本出來更新，加上會場內的網路訊號干擾太嚴重，每次我要修正、更新打版本之類的行為都需要帶著我的 MacBook Air 離開會場，站在廁所附近的小桌子上連網才有辦法好好處理。</p>
+<p>雖然開頭的試玩者很少，但也僅僅需要幾位試玩者我們就能立刻驗證到遊戲體驗上的一堆問題：</p>
+<p>「玩家看不懂教學都直接秒關掉然後不會玩」</p>
+<p>「玩家不懂師傅的警戒邏輯，經常顧著舔壽司而完全注意不到師傅已經強烈警戒了。」</p>
+<p>「師傅警戒的音效太小聲」</p>
+<p>「師傅強烈警戒的滯留時間太長很煩」</p>
+<p>「DAY 1、DAY 2 的難度體驗完全一樣沒有進展」</p>
+<p>「這個玩家似乎想打到結局，但我們沒結局」</p>
+<p>「我需要能快速切語言的快捷鍵」</p>
+<p>「FEVER TIME 觸發的太突然，很莫名其妙」</p>
+<p>「玩家不知道 FEVER TIME 要把舌頭收回去吞下去」</p>
+<p>「玩家一直舔不到食物」</p>
+<p>「玩家不會用滑鼠滾輪下滾來主動收舌頭，導致難度很高」</p>
+<p>「玩家就算賺到第一桶金了也不會去舔轉蛋機拿道具」</p>
+<p>「玩家拿到相機APP了也不會主動拍照」</p>
+<p>「沒人注意到師傅是可以舔+拍照的」</p>
+<p>「第一天勝利結束的很突然」</p>
+<p>「沒人看得懂怎麼掙脫陷阱」</p>
+<p>「拍照的回饋太低了，瀏覽數都超低感覺很怪」</p>
+<p>當然也還有一堆 null reference exception 之類的常見錯誤噴出。</p>
+<p>我就一直不斷地在會場攤位與外面廁所附近的小桌子之間來回移動數十次以上，易大師和立本人則是當場在攤位上用他十萬元的 MacBook Pro 現場修然後推上 git（因為我需要遠端回台灣電腦 build，遠端的流量需求比較高，會場內操作不了）。</p>
+<p>在現場更新的期間，可能因為我是待在廁所附近，我們這一側要上廁所的開發者們都會必經此路線，就變成時常在我修到一半的時候被搭話，我願稱其為廁所社交。</p>
+<p>就這樣在不間斷更新、修正、出版本的狀態下，第一天展會結束。</p>
+<p>.</p>
+<p>今天在會場內的更新內容包括但不限於：Localization 補完、 FOV 調整、音量調整、Option 系統、 師傅 AI 行為調整、關卡難度調整與重設計、支援多師傅關卡與 2P 色（DAY 3 會出現雙師傅關卡！）。</p>
+<p>.</p>
+<p>第一天的晚上，官方有辦一場每年慣例的會場內 after party，我們三個在攤位上也持續地在討論之後的修正方向之類的東西，在會場蹭了點免費食物以及慣例的 BitSummit 酒杯後拿回攤位上繼續尬聊吃吃。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_13.png" alt="瀟灑地把頂配 MacBook Pro 當盤子來喝酒吃東西。" /></p>
+<p>也順手調整了一下海報配置改成兩面朝外而不是背對背。</p>
+<p>哪知易大師喝了一杯清酒就整個人一副快死了的樣子，立本人也差不多喝兩口就快掛了的樣子，見兩個人一直在灌水解酒，我們就離開會場了，在附近找個地方吃晚餐後散會回去繼續更新遊戲。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_14.png" alt="不要問我為什麼拍空碗照" /></p>
+<h1 id="9"><a class="markdownIt-Anchor" href="#9"></a> — 9 —</h1>
+<p>第二天，今天開始是玩家日而不是 B2B。</p>
+<p>昨天晚上以及今天早上出門前我緊急加了個舌頭參數的功能上去，讓我們在展場可以快速測試不同舌頭參數。易大師在昨晚也加了準心功能以及命中後彈出分數數字，這樣玩家才能比較好理解舌頭吐出去的位置在哪、以及距離是否足夠長，命中時也有更多回饋。立本人加了更多拍照的 hashtags 、更改流量算法、加了點炎上特效。</p>
+<p>考慮到太多玩家不會「收舌頭」這件事，我首先嘗試調整舌頭的自動收回速度，把它改成跟主動收回舌頭的速度一樣快，這樣理想上是玩家不用學會收舌頭也沒差。然而這個的測試結果也不太行，自動收回的速度太快反倒變成玩家無法好好把舌頭伸直到最長了（需要滾輪一直往前滾，但玩家並沒有那麼擅長這件事，而且視覺上也沒有很好理解舌頭距離）。於是下一個改動變成「完全移除舌頭自然收回」的機制，這樣一開始玩家發現吐出舌頭不會自然收回的話，總會嘗試反方向滾輪之類的，讓他們趁早犯錯趁早學習。這個改動方向搭配準心設計之下，肉眼可見的玩家體驗好了很多，然而還是發生一些問題包括「玩家滾輪沒有滾到底，所以舌頭都只伸一半舔不到」之類的，我們也快速更正成舌頭吃到使用者輸入之後 always 往前伸到底 or 往後收到底，不會有一半的狀態停留。至此之後加上一點準心 BUG 修正以及舌頭長度調整之後，整個瞄準吐舌頭的體驗改善了非常多，很多玩家開始可以比較輕鬆地上手這款遊戲，包括小朋友都有能力玩。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_20.png" alt="準心與命中後噴數字" /></p>
+<p>接著除了無止盡的 exception 修正地獄之外，今天我們為了讓通關率高一點（對！這遊戲有通關條件了，我們在昨天的更新決定把展場版本的終點設計在 DAY 3 破台，但是沒有結局演出！）也把每次死亡就回歸 DAY 1 的設計給改掉了，現在讓他死亡後依然可以繼承天數直到破關。</p>
+<p>.</p>
+<p>這一天的試玩體驗順暢了許多，不過在舌頭體驗改善之後，易大師依舊不滿意舔壽司環節的 gameplay 內容。</p>
+<p>「覺得現在舔壽司的玩法有點單調噎，想加點更有回饋或者策略性的東西進去，比如可以吐吹針讓師傅睡著。」</p>
+<p>於是他加入了 Combo 機制和音效來獎勵玩家連續舔同樣的食物，又放入了金幣道具以及做到一半的吹針道具進去遊戲。</p>
+<p>「Combo 還不錯，但為什麼壽司店有金幣和吹針啦」我忍不住質疑。</p>
+<p>「金幣很有回饋感阿！不要管什麼合理性啦，瑪利歐賽車吃金幣有合理性嗎？就把瑪利歐賽車那套公式套進去遊戲就會好玩啦」</p>
+<p>「不是，可以套沒錯但你皮稍微包裝下吧，金幣也太粗暴了，何況吃到也就加分而已意義不明。」</p>
+<p>「就很有回饋感呀！而且現在玩家不是不知道 fever time 要收舌頭嗎？就沒教呀，所以遊戲裡面加入一點可以捲回去的關卡內道具的話玩家就能提早學會這件事。這時候吹針就有用了有沒有！」</p>
+<p>感覺得出來易大師非常想強化局內遊戲性與各式 feedbacks，我也認同關卡內道具的主意還不錯，但還是覺得金幣真是意義不明到不行，一時之間不知道怎麼回，覺得他都已經做進去了，那就這樣吧。</p>
+<p>.<br />
+.</p>
+<p>於是乎第二天也順利地在忙碌之中結束了，目前已知比較大的幾個問題有以下幾點：</p>
+<ol>
+<li>進入 FEVER TIME 很突然，玩家意識不太到「對面顧客因為被你的壽司噁到不行而氣噗噗導致師傅要去道歉」這件事。</li>
+<li>FEVER TIME 不知道要把食物拉回去吞下，會一直伸直舌頭浪費時間。</li>
+<li>客人走光後的勝利來的很突然，缺一個強制運鏡讓玩家盯著客人們離開。</li>
+<li>玩家還是不怎麼主動拍照，是知道拍照很好笑又可以賺錢，但基本上都還是在全神貫注地舔。</li>
+<li>被師傅發現進入警戒狀態的表現依舊沒那麼好懂。</li>
+<li>玩家依舊不會去看教學推文，看了也看不懂。</li>
+<li>DAY 3 過關後沒！有！結！局！</li>
+</ol>
+<p>其中 1、3、4 我們都覺得短期內是改善不了，2 、 5 、6 的部分最差還能仰賴口頭介紹來告知。</p>
+<p>所以我和立本人最在意的還是第 7 點的<strong>沒有結局</strong>，這讓我們一直有一股無法圓滿的感覺。</p>
+<p>「那我晚上回去一定要做結局」立本人說。</p>
+<p>「真的要有結局才行，我系統已經串好了理論上你就建一個獨立 scene 在上面編輯就好，我之後再跟你說去哪裡掛 scene 就能用，這應該蠻單純就是用易大師畫的新聞畫面加上一點文字描述壽司店股價暴跌最後倒閉了之類的警世結局」我回。</p>
+<p>「好，晚上回去 game jam。」</p>
+<p>.<br />
+.</p>
+<p>這一天的晚餐我們和 DK 一群人吃了個超頂的漢堡排，是來這趟日本吃到最好吃的一餐。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_15.png" alt="好吃到不想分享" /></p>
+<h1 id="10"><a class="markdownIt-Anchor" href="#10"></a> — 10 —</h1>
+<p>5/24 星期日，展覽的最後一天。</p>
+<p>我昨天晚上還在修舌頭長度與遮擋物判定的一系列問題，試圖再改善舌頭操作體驗。也順帶修了一些什麼 QTE 圖示、破關條件和結局天數數字過場的演出。</p>
+<p>易大師晚上把吹針的功能做完，然後嘗試加入一些提示符號來協助玩家注意到師傅正在警覺。</p>
+<p>我早上出門前照慣例會先建置一個版本才出去，看到立本人昨晚一個 commit 都沒有的情況下，覺得結局應該還是沒戲了，就這樣移動到了會場攤位。</p>
+<p>.<br />
+.<br />
+.</p>
+<p>「做不完啦，我要在這繼續弄。」</p>
+<p>立本人坐在攤位椅子上看著他電腦裡的 Unity 編輯器畫面這麼跟我說。</p>
+<p>「你還缺啥？先讓我看一下你目前有做的」我說。</p>
+<p>接著他就展示了他做的結局動畫，其內容電波到有點難文字描述，但我覺得很讚，而且這內容量是我原想的三倍以上。</p>
+<p>「靠杯你也做太長，還有後日談是怎樣，舔月球幹嘛啦！致敬 Portal 喔笑死」我說。</p>
+<p>「阿就想做成這樣，總之現在就缺個舌頭吐向月亮後拉過去的動畫，然後就舔到月球上的師傅『噢』一聲結束，然後這樣就成為一整個ＬＯＯＰ！」立本人激動地解釋完他想做的東西。我聽完覺得這主意很靠腰也很喜歡，但我不覺得今天有辦法做出來。</p>
+<p>「我覺得不太可能做出來啦，新聞結束之後就斷在殘破不堪、物是人非的壽司店貼個『感謝你的遊玩』之類的，有點淒涼的氛圍下結束也挺好了啦」我說。</p>
+<p>「好吧，那還要做可互動按鈕可以舔一下回到主選單。」</p>
+<p>「不用啦，我們開發者幫他們按作弊快捷鍵重啟就好。」</p>
+<p>就這樣，這遊戲終於有個結局了。</p>
+<p>.</p>
+<p>之後因為易大師的吹針實作完成，這是一個可以捲起來吐向壽司師傅，讓他睡著強制控場 N 秒的道具，即便我還是不太喜歡這麼粗暴的設計，我們還是討論了一下這個道具要什麼時機點提供。</p>
+<p>「我就先全部放在上排？這道具太強了感覺不要放在下排轉帶太輕易獲得比較好」我說。</p>
+<p>「有啦，你就放在 DAY 3 才會出現，在這之前的關卡都不要出現。」易大師說。</p>
+<p>有點道理，因為 DAY 3 是雙師傅關卡，吹針在這個關卡下你也只能控一位師傅的話就不會顯得太過強力而且也算挺平衡的，不然雙師傅關卡雖然很好笑但真的很難玩會一直警戒。</p>
+<p>火速更新上去，就這樣，我們的舔壽司的最後一關有了某種堪用的機制來平衡難度。</p>
+<p>.<br />
+.<br />
+.</p>
+<p>這一整天下來，有玩到結局笑出來的人蠻多的，有用吹針射師傅笑得很開心的玩家也不少。其中沒有日本人被冒犯，沒有小朋友因此學壞。我們在展覽的最後一天的最後幾小時的更新之後，舔壽司遊戲除了還是有些 BUG 和昨天列下的那些體驗問題之外，總算是個有始有終、有體驗起伏的遊戲了。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_17.png" alt="展會結束，收拾前的合照" /></p>
+<p><img src="/images/sushilick-devlogs/unimplemented.png" alt="一些來不及實裝的東西或棄案" /></p>
+<h1 id="ん"><a class="markdownIt-Anchor" href="#ん"></a> — ん —</h1>
+<p>這是一個很奇怪的參展經驗，基本上沒在商務交流、沒在交換名片、沒有很特別在拉媒體曝光、沒有玩到多少其他人的遊戲、沒有什麼在享受展覽的氛圍，只是一直不斷地、純粹地更新、驗證結果。我過去幾年帶著 Bionic Bay 參展的時候除了第一次 G-Eight 之外都還未有過如此瘋狂的即時更新打版本，這三天下來我看了一下我們 Steam 後台紀錄打了快要有 100 個版本（win + mac 雙版本），實在是很瘋狂也很問號。</p>
+<p>德國人無法親自參與 BitSummit 也是挺可惜的，也許這篇能讓他能夠稍微感受到這次線下參展的混亂狀況。</p>
+<p><img src="/images/sushilick-devlogs/screenshot_16.png" alt="這三天的 Commit 數量" /></p>
+<p>「明明嘴上說著只是為了找個藉口來玩而報名爽的，實際上又花了大把時間在遊戲更新之上累得要死幹嘛。」</p>
+<p>對此我難以反駁，有點說不上來這是個什麼樣的心理狀態。<br />
+我是真的覺得這次參展的任何結果都不太會影響未來，這款遊戲終究是個興趣專案而沒有什麼偉大抱負，展覽結束後一切都會回歸平靜，大家都會回歸日常。可能我心底多少有這樣的想法，覺得既然來參展、既然有人玩、既然有機會看看玩家反應、既然有能力可以快速地驗證創作的表達是否落地，那不嘗試以最好的模樣去面對的話心底有點過不去。</p>
+<p>實際上這一路走來還是挺多樂趣的，這是如果我當初單人參賽 Game Jam 就不會發生的事情。</p>
+<p>關於舔壽司的未來，我的三分鐘熱度能量槽已經嚴重過熱了，現階段已然沒有太大的熱情把展覽遇到的那些無法傳達的失敗設計好好修正改善的心情了，也還未能知曉這樣的遊戲方向到底是不是只在我的幻想之中裡有戲，所以乾脆點就全部打成文字闡述完想法就這麼過去了吧。網上公開的版本就維持最初的 <a target="_blank" rel="noopener" href="http://itch.io">itch.io</a> 版本擺著，至於這次展覽的更新版本以及 <a target="_blank" rel="noopener" href="https://store.steampowered.com/app/4343450/Sushi_Lick/">Steam 頁面</a>的未來與去留，對我來說 itch 和 steam 上架遊戲的覺悟差很多，既然上了 Steam 頁面就得到達某種水準線之上我才能坦然釋出，其中包括視覺及遊戲內容的補完。不過組員們的想法又是另一回事了這要我們好好討論才有辦法給個正式答案，對我來說可能在未來某天應該會弄成至少三種結局的形式才會釋出</p>
+<p>吧。</p>
+<!-- flag of hidden posts -->
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2026-05-29 17:40:50
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="標籤 Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Unity/" title="Unity">
+                        <b>#</b> Unity
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Gamedev/" title="Gamedev">
+                        <b>#</b> Gamedev
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Game-Design/" title="Game Design">
+                        <b>#</b> Game Design
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/Game-Jam/" title="Game Jam">
+                        <b>#</b> Game Jam
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目錄 Table of contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1"><span class="toc-text"> — 1 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2"><span class="toc-text"> — 2 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3"><span class="toc-text"> — 3 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4"><span class="toc-text"> — 4 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5"><span class="toc-text"> — 5 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6"><span class="toc-text"> — 6 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7"><span class="toc-text"> — 7 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8"><span class="toc-text"> — 8 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9"><span class="toc-text"> — 9 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10"><span class="toc-text"> — 10 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%82%93"><span class="toc-text"> — ん —</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        <style>
+  .comments-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .comment-system {
+    flex: 1;
+    margin: 10px;
+    min-width: 300px; /* Adjust based on your layout needs */
+    box-sizing: border-box;
+  }
+</style>
+
+<div class="comments-container">
+  
+    <div class="comment-system">
+      <script src="https://utteranc.es/client.js"
+            repo='qwe321qwe321qwe321/qwe321qwe321qwe321.github.io'
+            issue-term='pathname'
+            label=''
+            theme='github-light'
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+  
+  
+
+  
+    <div class="comment-system">
+      <div id="disqus_thread"></div>
+      <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://pedevmakesgame.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  
+
+  
+
+  
+</div>
+      </div>
+    
+  </div>
+  
+
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/PeDev_">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/qwe321qwe321qwe321">Copyright © 2026 PeDev</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=GMTK%E3%80%81%E8%88%94%E5%A3%BD%E5%8F%B8%E3%80%81BitSummit%20%E7%9A%84%E5%A5%BD%E6%97%A5%E5%AD%90&url=https%3A%2F%2Fqwe321qwe321qwe321.github.io%2Fposts%2F45789%2F" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://qwe321qwe321qwe321.github.io/posts/45789/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
