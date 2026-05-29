@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="Game,Unity,Programming" />
   <meta name="author" content="PeDev" />
-  <meta name="description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免">
+  <meta name="description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為「我」、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GMTK、舔壽司、BitSummit 的好日子">
 <meta property="og:url" content="https://qwe321qwe321qwe321.github.io/posts/45789/">
 <meta property="og:site_name" content="PE 工具箱">
-<meta property="og:description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免">
+<meta property="og:description" content="覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。 謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）  — 1 — 去年 8 月初的時候我與三位朋友們參加了 GMTK Game Jam 2025，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為「我」、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/gamejam_theme_loop.png">
 <meta property="og:image" content="https://qwe321qwe321qwe321.github.io/images/sushilick-devlogs/screenshot_1.png">
@@ -249,7 +249,7 @@ MathJax = {
         <p><em>覺得自從 AI 工具湧現之後，自己的寫文意願大幅降低了很多。</em><br />
 <em>謝謝 AI 讓我這個本來很愛用破折號的人再也不用了：）</em></p>
 <h1 id="1"><a class="markdownIt-Anchor" href="#1"></a> — 1 —</h1>
-<p>去年 8 月初的時候我與三位朋友們參加了 <a target="_blank" rel="noopener" href="https://itch.io/jam/gmtk-2025">GMTK Game Jam 2025</a>，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為我、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免混淆才稱呼為立本人。我們四個人其實都是工程師，雖然覺得這組成很微妙，但還是出於玩玩轉換心情的態度便頂著這樣單一職種、三個時區的成員配置參加了這次活動。</p>
+<p>去年 8 月初的時候我與三位朋友們參加了 <a target="_blank" rel="noopener" href="https://itch.io/jam/gmtk-2025">GMTK Game Jam 2025</a>，為了方便文章後面提及（加上我也懶得詢問他們可不可以讓我在文章中提及），所以以下代稱為「我」、「立本人」、「德國人」、「易大師」，立本人住在日本，德國人住在德國，因為後續可能會提及真的日本人避免混淆才稱呼為立本人。我們四個人其實都是工程師，雖然覺得這組成很微妙，但還是出於玩玩轉換心情的態度便頂著這樣單一職種、三個時區的成員配置參加了這次活動。</p>
 <p>GMTK Game Jam 是個我過去參加過三次的線上 Game Jam 活動，其中有前兩次是和立本人參加的，上一次則是單人參加（然後做完了沒提交幹）。這次我本來也打算單人參加，不過和朋友們講了這件事之後便順水推舟成了這四人工程師配置。現在有點忘了，但我當時應該是個情緒比較高漲的狀態，稍稍進入了一種「怎樣都無所謂啦感覺好玩就好」的無理由全盤接受模式。</p>
 <p>立本人本來就常和我玩 GMTK Game Jam，平日做移植工作也缺乏這種創作遊戲的契機；德國人或許只是因為工作與遊戲無關，想要找回點做遊戲的感覺；易大師大概只是想嘗鮮湊熱鬧，順帶想畫點東西當當美術而不要碰程式碼；我則是想拿 Game Jam 當藉口做點東西讓自己的身分認同不會崩塌。</p>
 <p>2025 GMTK Game Jam 長達四天 96 小時，從星期四的凌晨一點到週一凌晨一點，然後照慣例最後還會再延一小時給大家提交，所以共 97 小時。</p>
